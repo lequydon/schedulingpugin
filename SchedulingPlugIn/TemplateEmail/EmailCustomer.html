@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+    <body style="background-color: #f2f2f2;font-size: 14px; font-family: 'Open Sans';  padding: 100px;">
+        <article style=" background-color: #f2f2f2; padding-bottom: 30px; padding-top: 30px;">
+            <table align="center" cellpadding="0" cellspacing="0" class="article" style=" margin: 0 auto;width: 570px;background-color:#fff">
+                <tr>
+                    <td class="header" style="width:570px; height: 80px; font-size: 40px; font-family: inherit;">
+                        <img src={logo} border="0" style="width: 570px;" />
+                    </td>
+                </tr>
+                <tr>
+                   <td class="name" style="float: left;margin-left: 30px; margin-top: 54px; margin-bottom: 24px;">Hi, <b>{firstName} {lastName}</b></td>
+                </tr>
+                <tr style="float: left; padding-left: 30px; padding-right:30px; text-align:left;margin-bottom:46px;">
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p style="line-height: 26px; color: #414042; margin-top: 0; margin-bottom: 5px; margin-bottom: 20px;">
+                                        You recently requested a consultation with <b>{pagerequest}</b> via email<br> <strong><a href="mailto: {email}" style="color: #208DEC;">{email} </a></strong>
+                                        <br /><b><a id="accept" href="{linkAccept}" style="color: #208DEC;">Click here</a></b> to confirm your requested.
+                                        <br>
+                                    </p>
+                                    <p>OR</p>
+                                    <p style="line-height: 26px; color: #414042; margin-top: 0; margin-bottom: 5px; margin-bottom: 10px;">
+                                        <b><a id="decline" href="{linkDecline}" style=" color: red;">Click here</a></b> to decline you requested.
+                                        <br>
+                                        if you did not request a consultation, no futher action is needed.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p style="margin-top: 20px; line-height: 26px; color: #414042; margin-top: 0; margin-bottom: 20px;">Regards,</p>
+                                    <b style="margin-bottom:10px; line-height: 26px; color: #414042; margin-top: 0;">The {pagerequest} Team</b>
+                                    <p style="color: #fff;">The {pagerequest} Team</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </article>
+    </body>
+</html>
+

@@ -1,0 +1,318 @@
+﻿.Custom {
+    background-color: #383838;
+    color: white;
+    width: 116px;
+}
+.headerbtnselect {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+    .headerbtnselect p a {
+        font-size: 1.2em;
+    }
+
+    .headerbtnselect select {
+        border-radius: 5px;
+        padding-left: 10px;
+        background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right white;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+
+    .headerbtnselect .k-dropdown-wrap.k-state-default {
+        background-color: transparent;
+    }
+
+.EventAction {
+    margin: 0;
+    font-size: 0.8em;
+}
+
+.k-event-actions:first-child {
+    position: static;
+    float: left;
+    margin: 0;
+}
+
+.k-window-title {
+    color: white;
+}
+
+.k-window-titlebar .k-window-action {
+    color: white;
+}
+
+.k-window, .k-edit-form-container {
+    width: 35%;
+}
+
+.k-scheduler-edit-form .k-edit-form-container {
+    width: 100%;
+}
+
+.k-edit-form-container {
+}
+
+    .k-edit-form-container h3 {
+        text-align: center;
+    }
+
+    .k-edit-form-container p {
+    }
+
+.date span:hover, .date strong:hover {
+    cursor: pointer;
+}
+
+.date span:hover {
+    border-radius: 99999px;
+    padding: 10px;
+    background-color: #F1F3F4;
+}
+
+.k-scheduler-header {
+    box-sizing: border-box;
+   
+}
+.Color {
+    color:white;
+}
+
+.k-scheduler-header .k-scheduler-table .k-today {
+    background-color: #383838;
+}
+
+.k-today .date span {
+    border-radius: 99999px;
+    padding: 10px;
+    background-color: #383838;
+    color: white;
+}
+
+.k-today .date:hover span {
+    background-color: #1A73E8;
+}
+
+#schedulerCalendar > table > tbody > tr:nth-child(1) {
+    color: white;
+    background-color: #383838;
+}
+
+.rightcalendar {
+    border-left: 2px solid #655c5c52;
+}
+
+h2 {
+    margin: 0 0 10px 0;
+}
+
+.k-time-text, .k-time-period {
+    font-size: 0.8em;
+}
+
+.k-floatwrap.k-header.k-scheduler-toolbar {
+    background-color: #383838;
+}
+
+.filter {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+    .filter span i {
+        cursor: pointer;
+    }
+
+    .filter span: {
+    }
+
+h4 {
+    margin: 0;
+}
+/*Css calendar left*/
+#Calendar, #Calendar .k-calendar-view {
+    width: 100%;
+}
+
+.calendar-item li {
+    padding: 10px 5px;
+}
+
+
+
+    .calendar-item li:hover {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+    }
+
+.k-header {
+    background-color: #383838;
+}
+
+.k-scheduler-navigation div table.k-scheduler-table tbody tr th.k-today {
+    background-color: transparent;
+}
+
+.k-nav-next a span, .k-nav-prev a span {
+    color: white;
+}
+
+.k-scheduler-toolbar .k-nav-next a.k-link, .k-scheduler-toolbar .k-nav-prev a.k-link {
+    padding: 0;
+}
+
+.k-scheduler-toolbar .k-nav-next, .k-scheduler-toolbar .k-nav-prev {
+    border-right: 1px solid white;
+}
+
+.k-scheduler-navigation div table.k-scheduler-table tbody tr th {
+    border-right: 1px solid white;
+}
+
+#Calendar {
+    margin-top: 60.63px;
+}
+
+.k-scheduler-layout tbody tr:first-child .k-scheduler-times {
+    display: none;
+}
+
+/*Note*/
+.k-scheduler-layout tbody tr:first-child .k-scheduler-header.k-state-default {
+    display: none;
+}
+
+#Calendar.k-calendar > .k-header {
+    background-color: #383838;
+    color: white;
+}
+
+.k-floatwrap.k-header.k-scheduler-toolbar {
+    padding: 0;
+}
+
+.k-scheduler-toolbar .k-link.k-nav-day {
+    padding: 0;
+}
+
+.k-scheduler-navigation div table.k-scheduler-table tbody tr th {
+    text-align: center;
+}
+
+
+
+
+label.container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 1em;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+    /* Hide the browser's default checkbox */
+    label.container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+label.container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+label.container:nth-child(1) input:checked ~ .checkmark {
+    background-color: #b1b10e;
+    box-shadow: 0px 0px 2px -1px;
+}
+
+label.container:nth-child(2) input:checked ~ .checkmark {
+    background-color: blue;
+    box-shadow: 0px 0px 2px -1px;
+}
+
+label.container:nth-child(3) input:checked ~ .checkmark {
+    background-color: green;
+    box-shadow: 0px 0px 2px -1px;
+}
+
+label.container:nth-child(4) input:checked ~ .checkmark {
+    background-color: #383838;
+    box-shadow: 0px 0px 2px -1px;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+label.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+label.container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.k-scheduler-navigation {
+    display: flex;
+    width: 100%;
+}
+
+.k-scheduler-toolbar > ul > li {
+    border-style: none;
+    border-width: thin;
+}
+/*.k-scheduler-content .k-current-time {
+    height: 3px;
+}*/
+.new-time-marker {
+    width: 0px;
+    height: 0px;
+    border: 6px solid transparent;
+    border-left-color: blue;
+    position: absolute;
+    transform: translateY(-6px);
+}
+
+@media screen and (max-width: 768px) {
+    div.k-widget.k-window {
+        width: 95%;
+    }
+}

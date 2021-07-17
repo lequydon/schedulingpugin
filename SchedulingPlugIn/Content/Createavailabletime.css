@@ -1,0 +1,175 @@
+﻿main {
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+label {
+    font-weight: 200;
+}
+
+h2 {
+    font-weight: 400;
+}
+
+h2, #date, #timezone {
+    text-align: center;
+}
+
+.remove-div {
+    margin: 0.5em 0;
+}
+
+.label-time, .custom-duration {
+    font-weight: 700;
+}
+
+.k-dropdown .k-input {
+    color: none;
+    border-radius: 4px;
+}
+
+#datepicker, #datepickerr {
+    border-radius: 5px;
+    width: 200px;
+}
+
+#notifications-switch0, #notifications-switch1, #notifications-switch2, #notifications-switch3, #notifications-switch4, #notifications-switch5, #notifications-switch6 {
+    width: 46px;
+    height: 30.67px;
+}
+
+span.k-datepicker, span.k-timepicker {
+    margin: 0 1em;
+}
+
+span.k-timepicker {
+    width: 9em;
+}
+
+.datestart, .dateend {
+    margin: 10px;
+    width: 311px;
+    height: 2em;
+}
+
+.duration-dayofweek {
+    margin: 0 0.5em;
+    width: 80px;
+    border: 0.5px solid rgba(0,0,0,.1);
+    color: #656565;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 0.2em 0 0.2em 1em;
+    outline: none;
+}
+
+    .duration-dayofweek:focus {
+        box-shadow: 0px 1px 4px rgba(0,0,0,.1);
+    }
+
+#duration-main {
+    width: 80px;
+    border-radius: 5px;
+    margin: 0 0.5em;
+}
+
+#time-from0, #time-to0, #time-from1, #time-to1, #time-from2, #time-to2, #time-from3, #time-to3, #time-from4, #time-to4, #time-from5, #time-to5, #time-from6, #time-to6 {
+    width: 100px;
+    border-radius: 5px;
+    margin: 0 0.5em;
+}
+
+#timeZone {
+    width: 361px;
+    border-radius: 5px;
+    margin: 0 2em 0 0.5em;
+}
+
+.timeZone {
+    padding-right: 20px;
+    margin-right: 10px;
+}
+
+.duration {
+    width: 324px;
+    height: 36px;
+}
+
+.view {
+    height: auto;
+    width: 1008px;
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom: 2px solid #707070;
+    padding: 30px 0;
+    align-items: center;
+}
+
+.k-button .k-edit-button {
+    width: 65px;
+    height: 32px;
+}
+
+.box-edit {
+    margin-bottom: 30px;
+}
+
+#name {
+    padding-left: 10px;
+}
+
+.k-switch-on .k-switch-container {
+    background-color: #2ecc71 !important;
+}
+
+.k-switch-off .k-switch-container, .k-switch-off .k-switch-handle {
+    border: 3px solid #959CA3;
+}
+
+.k-switch-label-on {
+    color: #2ecc71;
+}
+
+.k-switch-label-off {
+    color: #fff;
+}
+
+.k-switch-on.k-state-hover .k-switch-handle, .k-switch-on:hover .k-switch-handle, .k-switch-on .k-switch-handle, .k-switch-off .k-switch-handle {
+    background-color: #ffffff !important;
+}
+
+#save-button, #save-button0, #save-button1, #save-button2, #save-button3, #save-button4, #save-button5, #save-button6 {
+    float: right;
+    color: #fff;
+    background: #4bc34b;
+}
+
+.k-update-button {
+    width: 70px;
+    height: 32px;
+}
+
+.k-cancel-button {
+    margin-right: 0.5em;
+    width: 84px;
+    height: 32px;
+}
+
+.k-i-minus-outline {
+    cursor: pointer;
+    color: #ff0000;
+    width: 18px;
+    height: 18px;
+    margin-left: 1em;
+}
+
+    .k-i-minus-outline:hover {
+        color: #0026ff;
+    }
+.k-state-selected.k-state-focused {
+    background-color: #fff;
+}
+
+.k-dropdown-wrap > .k-input {
+    background-color: #fff !important;
+}

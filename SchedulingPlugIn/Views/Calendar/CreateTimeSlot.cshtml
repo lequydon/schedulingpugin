@@ -1,0 +1,314 @@
+﻿@model SchedulingPlugIn.Models.Entity.TimeSlot
+@using SchedulingPlugIn.Helper
+@Scripts.Render("~/bundles/jquery")
+@{
+    ViewBag.Title = "Create Free Time Slot";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Hieu/Calendar.css" />
+
+@using (Html.BeginForm("CreateTimeSlot", "Calendar", FormMethod.Post, new { @class = "col-sm-12" }))
+{
+    @Html.AntiForgeryToken()
+
+    @*if (ViewBag.Success == "1")
+    {
+        <script>
+            const num = 1;
+        </script>
+
+    }
+    else
+    {
+        <script>
+            const num = 0;
+        </script>
+
+    }*@
+<div class="form-horizontal">
+    <h4 class="title-center">CREATE TIME SLOT</h4>
+    @*<div class="col-md-2"></div>
+    <div class="form-group" hidden>
+        @Html.Label("Time Zone", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6"> 
+            @Html.Editor("timezone", new { htmlAttributes = new { @class = "form-control", id = "timeZone" } })
+        </div>
+    </div>*@
+    <hr />
+
+    
+    <div class="form-group col-md-offset-2" style="display:flex; align-items:center;">
+        @Html.LabelFor(model => model.DateStart, htmlAttributes: new { @class = "control-label col-xs-3 col-md-offset-2" })
+        <div class="col-xs-9">
+            @Html.EditorFor(model => model.DateStart, new { htmlAttributes = new { @class = "form-control", id = "dateStart", style = "width: 13em;" } })
+            @Html.ValidationMessageFor(model => model.DateStart, "", new { @class = "alert-danger text-center" })
+        </div>
+    </div>
+    
+    <div class="form-group col-md-offset-2" style="display:flex; align-items:center;">
+        @Html.Label("Time", htmlAttributes: new { @class = "control-label col-xs-3 col-md-offset-2" })
+        <div class="col-xs-9" style="display: flex;">
+            @Html.Editor("time", new { htmlAttributes = new { @class = "form-control", id = "time", style = "width: 8em;" } })
+          
+            <div class="form-group" style="display: flex;align-items: center;margin: 0;">
+                @Html.Label("To", htmlAttributes: new { @class = "control-label col-md-2", style = "margin-left: 1em;margin-bottom:0;" })
+                <div class="col-xs-4">
+                    @Html.Editor("to", new { htmlAttributes = new { @class = "form-control", id = "to", style = "width: 8em;" }
+            })
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group col-md-offset-2" style="display:flex; align-items:center;">
+        @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label col-xs-3 col-md-offset-2" })
+        <div class="col-xs-9" style="display: flex;align-items:center;">
+            @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control", id = "duration", step = 1, min = 1, @Value = 60, style = "width: 13em" } })
+            @Html.Label("Minutes", htmlAttributes: new { @class = "control-label col-md-2" })
+        </div>
+    </div>
+    
+    <div class="form-group "  style="display:flex; align-items:center;">
+        @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-xs-3 col-md-offset-2" })
+        <div class="col-xs-9">
+            @Html.TextAreaFor(model => model.Note, new { @class = "form-control", style = "width: 100vh", @size = "50", @rows = "5", @cols = "100", id = "note" })
+            @Html.ValidationMessageFor(model => model.Note, "", new { @class = "alert-danger" })
+        </div>
+    </div>
+
+    
+    <div class="form-group ">
+        <div class="" style="display:flex; justify-content:center; " >
+            <input type="submit" value="Create"class="btn btn-primary" id="btnTimeSlot1" onclick="location.href='/Calendar/Detail'" />
+            <input type="reset" value="Cancel"class="btn btn-default" id="btnTimeSlot2" onclick="location.href='/Calendar/Detail'" />
+        </div>
+    </div>
+
+    <div class="text-center">
+        @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "alert-danger" })
+    </div>
+    @Html.ValidationSummary(true, " ", new { @class = "alert-danger text-center" })
+</div>
+    }
+
+    @*<div class="back-to-list" style="margin-bottom: 2em;">
+        <i class="fas fa-arrow-circle-left"></i>@Html.ActionLink("Back to Manage Free Time Slot", "Detail", null, new { @class = "" })
+    </div>*@
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+    <script>
+    $(document).ready(function () {
+        $('#btnTimeSlot1').click(function () {
+            window.location.reload();
+            setTimeout(function () {
+                if (num == 1) {
+                    const Toast = swal.mixin({
+                        toast: true,
+                        position: 'top-left',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Create successed'
+                    })
+                } else {
+                    const Toast = swal.mixin({
+                        toast: true,
+                        position: 'top-left',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    Toast.fire({
+                        type: 'warning',
+                        title: 'The time is in conflict with the time previous event!'
+                    });
+                };
+            },500);
+        });
+        var ts1, ts2;
+        var minutes = new Date();
+        if (minutes.getMinutes() > 0 && minutes.getMinutes() < 30) {
+            ts1 = new Date(minutes.getFullYear(), minutes.getMonth(), minutes.getDate(), minutes.getHours(), 30, 0);
+            ts2 = new Date(minutes.getFullYear(), minutes.getMonth(), minutes.getDate(), minutes.getHours(), 30 + 60, 0);
+        }
+        else {
+            ts1 = new Date(minutes.getFullYear(), minutes.getMonth(), minutes.getDate(), minutes.getHours() + 1, 00, 0);
+            ts2 = new Date(minutes.getFullYear(), minutes.getMonth(), minutes.getDate(), minutes.getHours() + 1, 00 + 60, 0);
+        }
+        var minutes1 = kendo.toString(ts1, "hh:mm tt");
+        var minutes2 = kendo.toString(ts2, "hh:mm tt");
+
+        var presentDate = new Date();
+        var datee = $("#dateStart").kendoDatePicker({
+            format: "MMMM dd, yyyy",
+            value: presentDate,
+            min: presentDate,
+            disableDates: ["sa", "su"],
+            value: getDate()
+        }).data("kendoDatePicker");
+
+        function getDate() {
+            var get = localStorage.getItem("TimeFreeSlot");
+            var get1 = new Date();
+            if (get != null) {
+                $("#dateStart").val(get);
+                localStorage.clear();
+            }
+            else
+                $("#dateStart").val(kendo.toString(get1, "MMMM dd, yyyy"));
+        }
+
+        var start = $("#time").kendoTimePicker({
+            format: "hh:mm tt",
+            value: minutes1,
+            change: startChange
+        }).data("kendoTimePicker");
+       
+        var end = $("#to").kendoTimePicker({
+            format: "hh:mm tt",
+            value: minutes2,
+            change: endChange
+        }).data("kendoTimePicker");
+        start.min("8:00 AM");
+        start.max("8:30 PM");
+        end.min("8:30 AM");
+        end.max("9:00 PM")
+        $("#duration").change(function () {
+            var durationTime = parseInt($('#duration').val());
+            var duration = parseInt(durationTime / 60);
+            var startTime = start.value();
+            var endTime = end.value();
+            endTime.setHours(startTime.getHours() + duration);
+            endTime.setMinutes(startTime.getMinutes() + (durationTime - (duration * 60)));
+            end.value(endTime);
+        });
+
+        function startChange() {
+            var startTime = start.value();
+            var durationTime = parseInt($("#duration").val());
+
+            if (startTime) {
+                startTime = new Date(startTime);
+                startTime.setMinutes(startTime.getMinutes() + durationTime);
+                var milisecond = (startTime.getHours() * 3600 + startTime.getMinutes() * 60 + startTime.getSeconds()) * 1000;
+                var nineClock = 21 * 3600 * 1000;
+                if (milisecond > nineClock) {
+                    end.value("9:00 PM");
+                    endTime = new Date(end.value());
+                    startTime.setMinutes(endTime.getMinutes() - durationTime);
+                    start.value(startTime);
+                } else {
+                    end.min(startTime);
+                    end.max("9:00 PM");
+                    end.value(startTime);
+                }
+            }
+        }
+
+        function endChange() {
+            var endDate = end.value(),
+                startDate = start.value();
+            if (endDate) {
+                endDate = new Date(endDate);
+                endDate.setDate(endDate.getDate());
+                start.max(endDate);
+                var duration = (endDate.getHours() - startDate.getHours()) * 60 + (endDate.getMinutes() - startDate.getMinutes());
+                $('#duration').val(duration);
+            } else if (startDate) {
+                end.min(new Date(startDate));
+            } else {
+                endDate = new Date();
+                start.max(endDate);
+                end.min(endDate);
+            }
+        }
+
+        $('#timeZone').val(getTimezoneName());
+        
+        function getTimezoneName() {
+            var timeSummer = new Date(Date.UTC(2005, 6, 30, 0, 0, 0, 0));
+            var summerOffset = -1 * timeSummer.getTimezoneOffset();
+            var timeWinter = new Date(Date.UTC(2005, 12, 30, 0, 0, 0, 0));
+            var winterOffset = -1 * timeWinter.getTimezoneOffset();
+            var timeZoneHiddenField;
+
+            if (-720 == summerOffset && -720 == winterOffset) { timeZoneHiddenField = 'Dateline Standard Time'; }
+            else if (-660 == summerOffset && -660 == winterOffset) { timeZoneHiddenField = 'UTC-11'; }
+            else if (-660 == summerOffset && -660 == winterOffset) { timeZoneHiddenField = 'Samoa Standard Time'; }
+            else if (-660 == summerOffset && -600 == winterOffset) { timeZoneHiddenField = 'Hawaiian Standard Time'; }
+            else if (-570 == summerOffset && -570 == winterOffset) { timeZoneHiddenField.value = 'Pacific/Marquesas'; }
+                //                else if (-540 == summerOffset && -600 == winterOffset) { timeZoneHiddenField.value = 'America/Adak'; }
+                //                else if (-540 == summerOffset && -540 == winterOffset) { timeZoneHiddenField.value = 'Pacific/Gambier'; }
+            else if (-480 == summerOffset && -540 == winterOffset) { timeZoneHiddenField = 'Alaskan Standard Time'; }
+                //                else if (-480 == summerOffset && -480 == winterOffset) { timeZoneHiddenField = 'Pacific/Pitcairn'; }
+            else if (-420 == summerOffset && -480 == winterOffset) { timeZoneHiddenField = 'Pacific Standard Time'; }
+            else if (-420 == summerOffset && -420 == winterOffset) { timeZoneHiddenField = 'US Mountain Standard Time'; }
+            else if (-360 == summerOffset && -420 == winterOffset) { timeZoneHiddenField = 'Mountain Standard Time'; }
+            else if (-360 == summerOffset && -360 == winterOffset) { timeZoneHiddenField = 'Central America Standard Time'; }
+                //                else if (-360 == summerOffset && -300 == winterOffset) { timeZoneHiddenField = 'Pacific/Easter'; }
+            else if (-300 == summerOffset && -360 == winterOffset) { timeZoneHiddenField = 'Central Standard Time'; }
+            else if (-300 == summerOffset && -300 == winterOffset) { timeZoneHiddenField = 'SA Pacific Standard Time'; }
+            else if (-240 == summerOffset && -300 == winterOffset) { timeZoneHiddenField = 'Eastern Standard Time'; }
+            else if (-270 == summerOffset && -270 == winterOffset) { timeZoneHiddenField = 'Venezuela Standard Time'; }
+            else if (-240 == summerOffset && -240 == winterOffset) { timeZoneHiddenField = 'SA Western Standard Time'; }
+            else if (-240 == summerOffset && -180 == winterOffset) { timeZoneHiddenField = 'Central Brazilian Standard Time'; }
+            else if (-180 == summerOffset && -240 == winterOffset) { timeZoneHiddenField = 'Atlantic Standard Time'; }
+            else if (-180 == summerOffset && -180 == winterOffset) { timeZoneHiddenField = 'Montevideo Standard Time'; }
+            else if (-180 == summerOffset && -120 == winterOffset) { timeZoneHiddenField = 'E. South America Standard Time'; }
+            else if (-150 == summerOffset && -210 == winterOffset) { timeZoneHiddenField = 'Mid-Atlantic Standard Time'; }
+            else if (-120 == summerOffset && -180 == winterOffset) { timeZoneHiddenField = 'America/Godthab'; }
+            else if (-120 == summerOffset && -120 == winterOffset) { timeZoneHiddenField = 'SA Eastern Standard Time'; }
+            else if (-60 == summerOffset && -60 == winterOffset) { timeZoneHiddenField = 'Cape Verde Standard Time'; }
+            else if (0 == summerOffset && -60 == winterOffset) { timeZoneHiddenField = 'Azores Daylight Time'; }
+            else if (0 == summerOffset && 0 == winterOffset) { timeZoneHiddenField = 'Morocco Standard Time'; }
+            else if (60 == summerOffset && 0 == winterOffset) { timeZoneHiddenField = 'GMT Standard Time'; }
+            else if (60 == summerOffset && 60 == winterOffset) { timeZoneHiddenField = 'Africa/Algiers'; }
+            else if (60 == summerOffset && 120 == winterOffset) { timeZoneHiddenField = 'Namibia Standard Time'; }
+            else if (120 == summerOffset && 60 == winterOffset) { timeZoneHiddenField = 'Central European Standard Time'; }
+            else if (120 == summerOffset && 120 == winterOffset) { timeZoneHiddenField = 'South Africa Standard Time'; }
+            else if (180 == summerOffset && 120 == winterOffset) { timeZoneHiddenField = 'GTB Standard Time'; }
+            else if (180 == summerOffset && 180 == winterOffset) { timeZoneHiddenField = 'E. Africa Standard Time'; }
+            else if (240 == summerOffset && 180 == winterOffset) { timeZoneHiddenField = 'Russian Standard Time'; }
+            else if (240 == summerOffset && 240 == winterOffset) { timeZoneHiddenField = 'Arabian Standard Time'; }
+            else if (270 == summerOffset && 210 == winterOffset) { timeZoneHiddenField = 'Iran Standard Time'; }
+            else if (270 == summerOffset && 270 == winterOffset) { timeZoneHiddenField = 'Afghanistan Standard Time'; }
+            else if (300 == summerOffset && 240 == winterOffset) { timeZoneHiddenField = 'Pakistan Standard Time'; }
+            else if (300 == summerOffset && 300 == winterOffset) { timeZoneHiddenField = 'West Asia Standard Time'; }
+            else if (330 == summerOffset && 330 == winterOffset) { timeZoneHiddenField = 'India Standard Time'; }
+            else if (345 == summerOffset && 345 == winterOffset) { timeZoneHiddenField = 'Nepal Standard Time'; }
+            else if (360 == summerOffset && 300 == winterOffset) { timeZoneHiddenField = 'N. Central Asia Standard Time'; }
+            else if (360 == summerOffset && 360 == winterOffset) { timeZoneHiddenField = 'Central Asia Standard Time'; }
+            else if (390 == summerOffset && 390 == winterOffset) { timeZoneHiddenField = 'Myanmar Standard Time'; }
+            else if (420 == summerOffset && 360 == winterOffset) { timeZoneHiddenField = 'North Asia Standard Time'; }
+            else if (420 == summerOffset && 420 == winterOffset) { timeZoneHiddenField = 'SE Asia Standard Time'; }
+            else if (480 == summerOffset && 420 == winterOffset) { timeZoneHiddenField = 'North Asia East Standard Time'; }
+            else if (480 == summerOffset && 480 == winterOffset) { timeZoneHiddenField = 'China Standard Time'; }
+            else if (540 == summerOffset && 480 == winterOffset) { timeZoneHiddenField = 'Yakutsk Standard Time'; }
+            else if (540 == summerOffset && 540 == winterOffset) { timeZoneHiddenField = 'Tokyo Standard Time'; }
+            else if (570 == summerOffset && 570 == winterOffset) { timeZoneHiddenField = 'Cen. Australia Standard Time'; }
+            else if (570 == summerOffset && 630 == winterOffset) { timeZoneHiddenField = 'Australia/Adelaide'; }
+            else if (600 == summerOffset && 540 == winterOffset) { timeZoneHiddenField = 'Asia/Yakutsk'; }
+            else if (600 == summerOffset && 600 == winterOffset) { timeZoneHiddenField = 'E. Australia Standard Time'; }
+            else if (600 == summerOffset && 660 == winterOffset) { timeZoneHiddenField = 'AUS Eastern Standard Time'; }
+            else if (630 == summerOffset && 660 == winterOffset) { timeZoneHiddenField = 'Australia/Lord_Howe'; }
+            else if (660 == summerOffset && 600 == winterOffset) { timeZoneHiddenField = 'Tasmania Standard Time'; }
+            else if (660 == summerOffset && 660 == winterOffset) { timeZoneHiddenField = 'West Pacific Standard Time'; }
+            else if (690 == summerOffset && 690 == winterOffset) { timeZoneHiddenField = 'Central Pacific Standard Time'; }
+            else if (720 == summerOffset && 660 == winterOffset) { timeZoneHiddenField = 'Magadan Standard Time'; }
+            else if (720 == summerOffset && 720 == winterOffset) { timeZoneHiddenField = 'Fiji Standard Time'; }
+            else if (720 == summerOffset && 780 == winterOffset) { timeZoneHiddenField = 'New Zealand Standard Time'; }
+            else if (765 == summerOffset && 825 == winterOffset) { timeZoneHiddenField = 'Pacific/Chatham'; }
+            else if (780 == summerOffset && 780 == winterOffset) { timeZoneHiddenField = 'Tonga Standard Time'; }
+            else if (840 == summerOffset && 840 == winterOffset) { timeZoneHiddenField = 'Pacific/Kiritimati'; }
+            else { timeZoneHiddenField = 'US/Pacific'; }
+            return timeZoneHiddenField;
+        }
+    });
+
+    </script>

@@ -1,0 +1,440 @@
+﻿@model IEnumerable<SchedulingPlugIn.Models.Entity.TimeSlot>
+
+@{
+    ViewBag.Title = "Manage Free Slot";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link href="~/Content/Hieu/Calendar.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="https://unpkg.com/sweetalert2@7.18.0/dist/sweetalert2.all.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data.min.js"></script>
+
+<div class="row" id="calendarPage">
+    <h2 class="text-center m-0" style="text-transform:uppercase">
+        Manage Free Time Slot
+    </h2>
+    <div class="col-md-3" id="menu-choose">
+        <div id="Calendar"></div>
+    </div>
+
+    <div class="col-md-9 right-calendar">
+        <div id="example">
+            <div class="headerbtnselect">
+                <p><input type="button" class="btn btn-primary" value="Create Time Slot" onclick="location.href='/Calendar/CreateTimeSlot'" id="Createtime" /></p>
+            </div>
+            <div id="grid"></div>
+        </div>
+        <div id="details"></div>
+        <div id="editor"></div>
+    </div>
+</div>
+<style>
+    .k-grid-header th.k-header {
+        text-align: center;
+    }
+    .k-header .k-link {
+        text-align: center;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        kendo.culture().calendar.firstDay = 1;
+        //console.log(toTimeZone(new Date(2019, 8, 31, 22, 21),"America/Detroit"));
+        var Calen = $("#Calendar").kendoCalendar({
+            footer: false,
+            
+            //selectable: "multiple",
+            format: "MM-dd-yyyy",
+            change: function () {
+                var value = this.value();
+                localStorage.setItem("TimeFreeSlot", kendo.toString(value, "MMMM dd, yyyy"));
+                // filter datagrid when select date on minicalendar
+                var value1 = kendo.toString(value, "MM/dd/yyyy");
+                var grid = $("#grid").data("kendoGrid");
+                //get value
+                //var row = grid.tbody.find('tr td[role = \"gridcell\"]:contains(' + value1 + ')');
+                ////select row
+                //var select = $('.k-state-selected');
+                //if (select) {
+                //    $('tbody[role="rowgroup"] tr[role="row"]').hide();
+                //    select.show();
+                //} else {
+                //    $('tbody[role="row"] tr[role="row"]').show();
+                //}
+                grid.dataSource.transport.options.read.url = "/Calendar/getData/?date=" + value1;
+                grid.dataSource.page(1);
+                grid.dataSource.read();
+            },
+            disableDates: function (date) {
+                return (date && date.getTime() < (new Date()).getTime() - 86400000);
+            },
+            disableDates: ["sa", "su"],
+        }).data("kendoCalendar");
+        localStorage.clear();
+        function grid_edit(e) {
+            if (!e.model.isNew()) {
+                var numeric = e.container.find("input[name=id]").data("kendoNumericTextBox");
+                numeric.enable(false);
+            }
+        }
+        //kendoGrid
+        var grid = $("#grid").kendoGrid({
+            //selectable: "multiple row",
+            dataSource: {
+                transport: {
+                    read: "/Calendar/GetListEvent",
+
+                    update: {
+                        data: function (options) {
+                            options.DateEnd = null;
+                            console.log(options);
+                            var tempDay = kendo.parseDate(options.DateStart, "M/d/yyyy hh:mm:ss");
+                            var tempTime = kendo.toString(options.Start, "hh:mm:ss tt");
+                            var day = kendo.toString(tempDay, "M/d/yyyy hh:mm:ss tt");
+                            var time = kendo.toString(tempTime, "hh:mm:ss tt")
+                            var duration = kendo.parseInt($('#timeduration').val());
+                            console.log(time)
+                            $.ajax({
+                                type: "POST",
+                                url: "/TimeSlots/EditTimeSlotHieu",
+                                data: {
+                                    id: options.ID,
+                                    date: day,
+                                    time: options.Start,
+                                    note: options.Note,
+                                    duration: duration
+                                },
+                                success: function (d) {
+                                    if (d != "1") {
+                                        const Alert = swal.mixin({
+                                            toast: true,
+                                            position: 'top-left',
+                                            showConfirmButton: false,
+                                            timer: 3000
+                                        });
+                                        Alert.fire({
+                                            type: 'warning',
+                                            title: 'The time is in conflict with the time previous event!'
+                                        });
+
+                                    } else {
+                                        console.log(d);
+                                        const Toast = swal.mixin({
+                                            toast: true,
+                                            position: 'top-left',
+                                            showConfirmButton: false,
+                                            timer: 3000
+                                        });
+                                        Toast.fire({
+                                            type: 'success',
+                                            title: 'Updated successed'
+                                        });
+                                    }
+                                    $("#grid").data('kendoGrid').refresh();
+                                    $("#grid").getKendoGrid().dataSource.read();
+                                }
+                            });
+                            return true;
+                        }
+                    }
+                },
+                pageSize: 10,
+
+                schema: {
+                    data: function (e) {
+                        //function toTimeZone(time, zone) {
+                        //    var format = 'YYYY/MM/DD HH:mm:ss Z';
+                        //    return moment(time, format).tz(zone).format(format);
+                        //}
+
+                        for (i in e) {
+                            e[i].DateStart = moment(e[i].Start).tz("America/New_York").format("MM/DD/YYYY hh:mm");
+                            e[i].Start = moment(e[i].Start).tz("America/New_York").format("hh:mm A");
+                            e[i].DateEnd = moment(e[i].DateEnd).tz("America/New_York").format("hh:mm A");
+                        }
+
+                       // console.log(e);
+                        // moment(kendo.parseDate(e[i].DateStart)).tz("America/New_York").format("M/DD/YYYY hh:mm A")
+                        return e;
+                    },
+                    model: {
+                        id: "ID",
+                        fields: {
+                            ID: { type: "string", editable: false, repuired: true },
+                            DateStart: {
+                                type: "date",
+                                format: "{0:MM-dd-yyyy}",
+                            },
+                            Hour: { type: "number", repuired: true },
+                            Minute: { type: "number", repuired: true },
+                            Time: { type: "string", repuired: true },
+                            Duration: { type: "number", validation: { required: true, min: 5, step: 5 } }
+                        }
+                    }
+                }
+            },
+            dataBound: function (e) {
+                $('.k-pager-refresh.k-link').click(function () {
+                    var grid = $("#grid").data('kendoGrid');
+                    grid.dataSource.transport.options.read.url = "/Calendar/GetListForProspect_DetalTimeSlot";
+                    grid.dataSource.read();
+                    localStorage.clear();
+                });
+                var presentDate = new Date();
+                $('.k-picker-wrap.k-state-default [data-role="datepicker"]').kendoDatePicker({
+                    value: presentDate,
+                    min: presentDate,
+                    disableDates: ["sa", "su"],
+                });
+            },
+            batch: true,
+            scrollable: true,
+            sortable: true,
+            height: "80vh ",
+            pageable: {
+                refresh: true,
+                pageSizes: true,
+                buttonCount: 10
+            },
+            filterable: {
+                mode: "row"
+            },
+            columns: [{
+                field: "DateStart",
+                title: "Date",
+                //template: "#: kendo.toString(kendo.parseDate(<script>(DateStart), 'yyyy-MM-dd'), 'MM-dd-yyyy') #",
+                template: "#: kendo.toString(kendo.parseDate(DateStart, 'MM-dd-yyyy'), 'MM-dd-yyyy') #",
+                attributes: {
+                    style:"text-align:center"
+                },
+                filterable: false,
+                width: 230
+            }, {
+                template: "#: kendo.toString(Start,'hh:mm tt') #" + " - " + "#: kendo.toString(kendo.parseDate(DateEnd, 'hh:mm tt'), 'hh:mm tt') #",
+                title: "Time",
+                filterable: false,
+                width: 180
+            }, {
+                field: "Duration",
+                title: "Duration",
+                type: "number",
+                filterable: {
+                    cell: {
+                        showOperators: false
+                    }
+                },
+                width: 130
+            }, {
+                field: "Note",
+                title: "Note",
+                type: "string",
+                filterable: {
+                    cell: {
+                        operator: "contains",
+                        suggestionOperator: "contains"
+                    }
+                },
+                width: 300
+            }, {
+                title: "Commands",
+                command: [{ name: "edit" }, { text: "Delete", iconClass: "fa fa-close", name: "decline" ,click:deleteItem },
+                { text: "Detail", iconClass: "fa fa-info-circle", className: "btn-detail", name: "details", click: showDetails }],
+                width: 300
+            }],
+            editable: {
+                mode: "popup",
+                template: kendo.template($("#box-edit").html()),
+            },
+
+        });
+        //End kendoGrid
+
+        var wnd = $("#details")
+            .kendoWindow({
+                title: "EVENT DETAIL",
+                modal: true,
+                visible: false,
+                resizable: false,
+                width: 600
+            }).data("kendoWindow");
+
+        var detailsTemplate = kendo.template($("#template").html());
+        
+        function showDetails(e) {
+            e.preventDefault();
+
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            var Datestart = dataItem.DateStart;
+            console.log(dataItem);
+            var Dateend = dataItem.DateEnd.substr(0, 8);
+            dataItem.DateEnd = Dateend;
+            wnd.content(detailsTemplate(dataItem));
+            wnd.center().open();
+        };
+      function deleteItem(e) {
+            Swal.fire({
+                title: 'Are you sure you want to delete this record?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.value) {
+                    e.preventDefault();
+                    var grid = $("#grid").data("kendoGrid");
+
+                    var tr = $(e.target).closest("tr");
+                    var data = this.dataItem(tr);
+                    
+                    grid.dataSource.remove(data);
+                    $.ajax({
+                        type: "Post",
+                        url: "/Calendar/Delete",
+                        data: { id: data.ID },
+                        success: function (pon) {
+                            if (pon == 1) {
+                                const Toast = swal.mixin({
+                                    toast: true,
+                                    position: 'top-left',
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                })
+
+                                Toast.fire({
+                                    type: 'success',
+                                    title: 'Successfully deleted this record!'
+                                })
+                            }
+                            $("#grid").getKendoGrid().dataSource.read();
+                            $("#grid").data('kendoGrid').refresh();
+                        }
+                    });
+                    return true;
+                }
+            });
+        };
+    });
+
+
+</script>
+
+<script type="text/x-kendo-template" id="template">
+    <dl><dt id="labels">Date:       </dt><input style="font-size: 1.5em; font-weight: bold" class="form-control" value="#: kendo.toString(kendo.parseDate(DateStart, 'yyyy-MM-dd'), 'MM - dd - yyyy') #" readonly /></dl>
+    <dl><dt id="labels">Time Start: </dt><input style="font-size: 1.5em; color: red" class="form-control" value="#: kendo.toString(Start,'hh:mm') #" readonly /></dl>
+    <dl><dt id="labels">To:         </dt><input style="font-size: 1.5em; color: red" class="form-control" value="#: kendo.toString(DateEnd, 'hh:mm tt')#" readonly /></dl>
+    <dl><dt id="labels">Duration:   </dt><input style="font-size: 1.5em; width: 6em; margin-left: 1.6em;" class="form-control" value="#: Duration#" readonly /><dt id="labels"> Minutes</dt></dl>
+    <dl><dt id="labels">Note:       </dt><textarea style="font-size: 1em" class="form-control" cols="50" rows="5" readonly>#: Note#</textarea></dl>
+
+</script>
+
+<script type="text/x-kemdo-template" id="box-edit">
+    <div class="form-group">
+        <div class="col-md-3" style="margin-top: 0.5em;">
+            <label>Date Start</label>
+        </div>
+        <input type="text" data-type="date" data-role="datepicker" id="dateStart" name="DateStart" style="width: 10em; font-size: 1em;" value="#: kendo.toString(kendo.parseDate(DateStart, 'yyyy-MM-dd'), 'MM-dd-yyyy') #" />
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-3" style="margin-top: 0.5em;">
+            <label>Time</label>
+        </div>
+        <div style="display: flex;">
+            <input id="timestart" type="text" data-type="time" data-role="timepicker" name="Start" style="width: 8em; font-size: 1em;"value="#: kendo.toString(Start,'hh:mm')#" />
+            <label class="col-md-1" style="margin-top: 0.5em;">To</label>
+            <input id="timeend" type="text" data-type="time" data-role="timepicker" name="DateEnd" style="width: 8em; font-size: 1em;"value="#: kendo.toString(kendo.parseDate(DateEnd, 'yyyy-MM-dd'), 'hh:mm') #" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-3" style="margin-top: 0.5em;">
+            <label>Duration</label>
+        </div>
+        <div style="display: flex;">
+            <input id="timeduration" type="number" class="k-input k-textbox" name="Duration" step="5" min="5" value="#: Duration#" style="width: 10em; font-size: 1em;" />
+            <label class="col-md-2" style="margin-top: 0.5em;">Minutes</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-3" style="margin-top: 0.5em;">
+            <label>Note</label>
+        </div>
+        <textarea type="text" class="k-input k-textbox" name="Note" style="font-size: 1em; width: 22em;" rows="5" cols="50">#: Note#</textarea>
+    </div>
+    <script>
+
+        function startChange() {
+            var startTime = start.value();
+            var durationTime = parseInt($('\#timeduration').val());
+            
+            if (startTime) {
+                startTime = new Date(startTime);
+                startTime.setMinutes(startTime.getMinutes() + durationTime);
+                var milisecond = (startTime.getHours() * 3600 + startTime.getMinutes() * 60 + startTime.getSeconds()) * 1000;
+                var nineClock = 21 * 3600 * 1000;
+                if (milisecond > nineClock) {
+                    end.value("9:00 PM");
+                    endTime = new Date(end.value());
+                    startTime.setMinutes(endTime.getMinutes() - durationTime);
+                    start.value(startTime);
+                } else {
+                    end.min(startTime);
+                    end.max("9:00 PM");
+                    end.value(startTime);
+                }
+            }
+        }
+
+        function endChange() {
+            var endTime = end.value();
+            var startTime = start.value();
+            var durationTime = parseInt($('\#timeduration').val());
+            if (endTime) {
+                endTime = new Date(endTime);
+                var duration = (endTime.getHours() - startTime.getHours()) * 60 + (endTime.getMinutes() - startTime.getMinutes());
+                $('\#timeduration').val(duration);
+                endTime.setDate(endTime.getDate());
+                start.max(endTime);
+            } else if (startTime) {
+                end.min(new Date(startTime));
+            } else {
+                endTime = new Date();
+                start.max(endTime);
+                end.min(endTime);
+            }
+        }
+        var start = $("\#timestart").kendoTimePicker({
+            change: startChange,
+        }).data("kendoTimePicker");
+        
+        var end = $("\#timeend").kendoTimePicker({
+            change: endChange,
+        }).data("kendoTimePicker");
+        start.min("8:00 AM");
+        start.max("8:30 PM");
+        end.min("8:30 AM");
+        end.max("9:00 PM");
+        var presentDate = new Date();
+        $("\#dateStart").kendoDatePicker({
+            min: presentDate,
+            disableDates: ["sa", "su"],
+        });
+
+        $('\#timeduration').change(function () {
+
+            var durationTime = parseInt($('\#timeduration').val());
+            var duration = parseInt(durationTime / 60);
+            var startTime = start.value();
+            var endTime = end.value();
+            endTime.setHours(startTime.getHours() + duration);
+            endTime.setMinutes(startTime.getMinutes() + (durationTime - (duration * 60)));
+            end.value(endTime);
+        });
+                    <\/script>
+    </script>

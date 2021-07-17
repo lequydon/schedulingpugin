@@ -1,0 +1,291 @@
+﻿.main {
+    font-family: 'Montserrat';
+}
+.k-grouping-header{
+    display:none;
+}
+.title {
+    font-size: 2em;
+    text-align:center;
+}
+.k-grid-header th.k-header {
+    font-weight: bold;
+}
+.k-grid td {
+    text-align: center;
+    font-size: 1em;
+}
+.k-grid-Delete  {
+    background-color: #d21c1c;
+    color: white !important;
+    background-image: none;
+}
+td.k-command-cell a.btn-decline-grid:hover {
+    color: #656565 !important;
+}
+#dialog_decline .k-dialog .k-header {
+    display: none;
+    background-color: white;
+    color: black;
+}
+/*edit dialog*/
+main {
+    font-size: 1em;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.remove-div, .remove-div-detail {
+    margin: 0.25em 0 0.25em 3em;
+}
+
+.k-plus-button {
+    margin-top: 0.25em;
+}
+.datestart, .dateend, .time, .duration {
+    font-weight: 200;
+    text-align: center;
+}
+
+h2 {
+    font-weight: 400;
+}
+
+h2, #date, #timezone, #date-detail, #timezone-detail-content, .timefrom-detail, .timeto-detail, .duration-dayofweek-detail {
+    text-align: center;
+}
+
+.k-dropdown .k-input {
+    color: none;
+}
+
+#datepicker, #datepickerr, #dateStart-detail, #dateEnd-detail {
+    width: 12.5em;
+    border-radius: 0.25em;
+    border: 0.07em solid #e4e4e4;
+    text-align: center;
+    background-color: #fbfbfb;
+    outline: none;
+}
+
+#notifications-switch0, #notifications-switch1, #notifications-switch2, #notifications-switch3, #notifications-switch4, #notifications-switch5, #notifications-switch6 {
+    width: 2.875em;
+    height: 1.917em;
+}
+
+span.k-datepicker, span.k-timepicker {
+    margin: 0 1em;
+}
+
+span.k-timepicker {
+    width: 9em;
+}
+
+.datestart, .dateend {
+    margin: 0.625em;
+    width: 19.438em;
+    height: 2em;
+}
+
+.duration-dayofweek-detail, .duration-dayofweek, #duration-main, #duration-main-detail {
+    text-align: center;
+    width: 5em;
+    border-radius: 0.25em;
+    margin: 0 0.5em;
+    border: 0.07em solid #e4e4e4;
+    outline: none;
+}
+
+#time-from0, #time-to0, #time-from1, #time-to1, #time-from2, #time-to2, #time-from3, #time-to3, #time-from4, #time-to4, #time-from5, #time-to5, #time-from6, #time-to6 {
+    width: 6.25em;
+    border-radius: 0.313em;
+    margin: 0 0.5em;
+}
+
+#timeZone, #timeZone-detail {
+    border-radius: 0.25em;
+    text-align: center;
+    margin: 0 0.5em 0 0.5em;
+    width: 29em;
+    font-size: 0.875em;
+    border: 0.102em solid #e4e4e4;
+    background-color: #fbfbfb;
+    outline: none;
+}
+
+.timeZone {
+    padding-right: 1.25em;
+    margin-right: 0.625em;
+}
+
+.duration {
+    width: 20.25em;
+    height: 2.25em;
+}
+
+.view, .view-detail {
+    height: auto;
+    width: 63em;
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom: 0.125em solid #707070;
+    padding: 1.875em 0;
+    align-items: center;
+}
+
+.k-button k-edit-button {
+    width: 4.063em;
+    height: 2em;
+}
+
+.box-edit, .box-edit-detail {
+    margin-bottom: 1.875em;
+}
+
+#name {
+    padding-left: 0.625em;
+}
+
+.k-widget.k-state-disabled.k-switch-on .k-switch-container {
+    background-color: #959CA3 !important;
+    border: 0.3em solid #959CA3;
+}
+
+.k-widget.k-switch-on .k-switch-container {
+    background-color: #2ecc71 !important;
+    border: 0.3em solid #2ecc71;
+}
+
+.k-switch-off .k-switch-container, .k-switch-off .k-switch-handle {
+    border: 0.3em solid #959CA3;
+}
+
+.k-widget.k-state-disabled.k-switch-on .k-switch-container .k-switch-label-on {
+    color: #959CA3;
+}
+
+.k-switch-label-on {
+    color: #2ecc71;
+}
+
+.k-switch-label-off {
+    color: #fff;
+}
+
+.k-switch-on.k-state-hover .k-switch-handle, .k-switch-on:hover .k-switch-handle, .k-switch-on .k-switch-handle, .k-switch-off .k-switch-handle {
+    background-color: #ffffff !important;
+}
+
+#save-button, #save-button0, #save-button1, #save-button2, #save-button3, #save-button4, #save-button5, #save-button6 {
+    float: right;
+    color: #fff;
+    background: #4bc34b;
+}
+#delete-button {
+    margin-left: 0.188em;
+    float: right;
+    color: #fff;
+    background: #d62829
+}
+#cancel-button {
+    margin-left: 0.188em;
+    float: right;
+    color: black;
+    background-color: white
+}
+.k-update-button {
+    width: 5em;
+    height: 2em;
+}
+
+.k-cancel-button {
+    margin-right: 0.5em;
+    width: 6em;
+    height: 2em;
+}
+
+.k-i-minus-outline {
+    cursor: pointer;
+    color: #ff0000;
+    width: 1.125em;
+    height: 1.125em;
+    margin-left: 1em;
+}
+
+    .k-i-minus-outline:hover {
+        color: #0026ff;
+    }
+.k-dialog .k-header{
+    background-color:white;
+    color:black;
+}
+input {
+    padding: 0.188em;
+    max-width: 29em;
+}
+    /*Hieu write css for page Detail in page Manege Available Time*/
+
+label {
+    font-weight: 200;
+}
+
+#notifications-switch-detail0, #notifications-switch-detail1, #notifications-switch-detail2, #notifications-switch-detail3, #notifications-switch-detail4, #notifications-switch-detail5, #notifications-switch-detail6 {
+    width: 2.875em;
+    height: 1.917em;
+}
+
+span.k-datepicker, span.k-timepicker {
+    margin: 0 1em;
+}
+
+span.k-timepicker {
+    width: 9em;
+}
+
+.datestart, .dateend {
+    margin: 0.625em;
+    width: 19.438em;
+    height: 2em;
+}
+
+/*.duration-dayofweek-detail {
+    width: 5em;
+    border-radius: 0.25em;
+    margin: 0 0.5em;
+    border: 0.07em solid #e4e4e4;
+    outline: none;
+}*/
+
+.timefrom-detail, .timeto-detail {
+    width: 6em;
+    border-radius: 0.25em;
+    margin: 0 0.5em;
+    border: 0.07em solid #e4e4e4;
+    outline: none;
+}
+
+.k-button .k-view-button {
+    width: 4.063em;
+    height: 2em;
+    font-weight: 500;
+}
+
+#button-page-detail {
+    float: right;
+}
+input, button, select, textarea {
+     line-height: inherit;
+}
+
+.k-widget.k-window {
+    top: 0;
+}
+
+.label-time, .custom-duration, .k-i-minus-outline {
+    margin-top: 0.313em;
+}
+#dialog_edit, #dialog_detail {
+    font-size: 1.2em;
+}
+.k-picker-wrap .k-input {
+    font-size: 1.2em;
+}

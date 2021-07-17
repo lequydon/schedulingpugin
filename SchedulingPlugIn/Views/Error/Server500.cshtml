@@ -1,0 +1,392 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@using Microsoft.AspNet.Identity
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Page - Schedule Plugin</title>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <link rel="icon" type="image/png" sizes="192x192" href="~/Content/Favicon/fav-icon-192x192-MGI.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/Content/Favicon/fav-icon-32x32-MGI.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="~/Content/Favicon/fav-icon-96x96-MGI.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Content/Favicon/fav-icon-16x16-MGI.png">
+    <link rel="manifest" href="~/Content/Favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="~/Content/Favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="https://kendo.cdn.telerik.com/2019.2.619/js/jquery.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-default" id="nav">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                @if (User.IsInRole("Administrator"))
+                {
+                    <a class="navbar-brand" href="/">
+                        <img src="~/Content/Images/Logo_MGI.png" width="300px" />
+                    </a>
+                }
+                else
+                {
+                    <a class="navbar-brand" href="~/Admin/RedirectLink?iDpage=MGISolutions">
+                        <img src="~/Content/Images/Logo_MGI.png" width="300px" />
+                    </a>
+                }
+            </div>
+
+        </div>
+    </nav>
+    <div class="container-fluid">
+        @*<div class="row" id="nav">
+                <div class="col-xs-12 ">
+                    <div class="row">
+                        <p class="col-xs-5">
+                            <a class="navbar-brand" href="/">
+                                <img style="width: 50%" src="~/Content/Images/Logo_MGI.png " />
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>*@
+        <div class="row bodymain">
+            <div class="gears">
+                <div class="gear one">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <div class="gear two">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <div class="gear three">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="col-xs-12 back ">
+                <h2>Oops, something went wrong</h2>
+            </div>
+            <div class=" col-xs-12 back">
+                <p><strong>Server Error 500.</strong> We apologise and are fixing the problem.</p>
+
+            </div>
+            <div class=" col-xs-12 name">
+                <p>Please try again at later stage.</p>
+            </div>
+            <div class="col-xs-12 back">
+                <h4>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <a href="/"> back to homepage </a>
+                    }
+                    else
+                    {
+                        <a href="~/Admin/RedirectLink?iDpage=MGISolutions"> back to homepage </a>
+                    }
+                </h4>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    <script>
+        $('.back h4 p').click(function () {
+
+        })
+    </script>
+</body>
+</html>
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .bodymain::before {
+        content: "";
+        position: relative;
+    }
+
+    .bodymain::after {
+        content: "500";
+        position: absolute;
+        font-size: 150px;
+        font-weight: bold;
+        text-align: center;
+        color: rgba(112, 141, 220, 0.24);
+        width: 100%;
+        z-index: 0;
+    }
+
+    #nav {
+        height: 90px;
+        background-color: rgb(112,141,220);
+    }
+
+    h4 {
+        border: 1px solid rgb(112,141,220);
+        border-radius: 999999999px;
+        padding: 10px 10px;
+        display: inline-block;
+        margin: 0 auto;
+        background-color: rgb(145, 163, 212);
+        box-shadow: 0px 0px 10px 1px;
+    }
+
+    h2 {
+        font-weight: bold;
+        display: inline-block;
+        margin: 15px auto;
+    }
+
+    .back p {
+        display: inline-block;
+        margin: 20px auto 0px auto;
+    }
+
+    .back {
+        display: inline-flex;
+        top: 170px;
+    }
+
+    .name p {
+        display: inline-block;
+        margin: 0 auto 20px auto;
+    }
+
+    .name {
+        display: inline-flex;
+        top: 170px
+    }
+
+    .back h4:hover {
+        background-color: rgb(112,141,220);
+        cursor: pointer;
+    }
+
+    .back h4 a {
+        text-decoration: none;
+        text-transform: uppercase;
+        color: white;
+    }
+
+    .back h4:hover a {
+        color: white;
+    }
+
+    .back h4 a:hover {
+        text-decoration: none;
+        color: white;
+    }
+
+    :root {
+        --main-color: #ffffff;
+        --stroke-color: rgb(112,141,220);
+    }
+
+    .gears {
+        position: relative;
+        margin: 0 auto;
+        width: auto;
+        height: 0;
+    }
+
+    .gear {
+        position: relative;
+        z-index: 0;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+        border-radius: 50%;
+        background: var(--stroke-color);
+    }
+
+        .gear:before {
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            right: 5px;
+            bottom: 5px;
+            z-index: 2;
+            content: "";
+            border-radius: 50%;
+            background: var(--main-color);
+        }
+
+        .gear:after {
+            position: absolute;
+            left: 25px;
+            top: 25px;
+            z-index: 3;
+            content: "";
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 5px solid var(--stroke-color);
+            box-sizing: border-box;
+            background: var(--main-color);
+        }
+
+        .gear.one {
+            left: -130px;
+            top: 300px;
+        }
+
+        .gear.two {
+            top: 225px;
+        }
+
+        .gear.three {
+            top: 65px;
+            left: 130px;
+        }
+
+        .gear .bar {
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            z-index: 0;
+            width: 150px;
+            height: 30px;
+            margin-top: -15px;
+            border-radius: 5px;
+            background: var(--stroke-color);
+        }
+
+            .gear .bar:before {
+                position: absolute;
+                left: 5px;
+                top: 5px;
+                right: 5px;
+                bottom: 5px;
+                z-index: 1;
+                content: "";
+                border-radius: 2px;
+                background: var(--main-color);
+            }
+
+            .gear .bar:nth-child(2) {
+                transform: rotate(60deg);
+                -webkit-transform: rotate(60deg);
+            }
+
+            .gear .bar:nth-child(3) {
+                transform: rotate(120deg);
+                -webkit-transform: rotate(120deg);
+            }
+
+    @@-webkit-keyframes clockwise {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@-webkit-keyframes anticlockwise {
+        0% {
+            -webkit-transform: rotate(360deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(0deg);
+        }
+    }
+
+    @@-webkit-keyframes clockwiseError {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        20% {
+            -webkit-transform: rotate(30deg);
+        }
+
+        40% {
+            -webkit-transform: rotate(25deg);
+        }
+
+        60% {
+            -webkit-transform: rotate(30deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(0deg);
+        }
+    }
+
+    @@-webkit-keyframes anticlockwiseErrorStop {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        20% {
+            -webkit-transform: rotate(-30deg);
+        }
+
+        60% {
+            -webkit-transform: rotate(-30deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(0deg);
+        }
+    }
+
+    @@-webkit-keyframes anticlockwiseError {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        20% {
+            -webkit-transform: rotate(-30deg);
+        }
+
+        40% {
+            -webkit-transform: rotate(-25deg);
+        }
+
+        60% {
+            -webkit-transform: rotate(-30deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(0deg);
+        }
+    }
+
+    .gear.one {
+        -webkit-animation: anticlockwiseErrorStop 2s linear infinite;
+    }
+
+    .gear.two {
+        -webkit-animation: anticlockwiseError 2s linear infinite;
+    }
+
+    .gear.three {
+        -webkit-animation: clockwiseError 2s linear infinite;
+    }
+
+    .loading .gear.one, .loading .gear.three {
+        -webkit-animation: clockwise 3s linear infinite;
+    }
+
+    .loading .gear.two {
+        -webkit-animation: anticlockwise 3s linear infinite;
+    }
+</style>

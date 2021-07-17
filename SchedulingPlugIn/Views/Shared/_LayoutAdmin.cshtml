@@ -1,0 +1,238 @@
+﻿
+@{
+    string temp = ViewBag.Controller;
+    int active = 0;
+    string action = ViewBag.Action;
+    if (temp == "AdminController")
+    {
+        active = 1;
+    }
+    if (temp == "CalendarController")
+    {
+
+        if (action == "Detail")
+        {
+            active = 6;
+        }
+        else
+        {
+            active = 2;
+        }
+    }
+    if (temp == "ConsultationController")
+    {
+        active = 3;
+    }
+    if (temp == "QuestionController")
+    {
+        active = 4;
+    }
+    if (temp == "PageController")
+    {
+        active = 5;
+    }
+
+
+}
+
+<!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - Schedule Plugin</title>
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+        <link rel="icon" type="image/png" sizes="192x192" href="~/Content/Favicon/fav-icon-192x192-MGI.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="~/Content/Favicon/fav-icon-32x32-MGI.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="~/Content/Favicon/fav-icon-96x96-MGI.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="~/Content/Favicon/fav-icon-16x16-MGI.png">
+        <link rel="manifest" href="~/Content/Favicon/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="~/Content/Favicon/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+        <link rel='stylesheet' href='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.css'>
+
+        <script src="https://kit.fontawesome.com/fd2214d6b5.js"></script>
+
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+        <script src="https://kendo.cdn.telerik.com/2019.2.619/js/jquery.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.common.min.css" />
+        <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.default.min.css" />
+        <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.default.mobile.min.css" />
+
+
+        <link href="~/Content/Thinh/_LayoutAdmin.css" rel="stylesheet" />
+
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 visible-xs-block" id="menuPhone">
+                    <div class="row abc">
+                        <p class="col-xs-5">
+                            <a class="navbar-brand" href="/">
+                                <img style="width: 100%" src="~/Content/Images/Logo_MGI.png " />
+                            </a>
+                        </p>
+                        <p class="col-xs-7">
+                            <button class="btn btn-menu tooltip1" id="btnMenu3" data-toggle="collapse" data-target="#collapseExample1">
+                                <i class="fa fa-bars"></i><span class="tooltiptext tooltip-right">Collapse/Expand   Navigation</span>
+                            </button>
+                        </p>
+                    </div>
+                    <div class="menu-admin-top">
+                        <nav class="h-100 collapse" id="collapseExample1">
+                            <ul class="total">
+                                <li class="@((active == 1) ? "active" : " ")">
+                                    <a href="/">
+                                        <i class="fas fa-home tooltip1"><span class="tooltiptext tooltip-right">HOME</span></i>
+                                    </a> @Html.ActionLink("Home", "Index", "Admin", null, new { @class = "nav_link" })
+                                </li>
+                                <li style="margin-bottom:0">
+                                    <a>
+                                        <i class="far fa-calendar-alt tooltip1"><span class="tooltiptext tooltip-right">CALENDAR</span></i>
+                                    </a>@Html.ActionLink("Calendar", "Index", "Calendar", null, new { @class = "nav_link" })
+                                    <ul class="calendar-item">
+                                        <li class="@((active == 2) ? "active" : " ") " style="margin-bottom:0"><a href="/Calendar/CreateAvailableTime"><i class="fas fa-tasks tooltip1"><span class="tooltiptext tooltip-right">MANAGE CALENDAR</span></i></a> @Html.ActionLink("Manage Calendar", "Index", "Calendar", null, new { @class = "nav_link" })</li>
+                                        <li class="@((active == 6) ? "active" : " ") "><a href="/timeslots/available"><i class="far fa-calendar-plus tooltip1"><span class="tooltiptext tooltip-right">MANAGE FREE TIME SLOT</span></i></a> @Html.ActionLink("Manage Free Time Slot", "Available", "TimeSlots", null, new { @class = "nav_link" })</li>
+                                    </ul>
+                                </li>
+                                <li class="@((active == 3) ? "active" : " ") " style="margin-top:0;"><a href="/Consultation"><i class="fab fa-weixin tooltip1"><span class="tooltiptext tooltip-right">MANAGE CONSULTATIONS</span></i></a> @Html.ActionLink("Manage Consultations", "Index", "Consultation", null, new { @class = "nav_link" })</li>
+                                <li class="@((active == 4) ? "active" : " ") "><a href="/Question"><i class="far fa-question-circle tooltip1"><span class="tooltiptext tooltip-right">MANAGE QUESTIONS</span></i></a> @Html.ActionLink("Manage Questions", "Index", "Question", null, new { @class = "nav_link" })</li>
+                                <li class="@((active == 5) ? "active" : " ") "><a href="/Page"><i class="fas fa-window-restore tooltip1"><span class="tooltiptext tooltip-right">MANAGE PAGE</span></i></a> @Html.ActionLink("Manage Page", "Index", "Page", null, new { @class = "nav_link" })</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="col-md-2 hidden-xs" id="menuBar">
+                    <div class="row">
+                        <a class="navbar-brand" href="/">
+                            <img style="width: 70%" src="~/Content/Images/Logo_MGI.png " />
+
+                        </a>
+                    </div>
+                    <div class="menu-admin-left">
+                        <nav class="h-100" id="collapseExample">
+
+                            <ul class="total">
+                                <li class="@((active == 1) ? "active" : " ") ">
+                                    <a href="/">
+                                        <i class="fas fa-home tooltip1"><span class="tooltiptext tooltip-right">HOME</span></i>
+                                    </a> @Html.ActionLink("Home", "Index", "Admin", null, new { @class = "nav_link" })
+                                </li>
+                                <li class="">
+                                    <i class="far fa-calendar-alt tooltip1"><span class="tooltiptext tooltip-right">CALENDAR</span></i>
+                                    @Html.ActionLink("Calendar", "CreateAvailableTime", "Calendar", null, new { @class = "nav_link" })
+                                    <ul class="calendar-item">
+                                        <li class="@((active == 2) ? "active" : " ") "><a href="/Calendar/CreateavailableTime"><i class="fas fa-tasks tooltip1"><span class="tooltiptext tooltip-right">MANAGE CALENDAR</span></i></a> @Html.ActionLink("Manage Calendar", "Index", "Calendar", null, new { @class = "nav_link" })</li>
+                                        <li class="@((active == 6) ? "active" : " ") "><a href="/timeslots/available"><i class="far fa-calendar-plus tooltip1"><span class="tooltiptext tooltip-right">MANAGE FREE TIME SLOT</span></i></a> @Html.ActionLink("Manage Free Time Slot", "Available", "TimeSlots", null, new { @class = "nav_link" })</li>
+                                    </ul>
+                                </li>
+                                <li class="@((active == 3) ? "active" : " ") "><a href="/Consultation"><i class="fab fa-weixin tooltip1"><span class="tooltiptext tooltip-right">MANAGE CONSULTATIONS</span></i></a> @Html.ActionLink("Manage Consultations", "Index", "Consultation", null, new { @class = "nav_link" })</li>
+                                <li class="@((active == 4) ? "active" : " ") "><a href="/Question"><i class="far fa-question-circle tooltip1"><span class="tooltiptext tooltip-right">MANAGE QUESTIONNAIRES</span></i></a> @Html.ActionLink("Manage Questionnaires", "Index", "Question", null, new { @class = "nav_link" })</li>
+                                <li class="@((active == 5) ? "active" : " ") "><a href="/Page"><i class="fas fa-window-restore tooltip1"><span class="tooltiptext tooltip-right">MANAGE PAGE</span></i></a> @Html.ActionLink("Manage Page", "Index", "Page", null, new { @class = "nav_link" })</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-10 content-right col-xs-10">
+                    <div class="hidden-xs">
+                        <button class="btn btn-menu hidden-md tooltip1" id="btnMenu2">
+                            <i class="fa fa-bars"></i><span class="tooltiptext tooltip-right">Collapse/Expand Navigation</span>
+                        </button>
+                        @{Html.RenderPartial("~/Views/Shared/_LoginPartial.cshtml");}
+                    </div>
+                    <div class="row" id="bodyMain">
+                        <div class="container body-content">
+                            @RenderBody()
+                        </div>
+                    </div>
+                    <div>
+                        <footer>
+                            <p><b>Copyright © @DateTime.Now.Year Management Group International, LLC</b> </p>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                var x = 0
+                $('#btnMenu2').click(function () {
+                    $("#menuBar").toggleClass("toogle_navigation");
+                    var result = $("#menuBar").css('width');
+                    $('.content-right').css("width", "calc(100% - " + result + ")");
+                    showhide_navbarleft();
+                });
+                //reponsive navbar-left
+                $(window).resize(function () {
+                    resize_width();
+                    showhide_navbarleft();
+                });
+                function resize_width() {
+                    var widths = $('#menuBar').width();
+
+                    var x = $('#menuBar').css('display');
+                    if (x == "none") {
+                        $('.content-right').css("width", "100%");
+                    } else {
+                        var result = $("#menuBar").css('width');
+                        $('.content-right').css("width", "calc(100% - " + result + ")");
+                    }
+                };
+                function showhide_navbarleft() {
+                    var width = $(window).width();
+                    var width_nav = $('#menuBar').width();
+                    if (width <= 1285) {
+                        $('#menuBar .navbar-brand img').css('width', '80%');
+                        $('#menuBar ul li a.nav_link').hide();
+                        $('.menu-admin-left').css('min-width', '100');
+                        if (width <= 600) {
+                            $("#btnMenu2").toggle("fast");
+                        }
+                    }
+                    else {
+                        $('#menuBar .navbar-brand img').css('width', '70%');
+                        $('#menuBar ul li a.nav_link').show();
+                        $('.menu-admin-left ul li ').removeClass('text-center');
+                        $('.menu-admin-left').css('min-width', '200');
+                    }
+                    if (width_nav <= 101) {
+                        $('#menuBar .navbar-brand img').css('width', '80%');
+                        $('#menuBar ul li a.nav_link').hide();
+                        $('.menu-admin-left').css('min-width', '100');
+                        if (width <= 600) {
+                            $("#btnMenu2").toggle("fast");
+                        }
+                    } else {
+                        $('#menuBar .navbar-brand img').css('width', '70%');
+                        $('#menuBar ul li a.nav_link').show();
+                        $('.menu-admin-left ul li ').removeClass('text-center');
+                        $('.menu-admin-left').css('min-width', '200');
+                    }
+                };
+                showhide_navbarleft();
+                resize_width();
+
+
+            });
+
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data.min.js"></script>
+        <script src='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.min.js'></script>
+        <script src="https://unpkg.com/sweetalert2@7.18.0/dist/sweetalert2.all.js"></script>
+        <script src="https://kendo.cdn.telerik.com/2019.2.619/js/kendo.all.min.js"></script>
+        <script src="https://kendo.cdn.telerik.com/2019.2.619/js/kendo.timezones.min.js"></script>
+    </body>
+    </html>
+

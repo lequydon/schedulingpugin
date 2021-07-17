@@ -1,0 +1,141 @@
+﻿#Question .demo-section #tabstrip {
+    width: 100%;
+    margin-top:3em;
+
+}
+
+.k-command-cell .k-grid-edit {
+    background-color: green;
+}
+
+.k-command-cell .k-grid-delete {
+    background-color: firebrick;
+}
+
+.k-alt:hover {
+    background-color: white;
+}
+
+#tabstrip .button {
+    float: right;
+    margin-top: -2.3em;
+    margin-right: 0.4em;
+    width: 70px;
+    background-color: dodgerblue;
+    border: 0px solid dodgerblue;
+    height: 29px;
+    border-radius: 5px;
+}
+.manage{
+    font-size:30px;
+    margin-top:-0.5em;
+    margin-left:350px;
+}
+#example #grid{
+    margin-top: 3em;
+}
+.page{
+    margin-top:-1em;
+    text-align:center;
+}
+.k-grid-add {
+    background-color: dodgerblue;
+}
+.PagerequestID{
+    display:flex;
+}
+.Pagequestion{
+    display:flex;
+}
+#page{
+    padding:9px 3em;
+}
+#question{
+    padding:9px 3em;
+}
+.modal-header {
+    background-color: #eeeeee;
+    height:22px;
+}
+.modal-footer {
+    background-color: #eeeeee;
+}
+.modal-footer button{
+    color:#eeeeee;
+}
+.appendItem{
+    background-color: #d5570f;
+}
+.appendItem:hover{
+    background-color:#d5570f;
+}
+.orderQuestion{
+    display:flex;
+    margin-top:1em;
+}
+#order{
+    padding:0 1.3em;
+}
+#ordertext {
+    margin-left: -7px;
+    border-radius: 3px;
+    border: 1px solid gray;
+    padding: 2px;
+}
+#text {
+    border-radius: 3px;
+    border: 1px solid gray;
+    
+}
+.close{
+    margin-top:-1em !important;
+}
+.k-dialog .k-header{
+    display:none;
+}
+.k-dialog .k-dialog-content{
+    background-color:lightgray;
+    text-align:center;
+
+}
+.k-dialog{
+    top:151px !important;
+}
+.k-grid-Delete {
+    background-color: firebrick;
+}
+
+@media screen and (min-width: 650px) {
+    .k-edit-form-container {
+        width: 720px;
+    }
+    .k-edit-label{
+        margin-left: -10%;
+    }
+    .k-edit-field, .k-edit-form-container .editor-field {
+        margin-right: 15%;
+        float: unset;
+        width: 100%;
+        
+    }
+        .k-edit-field:nth-last-child(-n+2), .k-edit-field:nth-last-child(-n+4) {
+            padding-top: 5px;
+        }
+    .k-edit-form-container .editor-label, .k-edit-label{
+        margin-right: 15px;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .k-edit-form-container {
+        width: 400px;
+    }
+}
+.k-edit-field {
+    word-break: break-word;
+}
+@media screen and (min-width: 600px) {
+    .k-window, .k-edit-form-container {
+        width: 500px;
+    }
+}

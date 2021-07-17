@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+</head>
+<body style="font-size: 14px; font-family: 'Open Sans'; padding:100px;background-color: #f2f2f2">
+    <article style="background-color: #f2f2f2; padding-bottom: 30px; padding-top: 30px;">
+        <table align="center" cellpadding="0" cellspacing="0" class="article" style="margin: auto;width: 570px; height: 400px;  background: white; box-shadow: 0px 0px 50px -15px rgba(0,0,0,0.75);">
+            <tr >
+                <td class="header" style="width:570px; height: 80px; font-size: 40px; font-family: inherit;">
+                <img src={logo} border="0" style="width: 570px;" />
+                </td>
+            </tr>
+            <tr>
+                <td class="name" style="float: left;margin-left: 30px; margin-top: 54px; margin-bottom: 24px;">Hi, <b>{firstName} {lastName}</b></td>
+            </tr>
+            <tr style="float: left; padding-left: 30px; padding-right:30px; text-align:left;margin-bottom:46px;">
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <p style="line-height: 26px; color: #414042; margin-top: 0; margin-bottom: 5px; margin-bottom: 20px;">You had requested a consultation with <b>{namepagerequest}</b> via email<br> <strong><a href="mailto: {email}" style="color: #208DEC;">{email}</a></strong> on: </p>
+
+                                <p style="line-height: 26px; color: #414042; margin-top: 0; margin-bottom: 5px; margin-bottom: 20px;background-color:#cccccc;padding-top: 10px; padding-bottom: 10px; text-align: center; font-size: 18px; font-weight: bold;" class="time_view">{datemeeting}<br>{timemeeting}</p>
+                                <p style="line-height: 26px; color: #414042; margin-top: 0; margin-bottom: 5px; margin-bottom: 20px;"><span style="font-weight:bold">Unfortunately</span>, an urgent matter has come up and we are afraid we cannot have a meeting on that day.
+                    We apologize for the inconvenience.</p>
+                                <p style="line-height: 26px; color: #414042; margin-top: 0; margin-bottom: 5px; margin-bottom: 20px;"> Please <a href="{linkProspect}" style="color: #208DEC;">Click here</a> to book another consultation.</p>
+                                <p style="line-height: 26px; color: #414042; margin-top: 0; margin-bottom: 5px; margin-bottom: 20px;"> Once again, We apologize for the change.
+                    We do not want to miss any opportunity to talk with you, so please book  another consultation to re-arrange this meeting.</p>
+                                 <p style="line-height: 26px; color: #414042; margin-top: 0; margin-bottom: 5px; margin-bottom: 20px;"> We look forward to hearing from you.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p style="margin-top: 20px;line-height: 26px; color: #414042; margin-top: 0; margin-bottom: 20px;">Regards,</p>
+                                <b style="margin-bottom:10px; line-height: 26px; color: #414042; margin-top: 0;">The {namepagerequest} Team</b>
+                                <p style="color: #fff;">The  Team</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </article>
+</body>
+</html>
+

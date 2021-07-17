@@ -1,0 +1,194 @@
+﻿.back-to-list {
+    border: 1px solid grey;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 10px;
+}
+    .back-to-list:hover {
+        background-color: #0000006e;
+    }
+    .back-to-list i {
+        padding-right: 5px;
+    }
+    .back-to-list a {
+        color: black;
+        text-decoration: none;
+        padding:10px;
+    }
+        .back-to-list a:hover {
+            text-decoration: none;
+            color: black;
+        }
+    .k-command-cell .k-grid-edit {
+        background-color: green;
+        color: #fff;
+    }
+
+    #dateStart {
+        pointer-events: none;
+    }
+#Success {
+    position: absolute;
+    top: -30px;
+    left: -195px;
+    z-index: 2000;
+}
+@keyframes Success {
+    0%();
+    100%();
+    9%();
+}
+.k-input {
+    padding: 0;
+}
+
+.validation-summary-errors {
+    display: block;
+}
+    .validation-summary-errors ul{
+        list-style:none;
+        margin-top: 30px;
+    }
+
+.k-command-cell .k-grid-decline {
+    background-color: firebrick;
+    color: #fff;
+}
+
+.k-dropdown-operator {
+    display: block;
+}
+
+.filter {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+    .filter span i {
+        cursor: pointer;
+    }
+
+#Calendar, #Calendar .k-calendar-view {
+    width: 100%;
+}
+
+.calendar-item li {
+    padding: 10px 5px;
+}
+
+    .calendar-item li:hover {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+    }
+
+#Calendar {
+    margin-top: 60.63px;
+}
+
+    #Calendar.k-calendar > .k-header {
+        background-color: #383838;
+        color: white;
+    }
+
+#btnTimeSlot1, #btnTimeSlot2 {
+    width: auto;
+    padding: 5px 25px;
+    font-size: 1em;
+    margin-right: 0.2em;
+    margin: 0 10px;
+}
+
+th{
+    text-align: center;
+}
+
+#menu-choose {
+    border-right: 2px solid #655c5c52;
+}
+
+.k-filtercell > .k-operator-hidden {
+    padding-right: 0;
+}
+
+.k-edit-form-container {
+    width: 500px;
+}
+
+#labels {
+    width: 10em;
+    font-size: 1.1em;
+    padding-left: 2.5em;
+    padding-top: 0.8em;
+}
+
+dl {
+    display: flex;
+    font-size: 1em;
+}
+
+.btn-edit {
+    background-color: #29b628;
+    color: #fff;
+}
+
+.btn-destroy {
+    background-color: #ff0000;
+    color: #fff;
+}
+
+.btn-detail {
+    background-color: #fff;
+}
+
+.title-center {
+    font-size: 1.5em;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.minu {
+    padding-left: 0.4em;
+}
+
+#btn1 {
+    color: #fff;
+    font-size: 1.3em;
+}
+
+.menu {
+    display: flex;
+    margin-bottom: 3em;
+}
+
+.content {
+    margin-top: 0.5em;
+}
+
+#grid {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 2em;
+}
+
+@media screen and (max-width: 800px) {
+    
+    .form-horizontal {
+        width: 100%;
+        margin: 5% 0;
+    }
+
+    #labels {
+        display: none;
+    }
+
+    .col-md-10 {
+        margin-left: 13%;
+    }
+
+    #btnTimeSlot1, #btnTimeSlot2 {
+        width: 100%;
+    }
+}

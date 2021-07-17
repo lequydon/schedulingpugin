@@ -1,0 +1,70 @@
+﻿body {
+    padding-top: 25px;
+    background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
+    height: 754px;
+    background-image: url('../../Content/Images/blur.jpg');
+    background-repeat: no-repeat;
+    background-size: auto;
+}
+
+.style-container {
+    text-align: center;
+    margin: 0 auto;
+    width: 600px;
+    padding-top: 290px;
+    padding: 50px;
+    background-color: rgba(255,255,255,0.5);
+}
+
+.text-form {
+    display: inline-grid;
+    width: 80%;
+}
+
+/*.text-form input{
+        margin-left:64px;
+    }*/
+
+.text-danger {
+    float: right;
+    margin-right: 4em;
+}
+
+.button-login {
+    margin: 0;
+}
+
+    .button-login {
+        padding-left: 2em;
+        padding-right: 2em;
+        /*background-color: mediumturquoise;*/
+        /*float: right;*/
+    }
+
+
+input {
+    min-width: 80%;
+    margin: auto;
+}
+
+.checkbox input {
+    left: 0;
+}
+
+@media only screen and (max-width: 640px){
+    .container-fluid.style-container {
+        width: 94%;
+        padding-left: unset;
+        padding-right: unset;
+        /*margin-left: 3%;*/
+    }
+    hr {
+        width: 90%;
+    }
+}
+.forgot div.text-form {
+    width: 100%;
+}
+.forgot .form-group {
+    margin: auto unset;
+}

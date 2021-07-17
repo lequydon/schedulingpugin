@@ -1,0 +1,137 @@
+﻿@using SchedulingPlugIn.Service;
+@using SchedulingPlugIn.Models;
+@using SchedulingPlugIn.Models.Entity;
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{  Calendar cal = new Calendar();
+        cal.IDPageRequest = ViewData["IDPageRequest"].ToString();       
+    }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.common-bootstrap.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.bootstrap.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.bootstrap.mobile.min.css" />
+
+    @if (cal.IDPageRequest == "MGISolutions")
+    {
+        <title>@ViewBag.Title - MGI Solutions</title>
+        <link rel="icon" type="image/png" sizes="192x192" href="~/Content/Favicon/fav-icon-192x192-MGI.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="~/Content/Favicon/fav-icon-32x32-MGI.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="~/Content/Favicon/fav-icon-96x96-MGI.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="~/Content/Favicon/fav-icon-16x16-MGI.png">
+        <link rel="manifest" href="~/Content/Favicon/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="~/Content/Favicon/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+    }
+    else if (cal.IDPageRequest == "JouleBroker")
+    {
+        <title>@ViewBag.Title - Joule Broker</title>
+        <link rel="icon" type="image/png" sizes="192x192" href="~/Content/Favicon/favicon_192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="~/Content/Favicon/favicon_32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="~/Content/Favicon/favicon_96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="~/Content/Favicon/favicon_16x16.png">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="~/Content/Favicon/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+    }
+
+    <script src="https://kendo.cdn.telerik.com/2019.2.619/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.2.619/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.2.619/js/kendo.timezones.min.js"></script>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        body {
+            padding: unset;
+            min-height: 100%;
+        }
+
+        img {
+            height: 5rem;
+            display: block;
+        }
+
+        a {
+            display: table;
+        }
+
+        header > div {
+            float: right;
+            text-align: left;
+        }
+
+        header {
+            text-align: center;
+            margin: 3rem 2rem;
+        }
+
+        h3 {
+            margin-top: 34px;
+        }
+
+        footer {
+            padding: 1rem 1rem 1rem 3rem;
+            font-size: 17px;
+            border-top: solid 1px gray;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: 0;
+        }
+       
+        .main {
+                min-height: 100%;
+            }
+        @@media screen and (max-width: 798px) {
+            footer {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href=""><img src="~/Content/Images/Logo_MGI.png" /></a>
+
+        @*<select>
+                <option selected value="America/Santa_Isabel">America/Santa_Isabel</option>
+                <option value="Asia/Ho_Chi_Minh">Asia/Ho_Chi_Minh</option>
+            </select>*@
+        <h2>MGI Solutions Consultation Center</h2>
+    </header>
+    <div class="main">
+        @RenderBody()
+    </div>
+    <footer>
+        <p><b>MGI Management Group International, LLC</b> </p>
+    </footer>
+    <script type="text/javascript">
+        var heightWindow = $(window).height();
+        var footer = $('footer');
+        if (heightWindow < 650) {
+            footer.css("bottom", "unset");
+            footer.css("position", "absolute");
+        } else {
+            footer.css("bottom", "0");
+            footer.css("position", "absolute");
+        }
+        $(window).resize(function () {
+            var heightWindow = $(window).height();
+            var footer = $('footer');
+            if (heightWindow < 650) {
+                footer.css("bottom", "unset");
+                footer.css("position", "absolute");
+            } else {
+                footer.css("bottom", "0");
+                footer.css("position", "absolute");
+            }
+        })
+    </script>
+</body >
+</html >

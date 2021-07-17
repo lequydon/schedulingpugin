@@ -1,0 +1,14 @@
+﻿#example{
+    margin-left:2em;
+    margin-top:2em;
+}
+.k-command-cell .k-grid-edit {
+    background-color: green;
+}
+.k-command-cell .k-grid-delete {
+    background-color: firebrick;
+    border: 1px solid firebrick;
+}
+.k-grid-toolbar .k-grid-add {
+    background-color: dodgerblue;
+}

@@ -1,0 +1,111 @@
+﻿@{
+    string temp = ViewBag.Controller;
+    int active = 0;
+    if (temp == "AdminController")
+    {
+        active = 1;
+    }
+    if (temp == "CalendarController")
+    {
+        active = 2;
+    }
+    if (temp == "ConsultationController")
+    {
+        active = 3;
+    }
+    if (temp == "ManageQuestionController")
+    {
+        active = 4;
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/Thinh/_LayoutAdmin.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>*@
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2" id="menuBar">
+                <div class="menu-admin-left">
+                    <button class="btn " id="btnMenu1" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <nav class="h-100"  id="collapseExample">
+                        <ul class="">
+                            <li class="@((active==1)?"active":" ")">@Html.ActionLink("Home", "Index", "Admin")</li>
+                            <li class="@((active==2)?"active":" ")">@Html.ActionLink("Calendar", "CalendarPage", "Calendar")</li>
+                            <li class="@((active==3)?"active":" ")">@Html.ActionLink("Manager Consultation", "ManagerConsultation", "Consultation")</li>
+                            <li class="@((active==4)?"active":" ")">@Html.ActionLink("Manager Questions", "ManageQuestion", "ManageQuestion")</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-md-10 content-right">
+                <button class="btn btn-menu col-lg-2" id="btnMenu2">
+                    <i class="fa fa-bars"></i>
+                </button>
+                @*<div class="col-md-10"></div>*@
+                <div class="row">
+                    <div class="container body-content">
+                        @RenderBody()
+                        <footer>
+                            <p><b>MGI Management Group International, LLC</b> </p>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+        $('.btn-menu').click(function () {
+            $("#menuBar").toggle("slow", function () {
+                var x = $(this).css("display");
+                if (x == "none") {
+                    $('.content-right').css("width","100%");
+                } else {
+                    $('.content-right').css("width", "calc(100% - 260px)");
+                }
+
+            });
+        })
+    </script>
+</body>
+</html>

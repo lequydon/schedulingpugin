@@ -1,0 +1,318 @@
+﻿@using SchedulingPlugIn.Service;
+@using SchedulingPlugIn.Models;
+@using SchedulingPlugIn.Models.Entity;
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{ var pagecode = Session["pagecode"].ToString();
+
+        PageQuestionService pageIDService = new PageQuestionService();
+        Calendar cal = new Calendar();
+        cal.IDPageRequest = pageIDService.getIDPageRequest(pagecode);
+    }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Prospect Page</title>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.common-bootstrap.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.bootstrap.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.bootstrap.mobile.min.css" />
+    <script src="https://kendo.cdn.telerik.com/2019.2.619/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.2.619/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.2.619/js/kendo.timezones.min.js"></script>
+    <link rel='stylesheet' href='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.css'>
+    <script src='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.min.js'></script>
+    @if (cal.IDPageRequest == "MGISolutions")
+    {
+        <link rel="icon" type="image/png" sizes="192x192" href="~/Content/Favicon/fav-icon-192x192-MGI.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="~/Content/Favicon/fav-icon-32x32-MGI.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="~/Content/Favicon/fav-icon-96x96-MGI.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="~/Content/Favicon/fav-icon-16x16-MGI.png">
+        <link rel="manifest" href="~/Content/Favicon/manifest.json">
+        <link type="text/css" href="~/Content/Prospect/MGISolutions.css" />
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="~/Content/Favicon/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+    }
+    else if (cal.IDPageRequest == "JouleBroker")
+    {
+        <link rel="icon" type="image/png" sizes="192x192" href="~/Content/Favicon/favicon_192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="~/Content/Favicon/favicon_32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="~/Content/Favicon/favicon_96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="~/Content/Favicon/favicon_16x16.png">
+        <link type="text/css" href="~/Content/Prospect/JouleBroker.css" />
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="~/Content/Favicon/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+    }
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        body {
+            padding: unset;
+            min-height: 100%;
+        }
+
+        a {
+            display: table;
+        }
+
+        img {
+            height: 5rem;
+            padding-top:
+            /*display: block;*/
+        }
+
+        header > div {
+            float: right;
+            text-align: left;
+        }
+
+        header {
+            text-align: center;
+            margin: 3rem 2rem;
+        }
+
+        h3 {
+            margin-top: 34px;
+        }
+
+        footer {
+            padding: 1rem 1rem 1rem 3rem;
+            font-size: 17px;
+            border-top: solid 1px gray;
+            position: absolute;
+            width: 100%;
+            left: 0;
+        }
+
+        #timeZone {
+            width: 15em;
+        }
+
+        .main {
+            height:auto;
+        }
+        main {
+            margin-bottom: 4em;
+        }
+        .k-dropdown {
+            width: 450px;
+        }
+
+            .k-dropdown:last-child {
+                width: 140px;
+            }
+
+        @@media screen and (max-width:  500px) {
+            .k-dropdown {
+                width: 300px;
+            }
+
+                .k-dropdown:last-child {
+                    width: 140px;
+                }
+        }
+
+        @@media screen and (max-width: 798px) {
+            footer {
+                position: static;
+            }
+        }
+
+        @@media screen and (max-width: 460px) {
+            h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="">
+            @if (cal.IDPageRequest == "MGISolutions")
+            {
+                <img src="~/Content/Images/Logo_MGI.png" />
+            }
+            else if (cal.IDPageRequest == "JouleBroker")
+            {
+                <img src="~/Content/Images/JouleBroker.png" />
+            }
+        </a>
+        <h2>PLEASE SELECT AN AVAILABLE TIME SLOT FOR YOUR CONSULTATION</h2>
+
+        <div id="viewType" style="display:none">
+            <label for="ViewType">View Type:</label>
+            <input id="ViewType" />
+        </div>
+        <h3>@DateTime.Now.ToShortDateString(): <span id="vnclock"></span>
+        @*<span id="time"></span>*@
+        </h3>
+        @*<select>
+                <option selected value="America/Santa_Isabel">America/Santa_Isabel</option>
+                <option value="Asia/Ho_Chi_Minh">Asia/Ho_Chi_Minh</option>
+            </select>*@
+        <input id="timeZone" />
+        <h2></h2>
+    </header>
+    <main style="height:auto;">
+        <div class="main">
+            @RenderBody()
+        </div>
+    </main>
+    <footer>
+        <p><b>Copyright © @DateTime.Now.Year Management Group International, LLC</b> </p>
+    </footer>
+</body>
+</html>
+<script type="text/javascript">
+    window.setTimeout("showTime()", 1000);
+    function getVNTime() {
+        var time = new Date();
+        var dow = time.getDay();
+        if (dow == 0)
+            dow = "Chủ nhật";
+        else if (dow == 1)
+            dow = "Thứ hai";
+        else if (dow == 2)
+            dow = "Thứ ba";
+        else if (dow == 3)
+            dow = "Thứ tư";
+        else if (dow == 4)
+            dow = "Thứ năm";
+        else if (dow == 5)
+            dow = "Thứ sáu";
+        else if (dow == 6)
+            dow = "Thứ bảy";
+        var day = time.getDate();
+        var month = time.getMonth() + 1;
+        var year = time.getFullYear();
+        var hr = time.getHours();
+        var min = time.getMinutes();
+        var sec = time.getSeconds();
+        day = ((day < 10) ? "0" : "") + day;
+        month = ((month < 10) ? "0" : "") + month;
+        hr = ((hr < 10) ? "0" : "") + hr;
+        min = ((min < 10) ? "0" : "") + min;
+        sec = ((sec < 10) ? "0" : "") + sec;
+        return  hr + ":" + min + ":" + sec;
+    }
+    function showTime() {
+        var vnclock = document.getElementById("vnclock");
+        if (vnclock != null)
+            vnclock.innerHTML = getVNTime();
+        setTimeout("showTime()", 1000);
+    }
+    //var heightWindow = $(window).height();
+    //var footer = $('footer');
+    //if (heightWindow < 450) {
+    //    footer.css("bottom", "unset");
+
+    //} else {
+    //    footer.css("bottom", "-300");
+
+    //}
+    $(window).resize(function () {
+        var heightWindow = $(window).height();
+        var footer = $('footer');
+        if (heightWindow < 450) {
+            footer.css("bottom", "unset");
+
+        } else {
+            footer.css("bottom", "-300");
+
+        }
+    })
+    var viewType = $("#ViewType").kendoDropDownList({
+        dataTextField: "text",
+        dataValueField: "value",
+        dataSource: [
+            { text: "Day", value: "day" },
+            { text: "Work Week", value: "workWeek" },
+            { text: "Agenda", value: "agenda"}
+        ],
+        index: 1,
+        value: scheduler.view().name,
+        change: function () {
+            scheduler.view(this.value());
+            if (this.value() == "workWeek") {
+                //    $("div.main > .Container").removeClass("daytype listtype compactlisttype").addClass("weektype");
+                //xoa           $('.k-nav-current').hide();
+                //format week
+                //xoa          hideWeek();
+                //xoa          formatWeek();
+                hideWeek2();
+                formatWeek();
+                setwidthweek();
+                //editFormWeek();
+            }
+            else if (this.value() == "day") {
+                //xoa        $('.k-nav-current').show();
+                //xoa           myFunc();
+                hideDay();
+            } else {
+                formatAgenda(true);
+            }
+        }
+    }).data("kendoDropDownList");
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    var offset;
+    var timezone;
+    var timezone1;
+
+    viewType.select(1);
+    //scheduler.view("workWeek");
+    hideWeek2();
+    setwidthweek();
+    var dropDownListZone = $("#timeZone").kendoDropDownList({
+        dataTextField: "text",
+        dataValueField: "value",
+        // filter: "startswith",
+        dataSource: {
+            serverFiltering: true,
+            transport: {
+                read: {
+                   // url: "https://raw.githubusercontent.com/darkgunz1998/ahaha/master/timezoneServerJson"
+                    url: "https://jsonstorage.net/api/items/26392365-eee8-4e45-ae7a-548a34b5ad0a"
+                   // url: "/Scripts/TimeZoneJson.json"
+                }
+            }
+        },
+        //index: -1,
+        change: function (e) {
+
+            zone = this.value();
+
+            // console.log(this.value());
+            //if ($('#viewType .k-input').text() == "Work Week") {
+            //    hideWeek2();
+            //    formatWeek();
+            //}
+            var text = this.text();
+            $.getJSON("https://jsonstorage.net/api/items/26392365-eee8-4e45-ae7a-548a34b5ad0a", function (obj) {
+                timezone = getOffsetFromTimeZone(text, obj);
+                setTimeZone(timezone);
+                updateTime(timezone);
+            });
+
+
+        }
+    }).data("kendoDropDownList");
+   // dropDownListZone.text("Select timezone..");
+    //console.log("Antarctica/Davis");
+    dropDownListZone.value(getTimezoneName());
+    function getOffsetFromTimeZone(textTimeZone, obj) {
+        var temp;
+        for (i in obj) {
+            if (obj[i].text == textTimeZone) {
+                temp = obj[i].utc;
+                timezone1 = obj[i].value;
+                return temp[0];
+            }
+        }
+        return null;
+    }
+
+</script>

@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "Create Available Time";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/Content/Createavailabletime.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.3.917/styles/kendo.default-v2.min.css" />
+<script src="https://kendo.cdn.telerik.com/2019.3.917/js/jquery.min.js"></script>
+<script src="https://kendo.cdn.telerik.com/2019.3.917/js/kendo.all.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<script src="https://kendo.cdn.telerik.com/2019.2.619/js/kendo.timezones.min.js"></script>
+<script src="~/Scripts/Createavailabletime.js"></script>
+<h2>CREATE TIME SLOTS</h2>
+<main>
+    <div id="date">
+        <label class="datestart">Date Start <input id="datepicker" title="datepicker" /></label>
+        <label class="dateend">Date End <input id="datepickerr" title="datepicker" /></label>
+    </div>
+    <div id="timezone">
+        <label class="time">Time Zone For your avallability</label> <input id="timeZone" style="width: 34.5em;"/>
+        <label class="duration">
+            Default Duration <input id="duration-main" name="durationmain" class="duration-dayofweek" value=45 step=5 min=5 max=120 type="number" /> minutes
+        </label>
+    </div>
+    <div id="grid">
+        <div>
+            @for (int i = 0; i < 7; i++)
+            {
+                string[] dayofweek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+                var notifications = "notifications-switch" + i;
+                var on = "on" + i;
+                var off = "off" + i;
+                var edit = "edit-time" + i;
+                var editbutton = "edit-button" + i;
+                var cancel = "cancel-button" + i;
+                var savebutton = "save-button" + i;
+                var addbutton = "add-button" + i;
+                var timefrom = "time-from" + i;
+                var timeto = "time-to" + i;
+                var infoadd = "info-add" + i;
+                var durationdayofweek = "duration-dayofweek" + i;
+                <div class="view" @*id="view"*@>
+                    <input type="checkbox" id=@notifications checked="checked" style="margin:10px;" /><label id="name" style="margin:10px;">@dayofweek[i]</label>
+                    <button id=@editbutton style="float:right; margin-top:10px; margin-left:3.125em;" class="k-button k-edit-button" onclick="sessionStorage.setItem('id', @i);"><span class="k-icon k-i-edit" style="width: 1em; height: 1em;"></span>&nbsp;Edit</button>
+                    <div id=@edit class="box-edit">
+                        <div id=@infoadd>
+                            @*<label class="label-time">From</label> <input id=@timefrom data-format="hh:mm tt" />
+                                <label class="label-time">To</label> <input id=@timeto data-format="hh:mm tt" />
+                                <label class="custom-duration">Duration</label> <input id=@durationdayofweek class="duration-dayofweek"  step=5 min=5 max=120 type="number" /> <label>minutes</label>*@
+                        </div>
+                        <div>
+                            <button id=@addbutton class="k-button k-plus-button" onclick="sessionStorage.setItem('add', @i);"><span class="k-icon k-i-plus-circle" style="width: 1em; height: 1em;"></span>&nbsp;Add a slot</button>
+                        </div>
+                        <div style="float:right;">
+                            <button id=@savebutton class="k-button k-update-button" onclick="sessionStorage.setItem('save', @i);"><span class="k-icon k-i-save" style="width: 1em; height: 1em;"></span>&nbsp;Save</button>
+                            <button id=@cancel class="k-button k-cancel-button" onclick="sessionStorage.setItem('cancel', @i);"><span class="k-icon k-i-close" style="width: 1em; height: 1em;"></span>&nbsp;Cancel</button>
+                        </div>
+                    </div>
+                    <div id=@on style="float:right;width:11em; height:auto;">
+                        @*<label style="float:right;" id="datestarttime">09:00 AM - 11:00 AM</label><br />
+                        <label style="float:right;" id="dateendtime">02:00 PM - 05:00 PM</label>*@
+                    </div>
+                    <label id=@off style="float:right;padding-right:50px; ">Busy all day</label>
+                    <div style="clear:both"></div>
+                </div>
+            }
+
+            <div class="view" style="border:none;">
+                <a id="save-button" class="k-button k-save-button"><span class="k-icon k-i-save" style="width: 1em; height: 1em;"></span>&nbsp;Save</a>
+            </div>
+
+        </div>
+    </div>
+</main>
+@*<script id="add-timeslot" type="text/x-custom-template">
+        <div class="remove-div">
+            <label>
+                <label class="label-time">From</label> <input id=@timefrom data-format="hh:mm tt" />
+            </label>
+            <label>
+                <label class="label-time">To</label> <input id=@timeto data-format="hh:mm tt" />
+            </label>
+            <label>
+                <label class="custom-duration">Duration</label> <input class="duration-dayofweek" value=45 step=5 min=5 max=120 type="number" /> minutes
+            </label>
+            <i  class="fa fa-minus-circle" style="color: #ff0000; width: 18px; height: 18px; margin-left: 1em;"></i>
+        </div>
+        <script>
+            $('.fa-minus-circle').click(function () {
+                $(this).parent('.remove-div').remove();
+            });
+            $("#time-from").kendoTimePicker({
+                format: "hh:mm tt",
+                value: "11:00 AM",
+                interval: 15
+            }).data("kendoTimePicker");
+            $("#time-to").kendoTimePicker({
+                format: "hh:mm tt",
+                value: "2:00 PM",
+                interval: 15
+            }).data("kendoTimePicker");
+        </script>
+    </script>*@

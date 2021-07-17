@@ -1,0 +1,57 @@
+﻿Bước 1:
+Add-Migration "ThinhABC"
+Update-Database
+Bước 2: 
+Cài đặt các hàm trong Service
+Bước 3: 
+Gọi các hàm trong Service để đổ dữ liệu lên Controller tương ứng
+- Trường hợp chưa có dữ liệu thì vào Migration/Configuration.cs tạo
+seed data.
+
+Lưu ý: 
+- Có thể xóa DB sau khi Sync
+- Trước khi commit xóa các file sinh ra do Add-Migration
+
+
+OWin
+========================================================================
+* When the User Logs in, you can display the profile information by doing the following:
+- Get the current logged in UserId, so you can look the user up in ASP.NET Identity system
+var currentUserId = User.Identity.GetUserId();
+- Instantiate the UserManager in ASP.Identity system so you can look up the user in the system
+var manager = new UserManager<MyUser>(new UserStore<MyUser>(new MyDbContext()));
+- Get the User object
+var currentUser = manager.FindById(User.Identity.GetUserId());
+- Get the profile information about the user
+currentUser.BirthDate
+*************Or
+public class MyUser : IdentityUser
+    {
+        public virtual MyUserInfo MyUserInfo { get; set; }
+    }
+public class MyUserInfo{
+        public int Id { get; set; }dat
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+public class MyDbContext : IdentityDbContext<MyUser>
+    {
+        public MyDbContext()
+            : base("DefaultConnection")
+        {
+        }
+        public System.Data.Entity.DbSet<MyUserInfo> MyUserInfo { get; set; }
+     }
+==> When the User Logs in, you can display the profile information by doing the following
+- Get the current logged in UserId, so you can look the user up in ASP.NET Identity system
+var currentUserId = User.Identity.GetUserId();
+- Instantiate the UserManager in ASP.Identity system so you can look up the user in the system
+var manager = new UserManager<MyUser>(new UserStore<MyUser>(new MyDbContext()));
+- Get the User object
+var currentUser = manager.FindById(User.Identity.GetUserId());
+- Get the profile information about the user
+currentUser.MyUserInfo.FirstName
+
+6LeEi7IUAAAAAJNz6Nd7C6Gd2uoXF-_UQ5P3PwG2
+//scret key
+6LeEi7IUAAAAAESvZ0CQJJVWspyPjzacgoy5mj5_

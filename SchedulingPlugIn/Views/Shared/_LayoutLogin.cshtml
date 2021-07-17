@@ -1,0 +1,50 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Schedule Plugin</title>
+    <link rel="icon" type="image/png" sizes="192x192" href="~/Content/Favicon/fav-icon-192x192-MGI.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/Content/Favicon/fav-icon-32x32-MGI.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="~/Content/Favicon/fav-icon-96x96-MGI.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Content/Favicon/fav-icon-16x16-MGI.png">
+    <link rel="manifest" href="~/Content/Favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="~/Content/Favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <script src="https://kit.fontawesome.com/fd2214d6b5.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/Content/Login.css" />
+</head>
+<body>
+
+    <div class="container-fluid style-container">
+        @*<header>
+            <a href="#">
+                <img style="width: 200px;" src="~/Content/Images/Logo_MGI.png" />
+            </a>
+        </header>*@
+
+        @RenderBody()
+        @*<footer>
+            <p><b>Copyright</b> MGI - Solution  &copy; @DateTime.Now.Year</p>
+        </footer>*@
+
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>
+
+<style>
+   
+
+   
+</style>

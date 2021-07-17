@@ -1,0 +1,220 @@
+﻿.k-filtercell > span {
+     padding-right: 0.1em !important; 
+}
+
+.k-grid-header th.k-with-icon >a {
+    margin-right: 18px;
+    text-align:center !important;
+}
+.k-autocomplete .k-input, .k-multiselect-wrap, .k-textbox > input {
+    border-radius: 1px;
+    display: block !important;
+    width: 100% !important;
+    /*border-radius :18px !important;*/
+    text-align:center !important;
+    border-radius :18px !important;
+}
+.k-filter-row .k-dropdown-operator, .k-filtercell > span > .k-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+}
+.k-autocomplete .k-input, .k-textbox > input {
+    display: block;
+    width: 100%;
+    text-align:center !important;
+}
+.k-filter-row .k-dropdown-operator {
+    width: 2em !important;
+    right: 0em !important;
+}
+.k-filtercell > span > .k-button {
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+    line-height: 1.286em;
+    margin: 0;
+}
+.k-command-cell .k-grid-Decline{
+    background-color:red !important;
+}
+.k-command-cell .k-grid-Accept {
+    background-color: chartreuse !important;
+}
+
+#dialog_gridStart {
+    overflow: hidden;
+}
+
+	#dialog_gridStart .dialog_page {
+		height: 450px !important;
+		overflow-y: scroll;
+		display: grid;
+		grid-template-columns: repeat(2, 50%);
+	}
+
+    #dialog_gridStart .dialog_page .Page1 {
+        border-right: 2px solid #808080;
+        padding-right: 10px;
+    }
+
+    #dialog_gridStart .dialog_page .Page2 {
+        padding-left: 10px
+    }
+
+#dialog_gridStart .page-button {
+    text-align: center;
+    margin-top: 15px
+}
+
+.grid_PageFinish {
+    padding: 0 2px 0 4px;
+    font-size: 15px
+}
+
+.grid_PageStart {
+    padding: 0 4px 0 2px;
+    font-size: 15px
+}
+
+.button_dialog {
+    position: relative;
+    float: right
+}
+
+.question {
+    font-weight: bold;
+}
+
+.reply {
+    background-color: #ccc;
+    padding: 5px;
+}
+
+.info_person {
+    display: grid;
+    grid-template-columns: 35% 65%;
+    line-height: 2
+}
+
+.Page1 .question_info .question {
+    display: grid;
+    grid-template-columns: 35% 65%;
+    line-height: 2
+}
+
+.Page2 .question_info .question {
+    display: grid;
+    grid-template-columns: 35% 65%;
+    line-height: 2
+}
+
+.button_fromDecline {
+    margin-top: 25px;
+    background-color: #CE3A36;
+    color: #fff;
+    border: 1px solid #CE3A36;
+    border-radius: 4px;
+    font-size: 15px;
+    padding: 4px;
+    width: 70px;
+}
+
+.button_fromAccept {
+    margin-top: 25px;
+    background-color: #42C340;
+    color: #fff;
+    border: 1px solid #42C340;
+    border-radius: 4px;
+    font-size: 15px;
+    padding: 4px;
+    width: 70px;
+}
+
+.button_fromClose {
+    margin-top: 25px;
+    background-color: #ccc;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 15px;
+    padding: 4px;
+    width: 70px;
+}
+
+.k-dialog-titlebar .k-dialog-title {
+    text-align: center;
+}
+
+#dialog_gridStart {
+    font-size: 13.5px;
+    padding-bottom: 5px;
+}
+
+.k-grid-Decline {
+    background-color: #CE3A36;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.k-grid-Accept{
+    background-color: #42C340 !important;
+    color: #fff !important;
+    border-radius: 5px !important;
+}
+
+.k-grid-Details {
+    border-radius: 5px;
+}
+
+.btn-decline-gridStart span {
+    padding-right: 5px;
+}
+
+.btn-accept-gridStart span {
+    background-color: #42C340 !important;
+    color: #fff !important;
+    border-radius: 5px !important;
+    padding-right: 5px;
+}
+
+.btn-details-gridStart span {
+    padding-right: 5px;
+}
+
+.body-content {
+    width: inherit;
+}
+.k-window {
+	overflow-y: auto;
+}
+.dialog_page::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.dialog_page::-webkit-scrollbar {
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+.dialog_page::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #ccc;
+}
+@media ( max-width: 900px) {
+    .btn-group > .btn, .btn-group-vertical > .btn {
+        position: relative!important;
+        float: left !important;
+        font-size: 11px !important;
+       
+    }
+    .btn btn-default {
+        padding-right: 10px !important;
+    }
+    #Consultation {
+        grid-template-columns: 100%;
+    }
+    
+ }

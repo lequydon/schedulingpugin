@@ -1,0 +1,463 @@
+﻿.disabled {
+    pointer-events: none;
+    cursor: default;
+    background-color:grey;
+}
+.flex-container {
+    display: flex;
+    flex-flow: row wrap;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    margin: 0;
+    justify-content: space-around;
+}
+#detail {
+    display:flex;
+    align-items: center;
+}
+@media screen and (max-width: 478px){
+    #detail{
+        display:block;
+    }
+        #detail .col-xs-6 {
+            text-align: center;
+        }
+    #detail .col-xs-12{
+        text-align:center;
+    }
+}
+#scheduler {
+    width: 73%;
+    margin: 1rem auto;
+}
+#calendar {
+    width: 25%;
+    display: inline-table;
+    margin: 1rem auto;
+}
+/*ul.k-reset.k-scheduler-navigation {
+    width: 100%;
+}*/
+.k-calendar-view {
+    width: 100% !important;
+}
+li.k-state-default.k-header.k-nav-prev, li.k-state-default.k-header.k-nav-next, a.k-link.k-nav-prev, a.k-link.k-nav-next {
+    border: unset;
+    background: black;
+    color: white;
+}
+.k-header {
+    background-color: black !important;
+    color: white !important;
+    padding: unset;
+}
+div.k-event ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 3rem;
+    height: 100%;
+    align-items: center;
+}
+.k-event {
+    background-color: white;
+    color: black;
+}
+.k-scheduler-dayview .k-event {
+    border-color: gray;
+    min-height: 59px;
+    width: 99.8% !important;
+    margin: unset;
+    position: unset;
+    background-color: white;
+    color: black;
+}
+.k-scheduler-weekview .k-event div, .k-scheduler-workWeekview .k-event div {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+div.k-event button {
+    background-color: #38a5e1;
+    color: white;
+    width: 188px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-radius: 8px;
+}
+/*Edit*/
+textarea {
+    resize: none;
+}
+.k-edit-form-container {
+    text-align: center;
+}
+.k-edit-form-container ul {
+    list-style: none;
+}
+div.k-widget.k-window {
+    min-width: 60% !important;
+    padding: unset !important;
+}
+.k-edit-form-container {
+    min-width: 100% !important;
+}
+.k-window-titlebar.k-header {
+    display: none;
+}
+#field_list {
+    background-color: white;
+    margin: auto 1rem;
+    padding: 2rem 0;
+}
+#field_list > li:not(.questionList) {
+    display: grid;
+    grid-template-columns: repeat(2, 40%);
+    text-align: left;
+    margin-bottom: 1rem;
+    position: relative;
+}
+#field_list > li:not(.questionList) label {
+    text-align: right;
+}
+.k-scheduler-edit-form {
+    background-color: darkgray;
+}
+.k-edit-buttons.k-state-default {
+    margin-top: -2rem;
+    background-color: white;
+    border-top: none !important;
+    border: solid darkgray 10px;
+    text-align: center;
+}
+#field_list > li:not(.questionList) p {
+    margin-left: 13px;
+}
+#field_list > li:not(.questionList) input {
+    width: 50%;
+}
+#field_list > li.questionList {
+    margin-top: 5rem;
+}
+.question {
+    padding: unset;
+    width: 60%;
+    text-align: left;
+    margin: 0 auto;
+    margin-top: 2rem;
+}
+.question p > span:last-child {
+    color: red;
+}
+.question li {
+    margin-bottom: 2rem;
+}
+.question textarea {
+    min-width: 100%;
+}
+.capcha {
+    display: block !important;
+    text-align: center!important;
+}
+.g-recaptcha > div {
+    margin: auto;
+}
+/*End Edit*/
+
+.k-i-calendar {
+    display: none;
+}
+.k-scheduler-navigation{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.k-nav-current .k-link {
+    cursor: context-menu;
+}
+.k-nav-next:hover{
+    color: white;
+}
+.k-nav-next .k-link, .k-nav-prev .k-link {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+.k-scheduler-header-wrap .k-today{
+    background-color: black;
+}
+/*.k-nav-prev{
+    margin-right: 62.5px;
+}*/
+.k-scheduler-header{
+    padding-right: 0 !important;
+}
+.k-scheduler-toolbar .k-link{
+    padding: 0;
+}
+.k-scheduler-table > tbody > tr > th {
+    padding: unset;
+}
+.k-scheduler-table > tbody > tr > th:first-child {
+    border-left: 1px solid #CCCCCC;
+}
+.k-scheduler-table > tbody > tr > th:last-child {
+    border-right: 1px solid #CCCCCC;
+}
+
+.k-lg-date-format{
+    font-weight: bold;
+    padding: 4.6px;
+}
+@media only screen and (max-width: 1024px) {
+    .k-sm-date-format{
+        display: none !important;
+    }
+    .k-lg-date-format{
+        display: inline-block !important;   
+    }
+}
+@media screen and (max-width: 800px) {
+    .flex-container {
+        display: block;
+        padding: 0 5px 0 5px;
+    }
+
+    #scheduler {
+        width: auto;
+    }
+
+    #calendar {
+        width: 100%;
+    }
+
+    header img {
+        margin: auto;
+    }
+
+    header > div {
+        float: inherit;
+    }
+
+    #viewType {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    
+}
+/*.k-widget.k-window {
+    left: 20% !important;
+}
+@media (min-width: 551px) and (max-width: 800px) {
+    .k-widget.k-window {
+        left: 15% !important;
+    }
+}
+@media screen and (max-width: 550px) {
+    .k-widget.k-window {
+        left: 0px !important;
+    }
+}*/
+    /*.k-scheduler-layout > tbody > tr:first-child {
+    display: none;
+}*/
+    ul.k-reset.k-scheduler-navigation {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    li.k-state-default.k-nav-current span {
+        padding: 2.5px !important;
+    }
+
+    .k-scheduler-layout .k-scheduler-times, .k-current-time {
+        display: none;
+    }
+
+    .k-scheduler-dayview table.k-scheduler-table {
+        display: none;
+    }
+
+    hr {
+        border: solid black 1px;
+        margin-bottom: -49px;
+        width: 94%;
+    }
+
+    li > h3 {
+        display: -webkit-inline-box;
+        background-color: white;
+        padding: 0 1rem;
+    }
+
+    .k-edit-form-container > .Container > h3 {
+        margin-top: 0;
+    }
+
+    .k-scheduler-header-wrap th {
+        text-align: center;
+    }
+
+    #dialog {
+        text-align: center;
+    }
+
+        #dialog img {
+            height: 19rem;
+            margin: 0 auto;
+        }
+
+        #dialog h3 {
+            margin-top: 15px;
+        }
+
+        #dialog button {
+            font-size: 18px;
+            padding: 5px 21px;
+            background-color: white;
+            margin-top: 2rem;
+        }
+    /*Nghia*/
+    .k-scheduler-views, .k-nav-today {
+        display: none !important;
+    }
+
+    .k-scheduler-header-wrap .k-today {
+        background-color: black !important;
+    }
+
+    #loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 15000;
+        width: 150px;
+        height: 150px;
+        /*margin: -75px 0 0 -75px;*/
+        border: 8px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 8px solid #3498db;
+        width: 50px;
+        height: 50px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+        display: none;
+    }
+
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    /*.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(16, 16, 16, 0.5);
+
+}*/
+    .Over {
+        display: block;
+        z-index: 10002;
+        opacity: 0.5;
+        backface-visibility: hidden;
+        /*position: fixed;*/
+        top: 0;
+        left: 0;
+        z-index: 10001;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        opacity: .5;
+    }
+
+.k-widget .k-tooltip-validation {
+    grid-column-start: 2;
+    text-align: left;
+    background-color: white;
+    margin: unset !important;
+    padding: unset;
+    color: red;
+    margin-left: 14px !important;
+    position: absolute;
+    left: 36%;
+    bottom: 2px;
+}
+
+    .k-callout {
+        display: none;
+    }
+    /*div.k-scheduler-content table.k-scheduler-table tbody {
+    visibility: hidden;
+}*/
+    .k-scheduler-content div[role="gridcell"]:hover {
+        background-color: #CCCCCC;
+    }
+
+.k-maskedtextbox input{
+    /*style ="width: 50%!important; margin-left: 7px"*/
+    width: 50% !important;
+    margin-left: 14px;
+}
+ @media screen and (max-width: 920px) {
+    .phone_Number .k-tooltip-validation {
+        bottom: -10px;
+    }
+}
+.k-scheduler-content {
+    overflow: unset;
+}
+
+.edit-event {
+    background-color: #38a5e1;
+    color: white;
+    width: 80%;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-radius: 8px;
+}
+/*Css agenda view*/
+.k-scheduler-table{
+    height: 32px;
+}
+    /*.k-scheduler-table tr th {
+        padding-left: 6.5px !important;
+        padding-right: 6.5px !important;
+       width: 151px;
+    }*/
+    .k-scheduler-table tr th:first-child{
+        background-color: cadetblue;
+    }
+  .k-scheduler-table tr th:nth-child(2){
+        background-color: red;
+    }
+.k-scheduler-header-wrap .k-scheduler-table tr th{
+    background-color: black;
+    color: white;
+}
+@media screen and (max-width: 500px) {
+    .k-scheduler-header-wrap .k-scheduler-table tr th {
+        width: 100px;
+    }
+    .edit-event{
+        width: 80%;
+    }
+}

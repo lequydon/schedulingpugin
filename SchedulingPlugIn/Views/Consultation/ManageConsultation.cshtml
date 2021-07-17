@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewBag.Title = "Manage Consultation";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+@*<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.514/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.514/styles/kendo.default.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.514/styles/kendo.default.mobile.min.css" />
+    <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.2.514/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.2.514/js/kendo.all.min.js"></script>*@
+
+<div class="manage">
+    <h2 style="text-align:center;  "> Manage Consultations</h2>
+</div>
+<div class="btn-group" style="float:right; padding-bottom:1em; color:black;margin-bottom:1em;">
+    <button type="button" class="btn btn-default" style="border-top-left-radius:12px; border-bottom-left-radius:12px;">All Consultation</button>
+    <button type="button" class="btn btn-default">Approved</button>
+    <button type="button" class="btn btn-default" style="border-top-right-radius:12px; border-bottom-right-radius:12px;">Pending</button>
+</div>
+<div id="Consultation" style="padding-top:2em;">
+    <div id="grid"></div>
+    <script>
+                $(document).ready(function() {
+                    $("#grid").kendoGrid({
+                        dataSource:{
+                            type: "odata",
+                            transport: {
+                                read: "/Consultation/ListConsultation"
+                            },
+                            schema: {
+                                model: {
+                                    fields: {
+                                        ID: { type: "string" },
+                                        FirstName: { type: "string" },
+                                        LastName: { type: "string" },
+                                        Email: { type: "string" },
+                                        Date: { type: "date" },
+                                        Time: { type: "string" },
+                                        Page: { type: "string" },
+                                        Note: { type: "string" },
+                                    }
+                                }
+
+                            },
+                            serverpaging: true,
+                            serverfiltering: true,
+                            serversorting: true
+                        },
+                    
+                        filterable: {
+                            mode: "row"
+                        },
+                        pageSize: 20,
+                        height: 300,
+                        reorderable: true,
+                        resizable: true,
+                        sortable: true,
+                        pageable: true,
+                        columnMenu: true,
+                        columns: [{
+                            field:"ID",
+                            title: "ID",
+                            width: 100,
+                            locked: true,
+                            filterable: {
+                                cell: {
+                                    showOperators: false,
+                                    suggestionOperator: "contains"
+                                }
+                            }
+                        },
+                        {
+                            field: "FirstName",
+                            title: "First Name",
+                            width: 150,
+                            locked: true,
+
+                        }, {
+                            field: "LastName",
+                            title: "Last Name",
+                            width: 150,
+                            locked: true,
+
+                        },{
+                            field: "Email",
+                            title: "Email",
+                            width: 180,
+                            locked: true,
+                        },{
+                            field: "Date",
+                            title: "Date",
+                            format: "{0:MM/dd/yyyy}",
+                            filterable: {
+                                cell: {
+                                    showOperators: false,
+                                },
+                            },
+                            width: 150,
+
+                        }, {
+                            field: "Time",
+                            title: "Time",
+                            width: 130,
+                        }, {
+                            field: "Page",
+                            title: "Page",
+                            width: 150,
+                            filterable: { cell: { showOperators: false } }
+                        }, {
+                            field: " Note",
+                            title: " Note",
+                            width: 180,
+
+                        }, {
+                            command: ["Decline", "Details", "Approve"],
+                            title: "Commands",
+                            width: 255,
+                        }
+                        ]
+                    });
+                });
+    </script>
+</div>

@@ -1,0 +1,95 @@
+﻿<script id="popup-editor" type="text/x-kendo-template">
+    <div style="margin-left:1em;padding:0px 3px;">
+        <p style="float:left; padding-right:15px">Question:</p>
+    <textarea style=" margin-top:0em;width:250px; height:100px;border-radius:3px" id="text_key" name="Question"/>
+    <p style="color:red;text-align:center;display:none" id="error">We cannot update a blank question, please fill your question</p>
+    </div>
+</script>
+@{
+    ViewBag.Title = "Manage Question";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/Content/Question.css" rel="stylesheet" />
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://unpkg.com/sweetalert2@7.18.0/dist/sweetalert2.all.js"></script>
+<div id="Question">
+    <h2 style="text-align:center">MANAGE QUESTIONNAIRES </h2>
+</div>
+<div id="dialog"></div>
+<div id="dialog-content">
+</div>
+    <div>
+        <div class="demo-section k-content">
+            <div id="tabstrip">
+                <ul class="page_request">                  
+                </ul>
+                <section>
+                    <div class="modal" id="myModal">
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        var flag = 1;
+        $(document).ready(function () {
+
+        });
+        $(document).ready(function () {
+            
+            $("#text").keypress(function () {
+               
+                $("#alertNull").remove();
+            });
+            $.ajax({
+                type: "GET",
+                url: "/Question/ListIDPage",
+                success: function (e) {
+                    var tempid = 0;
+                    var tempid1 = 0;
+                    for (i in e) {
+
+                        if (flag == 1) {
+                            $('.page_request').append(' <li class="k-state-active">' + e[i].Name + '</li>');
+                            $('#tabstrip').append('<div><div id="grid' + e[i].PageID + '" class="text"></div></div>');
+
+                            flag = 0;
+                        }
+                        else {
+
+                            $('.page_request').append(' <li>' + e[i].Name + '</li>');
+                            $('#tabstrip').append('<div><div id="grid' + e[i].PageID + '" class="text"></div></div>');
+                        }
+                        //console.log(e[i].PageID);
+                        // console.log(e);
+                        //$.ajax({
+                        //    type: "POST",
+                        //    url: "/question/getlisttap",
+                        //    data: { PageID: e[i].PageID },
+                        //    success: function (t) {
+                        //        console.log(tempid, t)
+                        //        grid_in_tabtrip(tempid, t);
+                        //        tempid++;
+                        //    }
+                        //});
+                        grid_in_tabtrip(e[i].PageID, e[i].PageID);
+                        console.log(tempid1);
+                        tempid++;
+                        tempid1++;
+
+                    }
+                    $("#tabstrip").kendoTabStrip({
+                        animation: {
+                            open: {
+                                effects: "fadeIn"
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script src="~/Scripts/Question.js"></script>
+

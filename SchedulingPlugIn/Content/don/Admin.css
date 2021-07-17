@@ -1,0 +1,345 @@
+﻿.cal-heatmap-container {
+	margin: 0 auto !important;
+}
+.k-window{
+	overflow-y:auto;
+}
+.k-tooltip {
+	background: rgba(0, 0, 0, 0.8) !important;
+}
+
+.k-tooltip-content {
+	color: white;
+	font-size: 15px;
+}
+
+.k-callout-s {
+	border-top-color: rgba(0, 0, 0, 0.8);
+}
+
+#cal-heatmap {
+	padding: 12px;
+}
+
+.calendar_next_consultation h3, .calendar_analysis_consultation h3 {
+	text-align: center
+}
+
+.main {
+	width: 100%;
+	grid-template-rows: repeat(2, auto);
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+	display: grid;
+	justify-content: center;
+	grid-gap: 8px;
+	grid-template-areas: 'item8 item8 item8 item8 item8 item8'
+						 'item1 item1 item2 item2 item3 item3'
+						 'item7 item7 item7 item7 item7 item7'
+						 'item4 item4 item4 item5 item5 item5'
+						 'item6 item6 item6 item6 item6 item6'
+    width: 100%;
+    grid-template-rows: repeat(2, auto);
+    grid-template-columns: 14% 14% 20% 14% 20.5% 14%;
+    display: grid;
+    justify-content: center;
+    grid-gap: 8px;
+    grid-template-areas: 
+        'item1 item1 item2 item2 item3 item3'
+        'item8 item8 item8 item7 item7 item7'
+        'item4 item4 item4 item5 item5 item5'
+        'item6 item6 item6 item6 item6 item6'
+}
+
+.item1 {
+	grid-area: item1;
+}
+
+.item2 {
+	grid-area: item2;
+}
+
+.item3 {
+	grid-area: item3;
+}
+
+.item4 {
+	grid-area: item4;
+}
+
+.item5 {
+	grid-area: item5;
+}
+
+.item6 {
+	grid-area: item6;
+}
+
+.item7 {
+	grid-area: item7;
+}
+
+.item8 {
+	grid-area: item8;
+}
+
+
+.Analysis_Consultation {
+	display: grid;
+	grid-template-columns: 79% 21%;
+	font-size: 16px;
+}
+
+.Next_Consultation {
+	display: grid;
+	grid-template-columns: 40% 60%;
+	font-size: 16px;
+}
+
+.calendar_next_consultation, .calendar_analysis_consultation {
+	padding: 0 5px 0 5px;
+}
+
+.calendar_Heatmap, .calendar_next_consultation, .calendar_analysis_consultation {
+	height: 280px;
+	margin: 5px 0 5px 0;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+}
+
+	.calendar_next_consultation div {
+		margin-top: 8px
+	}
+
+	.calendar_analysis_consultation div {
+		margin-top: 18px
+	}
+
+.graph-legend rect {
+	rx: 5;
+	ry: 5;
+}
+
+.graph-subdomain-group rect:hover {
+	stroke: none;
+}
+
+.graph-label {
+	font-size: 20px;
+	fill: black
+}
+
+#dialog_decline {
+	padding-bottom: 6px;
+}
+
+.button_dialog_decline {
+	text-align: right;
+}
+
+.content-dialog-decline {
+	display: inline-flex;
+}
+
+#dialog_gridStart {
+	overflow: hidden;
+}
+
+	#dialog_gridStart .dialog_page {
+		height: 485px;
+		overflow-y: scroll;
+		display: grid;
+		grid-template-columns: repeat(2, 50%);
+	}
+.dialog_page::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.dialog_page::-webkit-scrollbar {
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+.dialog_page::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #ccc;
+}
+		#dialog_gridStart .dialog_page .Page1 {
+			border-right: 2px solid #808080;
+			padding-right: 10px;
+		}
+
+		#dialog_gridStart .dialog_page .Page2 {
+			padding-left: 10px
+		}
+
+	#dialog_gridStart .page-button {
+		text-align: center;
+		margin-top: 15px
+	}
+
+.grid_PageFinish {
+	padding: 0 2px 0 4px;
+	font-size: 15px
+}
+
+.grid_PageStart {
+	padding: 0 4px 0 2px;
+	font-size: 15px
+}
+
+.button_dialog {
+	position: relative;
+	float: right
+}
+
+.question {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.reply {
+	background-color: #ccc;
+	padding: 5px;
+	min-height: 30px;
+}
+
+.info_person {
+	display: grid;
+	grid-template-columns: 35% 65%;
+	line-height: 1.5;
+    font-size:16px;
+}
+
+.Page1 .question_info .question {
+	display: grid;
+	grid-template-columns: 25% 75%;
+	line-height: 1.5
+}
+
+.Page2 .question_info .question {
+	display: grid;
+	grid-template-columns: 25% 75%;
+	line-height: 1.5
+}
+
+.button_fromDecline, .button_fromCancel{
+    margin-top: 25px;
+    background-color: #CE3A36;
+    color: #fff;
+    border: 1px solid #CE3A36;
+    border-radius: 4px;
+    font-size: 15px;
+    padding: 4px;
+    width: 70px;
+}
+
+.button_fromAccept, .button_fromSaved, .button_fromok {
+    margin-top: 25px;
+    background-color: #42C340;
+    color: #fff;
+    border: 1px solid #42C340;
+    border-radius: 4px;
+    font-size: 15px;
+    padding: 4px;
+    width: 70px;
+}
+
+.button_fromClose {
+	margin-top: 25px;
+	background-color: #ccc;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 15px;
+	padding: 4px;
+	width: 70px;
+}
+
+.k-dialog-titlebar .k-dialog-title {
+	text-align: center;
+	font-size: 20px;
+}
+
+#dialog_gridStart {
+	font-size: 13.5px;
+	padding-bottom: 5px;
+	padding-right: 5px;
+}
+.k-grid-Cancel {
+    background-color: #CE3A36;
+    color: #fff;
+    border-radius: 5px;
+}
+.k-grid-Decline {
+    background-color: #CE3A36;
+    color: #fff;
+    border-radius: 5px;
+}
+.k-grid-Accept {
+	background-color: #42C340;
+	color: #fff;
+	border-radius: 5px;
+}
+
+.k-grid-Details {
+	border-radius: 5px;
+}
+
+.btn-decline-grid span, .btn-accept-grid span, .btn-Cancel-grid span, .btn-details-grid1 span, .btn-details-grid2 span {
+    padding-right: 5px;
+}
+
+.body-content {
+	width: inherit;
+}
+.question_info .question {
+	grid-template-columns: 25% 75%;
+	line-height: 1.5;
+}
+
+@media ( max-width: 1114px) {
+	.main {
+		grid-template-columns: 50% 50%;
+		grid-template-areas: 
+							 'item8 item8'
+							 'item1 item2'
+							 'item3 item3'
+							 'item7 item7'
+							 'item4 item4'
+							 'item5 item5'
+							 'item6 item6'
+	}
+	.Page1 .question_info .question {
+		grid-template-columns: 35% 65%;
+		line-height: 1.5;
+	}
+	.Page2 .question_info .question {
+		grid-template-columns: 35% 65%;
+		line-height: 1.5;
+	}
+}
+
+@media ( max-width: 900px) {
+	.main {
+		grid-template-columns: 100%;
+		grid-template-areas: 
+							 'item8'
+							 'item1'
+							 'item2'
+							 'item3'
+							 'item7'
+							 'item4'
+							 'item5'
+							 'item6'
+	}
+	.Page1 .question_info .question {
+		grid-template-columns: 35% 65%;
+		line-height: 1.5;
+	}
+	.Page2 .question_info .question {
+		grid-template-columns: 35% 65%;
+		line-height: 1.5;
+	}
+}

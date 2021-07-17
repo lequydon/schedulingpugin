@@ -1,0 +1,429 @@
+﻿@*<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.common-material.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.default.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.default.mobile.min.css" />
+
+
+    <script src="https://kendo.cdn.telerik.com/2019.2.619/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.2.619/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.2.619/js/kendo.timezones.min.js"></script>*@
+@{
+
+    ViewBag.Title = "Manager Calendar";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<script src="https://kit.fontawesome.com/fd2214d6b5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data.min.js"></script>
+
+<link href="~/Content/Thinh/Calendar.css" rel="stylesheet" />
+
+
+<script id="event-template" type="text/x-kendo-template">
+    <p style=" text-align:center;display:flex;flex-direction: column;justify-content: center;align-self: center;height: 100%;">
+        #: kendo.toString(start, "hh:mm tt")# - #: kendo.toString(end, "hh:mm tt")#
+    </p>
+</script>
+<div class="row" id="calendarPage">
+    <h2 class="text-center m-0"> Manage Calendar</h2>
+    <div class="col-md-3">
+        <div id="Calendar"></div>
+        <div>
+            <div class="filter">
+                <h4>Filter Calendar</h4> <span><i class="fas fa-chevron-up"></i></span>
+            </div>
+            <section id="checkbox">
+                <label class="container">
+                    Expired Consultations
+                    <input type="checkbox" id="expired" value="1" checked>
+                    <span class="checkmark"></span>
+                </label>
+                <label class="container">
+                    Booked Consultations
+                    <input type="checkbox" id="booked" value="2" checked>
+                    <span class="checkmark"></span>
+                </label>
+                <label class="container">
+                    On-going Consultations
+                    <input type="checkbox" id="moment" value="3" checked>
+                    <span class="checkmark"></span>
+                </label>
+                <label class="container">
+                    Available Time Slots
+                    <input type="checkbox" id="available" value="4" checked disabled>
+                    <span class="checkmark"></span>
+                </label>
+            </section>
+        </div>
+    </div>
+    <div class="col-md-9 rightcalendar">
+        <div id="example">
+            <div class="headerbtnselect">
+                <a href="/Calendar/createAvailableTime" id="Createtime" class="btn btn-primary">Create Time Slot</a>
+                @*<div id="timeZone" style="width:300px;border-radius:5px;" /> </div>*@
+                <div id="select"> </div>
+
+            </div>
+            <div id="schedulerCalendar"></div>
+        </div>
+    </div>
+</div>
+<script id="CreateScheduler" type="text/x-kendo-template">
+
+    <h3>Schedular</h3>
+    <p>
+        <label>Date: <input name="title" /></label>
+    </p>
+    <p>
+        <label>TimeStart: <input data-role="datetimepicker" name="start" /></label>
+
+        <label>To: <input data-role="datetimepicker" name="end" /></label>
+    </p>
+    <p>
+        <label>Duration: <input data-role="datetimepicker" name="end" /></label>
+    </p>
+    <p>
+        <label>Note: <textarea rows="4" cols="50"> </textarea></label>
+    </p>
+</script>
+<script id="editor" type="text/x-kendo-template">
+    <section class="row" style="margin:0 30px;">
+        <div class="col-xs-offset-2 col-xs-8" style="display:flex;justify-content:space-around;align-items:center;margin-bottom:15px;">
+            <p style="width:50px;margin:0"><label style="margin:0;">Start: </label></p>
+            <p style="margin:0;">#: kendo.toString(start, "MM-d-yyyy hh:mm tt") # @*<input id="inputStart" style="background-color:white;border:0px;" name="start" disabled />*@</p>
+        </div>
+
+        <div class="col-xs-offset-2 col-xs-8" style="display:flex;justify-content:space-around;align-items:center">
+            <p style="width:50px;margin:0"><label style="margin:0;">End:</label></p>
+            <p style="margin:0;"> #: kendo.toString(end, "MM-d-yyyy hh:mm tt") #  @*<input style="background-color:white;border:0px;" name="end" disabled />*@</p>
+        </div>
+    </section>
+        <script>
+            $('.k-button.k-primary.k-scheduler-update').remove();
+
+        
+        <\/script>
+</script>
+    <script>
+        $(document).ready(function () {
+            var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            var tzOffset = new Date().getTimezoneOffset();
+            //console.log(kendo.parseDate("2016-02-14 06:15:44.123"))  ;
+            //filter event
+            kendo.culture().calendar.firstDay = 1;
+            $("#checkbox :checkbox").change(function (e) {
+                scheduler.dataSource.read();
+                var CurrentTime = $('#red-line-current-time').position().top;
+                $(".k-scheduler-content").scrollTop(CurrentTime - 50);
+                var checked = $.map($("#checkbox :checked"), function (checkbox) {
+                    return parseInt($(checkbox).val());
+                });
+                scheduler.dataSource.filter({
+                    operator: function (task) {
+                        return $.inArray(task.makeColor, checked) >= 0;
+
+                    }
+                });
+            });
+
+
+            var data = [
+                { text: "Day", value: "day" },
+                { text: "Work Week", value: "workWeek" },
+                { text: "Agenda", value:"agenda"}
+            ];
+            var dropdownList = $('#select').kendoDropDownList({
+                dataTextField: "text",
+                dataValueField: "value",
+                dataSource: data,
+                index: 1,
+                change: function () {
+                    var value = this.value();
+                    scheduler.view(value)
+                    myFunc();
+                    var today = $('.k-today.k-nonwork-hour');
+                   
+                    scheduler.dataSource.read();
+                    if (today) {
+                        var CurrentTime = $('#red-line-current-time').position().top;
+                        $(".k-scheduler-content").scrollTop(CurrentTime - 50);
+                    } else {
+                        $('.k-current-time-arrow-right').css("position", "absolute");
+                    };
+                }
+            }).data("kendoDropDownList");
+            //console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
+            var ab = " ";
+            var dateHeaderTemplate = "<div class='k-link k-nav-day' ><p style='text-align:center;margin:0;color:White'><strong>#=kendo.toString(date, 'ddd')# - #=kendo.toString(date, 'dd')# </p></div> ";
+            var dateHeaderTemplate1 = "<div class='k-link k-nav-day' ><p style='text-align:center;margin:0;color:White'><strong>#=kendo.toString(date, 'dd')# </p></div> ";
+            var width = $(window).width();
+
+            if (width <= 700) {
+                ab = dateHeaderTemplate1;
+            } else {
+                ab = dateHeaderTemplate;
+            }
+            //console.log(width);
+            var scheduler = $("#schedulerCalendar").kendoScheduler({
+                //date: new Date("2019/8/30"),
+                timeZone: "America/New_York",
+                workDayStart: new Date("2019/8/30 8:00 AM"),
+                workDayEnd: new Date("2019/8/30 9:00 PM"),
+                majorTimeHeaderTemplate: kendo.template("<span class='k-time-text'>#=kendo.toString(date, 'hh:mm tt')#</span>"),
+                currentTimeMarker: false,
+                footer: false,
+                height: 600,
+                moveStart: function (e) {
+                    e.preventDefault();
+                },
+                editable: {
+                    template: $("#editor").html(),
+                    destroy: false,
+                    update: true,
+                    resize: false,
+                    window: {
+                        title: "Detail Event"
+                    }
+                },
+                edit: function (e) {
+                    var contenEvent = e.event.title;
+                    console.log(contenEvent);
+                },
+                allDaySlot: false,
+                dateHeaderTemplate: kendo.template(ab),
+                views: [
+                    {
+                        type: "day",
+                        showWorkHours: true
+                    },
+                    {
+                        type: "agenda",
+                        showWorkHours: true
+                    },
+                    {
+                        type: "workWeek",
+                        selected: true,
+                        showWorkHours: true
+                    }
+                ],
+                dataBound: function (e) {
+                    $("[role='gridcell'] p").addClass('EventAction');
+                    var today = $('.k-today.k-nonwork-hour');
+                    
+                    appendCustomTimeMarker(e.sender, new Date);
+                    var CurrentTime = $('#red-line-current-time').position().top;
+                    $(".k-scheduler-content").scrollTop(CurrentTime - 50);
+
+                    myFunc();
+
+                },
+                dataSource: {
+                    //data: dataScheduler,
+                    transport: {
+                        read: {
+                            url: "/Calendar/GetList",
+                        }
+                    },
+                    schema: {
+                        data: function (response) {
+                            for (var i in response) {
+                                response[i].Date = moment(response[i].Date).tz("America/New_York").format("M/DD/YYYY hh:mm A");
+                                response[i].DateEnd = moment(response[i].DateEnd).tz("America/New_York").format("M/DD/YYYY hh:mm A");
+                            }
+                            return response;
+                        },
+                        model: {
+                            id: "eventID",
+                            fields: {
+                                eventID: { from: "ID", type: "string" },
+                                start: { from: "Date", type: "date" },
+                                title: { from: "Reason", },
+                                end: { from: "DateEnd", type: "date" }
+                            }
+                        }
+                    },
+                    filter: {
+                        logic: "or",
+                        filters: [
+                            { field: "Status", operator: "eq", value: 1 },
+                            { field: "Status", operator: "eq", value: 0 },
+                            { field: "Status", operator: "eq", value: 3 },
+                            { field: "Status", operator: "eq", value: 2 },
+                            { field: "Status", operator: "eq", value: 4 },
+                        ]
+                    }
+
+                },
+                resources: [
+                    {
+                        field: "makeColor",
+                      
+                    }
+                ],
+                eventTemplate: $("#event-template").html(),
+                navigate: function (e) {
+                    scheduler_navigate(e);
+                    var value = e.date;
+                    calendar.value(value);
+                }
+            }).data('kendoScheduler');
+
+
+            //Create new currentTime Marker
+            function appendCustomTimeMarker(scheduler, date) {
+                try {
+
+                    var today = $('.k-scheduler-content .k-scheduler-table .k-today');
+                    var BORDER_SIZE_COEFF = 0.866;
+                    var marker = $('<div class="k-current-time-arrow-right" style="position:absolute;"></div>').prependTo(scheduler.view().times);
+                    var markerContent = $('<div id="red-line-current-time"></div>').prependTo(scheduler.view().content);
+                    var groups = scheduler.view().groups[0];
+                    var utcTime = kendo.date.toUtcTime(date);
+                    var range = groups.timeSlotRanges(utcTime, utcTime + 1)[0];
+                    var markerTopPos;
+                    var widthToday = $('.k-scheduler-content .k-scheduler-table .k-today').width();
+                    var markerWidth = today.width();
+                    var markerLeft;
+                    console.log(widthToday);
+
+                    var width = $(window).width();
+
+                    if (width <= 600) {
+                        var kEvent = $('.k-event.k-event-inverse').width() + 4;
+                        $('.k-event.k-event-inverse').width(kEvent);
+                    } else {
+                        var kEvent = $('.k-event.k-event-inverse').width() + 10;
+                        $('.k-event.k-event-inverse').width(kEvent);
+                    }
+
+
+                    //if (today) {
+                    markerLeft = today.position().left;
+                    markerTopPos = Math.round(range.innerRect(date, new Date(date.getTime() + 1), false).top);
+                    marker.css({
+                        top: markerTopPos - (marker.outerWidth() * BORDER_SIZE_COEFF / 2),
+                        position: "absolute"
+                    });
+                    markerContent.css({
+                        top: markerTopPos,
+                        position: "absolute",
+                        backgroundColor: "red",
+                        height: "3px",
+                        right: 0,
+                        width: widthToday + 17,
+                        left: markerLeft,
+                    })
+                    markerContent.css("z-index", 99999);
+                }
+                catch (error) {
+                    console.log("Error currentTime");
+                }
+            }
+            var calendar = $("#Calendar").kendoCalendar({
+                footer: false,
+                disableDates: ["sa", "su"],
+                selectable: "multiple",
+                change: function () {
+                    scheduler.dataSource.read();
+                    scheduler.refresh();
+                    var value = this.value();
+                    scheduler.date(value);
+                    scheduler.view("day");
+                    dropdownList.value("day");
+                    myFunc();
+                    localStorage.setItem("TimeFreeSlot", kendo.toString(value, "MMMM dd, yyyy"));
+                    var today = $('.k-today.k-nonwork-hour');
+                    if (today) {
+                        var CurrentTime = $('#red-line-current-time').position().top;
+                        $(".k-scheduler-content").scrollTop(CurrentTime - 50);
+                    } else {
+                        $('.k-current-time-arrow-right').css("position", "absolute");
+                    };
+
+                }
+
+            }).data('kendoCalendar');
+
+           
+            //toggle checkbox
+            var i = 0;
+            $(".filter span").on('click', function () {
+
+                $('#checkbox').toggle();
+                if (i == 0) {
+                    $(this).html('<i class="fas fa-chevron-down"></i>');
+                    return i = 1;
+                } else if (i == 1) {
+                    $(this).html('<i class="fas fa-chevron-up"></i>');
+                    return i = 0;
+                }
+            });
+
+
+
+
+
+            //FrontEnd. Day and Week Header
+            function addArrow() {
+                $('.k-reset.k-header.k-scheduler-views').hide();
+                $('.k-state-default.k-header.k-nav-today').hide();
+                $('.k-state-default.k-nav-current').hide();
+                var table = $('div.k-scheduler-header.k-state-default').html();
+                $('.k-scheduler-navigation .k-nav-prev').after(table);
+                $('.k-scheduler-navigation div table.k-scheduler-table tbody tr th.k-scheduler-datecolumn').addClass("Custom")
+                $('.k-scheduler-navigation div table.k-scheduler-table tbody tr th').addClass("Color")
+                $('li.k-nav-prev a').width('75');
+            }
+            addArrow();
+            function scheduler_navigate(e) {
+                e.sender.one('dataBound', myFunc)
+            }
+            function myFunc() {
+                $('.k-scheduler-navigation .k-scheduler-header-wrap').remove();
+                addArrow();
+            }
+            //
+            $('.k-nav-prev a span').removeClass('k-i-arrow-60-left').addClass('k-i-arrow-chevron-left');
+            $('.k-nav-next a span').removeClass('k-i-arrow-60-right').addClass('k-i-arrow-chevron-right');
+            $('.k-nav-prev, .k-nav-next').mousemove(function () {
+                $(this).removeClass("k-state-hover");
+            });
+
+
+
+            $(window).resize(function () {
+
+                window.location.reload();
+                $('.k-current-time-arrow-right').remove();
+                $('#red-line-current-time').remove();
+            });
+
+            // Set min width for view week and day
+            //function SetSchedulerWidth() {
+            //    var minColumnWidth = 200;
+            //    var columns = $(".k-scheduler-header .k-scheduler-table > tbody > tr:last-child > th").length;
+            //    var availableWidth = $("#schedulerCalendar").width() - $(".k-scheduler-layout > tbody > tr > td:first-child").width() - parseInt($(".k-scheduler-header").css("padding-right")) - 1;
+            //    var width = Math.max(columns * minColumnWidth, availableWidth);
+            //    $(".k-scheduler-content .k-scheduler-table").width(width);
+            //    $(".k-scheduler-header .k-scheduler-table").width(width);
+            //}
+
+        });
+
+    </script>
+
+
+
+
+    <style>
+
+        .k-nav-current > .k-link span + span {
+            max-width: 200px;
+        }
+
+        #team-schedule {
+            background: url('../content/web/scheduler/team-schedule.png') transparent no-repeat;
+            height: 115px;
+            position: relative;
+        }
+    </style>

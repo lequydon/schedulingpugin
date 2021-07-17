@@ -1,0 +1,294 @@
+﻿html, body {
+    font-size: 16px;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.active {
+    border-left: 3px solid #fff;
+    font-weight: bold;
+    background-color: #f3ecec42;
+    box-shadow: 0px 0px 8px 6px #f3ecec42;
+}
+
+#menuPhone {
+    background-color: rgb(112,141,220);
+}
+
+    #menuPhone .col-xs-7 {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    #menuPhone .abc {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #00000005;
+        box-shadow: -4px 1px 7px #00000091;
+    }
+
+        #menuPhone .abc p {
+            margin-bottom: 0px;
+        }
+
+    #menuPhone .total {
+        list-style: none;
+        padding: 0;
+    }
+
+        #menuPhone .total li {
+            margin: 15px 0;
+            color: #ffffff;
+        }
+
+            #menuPhone .total li a {
+                color: white;
+                margin-left: 10px;
+            }
+
+    #menuPhone nav {
+    }
+
+.tooltip1 {
+    position: relative;
+    /*display: inline-block;
+    margin: auto;
+    width: 150px;
+    height: 35px;
+    line-height: 35px;
+    background: yellow;
+    display: block;
+    margin-top: 20px;*/
+}
+
+    .tooltip1 .tooltiptext {
+        visibility: hidden;
+        position: absolute;
+        width: 200px;
+        background-color: rgb(112,141,220);
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 1s;
+    }
+
+    .tooltip1:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+
+.tooltip-right {
+    left: 110%;
+    top: 10%;
+}
+
+    .tooltip-right::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 100%;
+        margin-top: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent rgb(112,141,220) transparent transparent;
+    }
+
+.graph {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+#menuBar {
+    background-color: #708ddce3;
+    background-color: rgb(112,141,220);
+    min-height: 100%;
+    position: fixed;
+    /* width: 260px; */
+    top: 0;
+    /* width: 260px; */
+    left: 0;
+    z-index: 1030;
+    padding: 0 5px;
+}
+
+@keyframes example {
+    from {
+    }
+
+    to {
+    }
+}
+
+.toogle_navigation {
+    min-width: 100px;
+    max-width: 100px;
+}
+
+#menuBar nav {
+    height: 100vh;
+    /* position: relative; */
+    /* margin-top: 50px; */
+}
+
+.menu-admin-left {
+    height: 100vh;
+    padding: 0;
+    min-width: 200px;
+}
+
+    .menu-admin-left ul.total {
+        list-style: none;
+        margin: auto;
+        padding: 5px 0;
+        /* height: 70vh; */
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .menu-admin-left ul li {
+        padding: 10px 0px;
+    }
+
+        .menu-admin-left ul li a {
+            text-decoration: none;
+            color: white;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+            .menu-admin-left ul li a:hover {
+                text-decoration: none;
+                color: white;
+                font-weight: bold;
+            }
+
+        .menu-admin-left ul li i {
+            color: white;
+            padding-right: 2px;
+            cursor: pointer;
+            padding-left: 3px;
+        }
+
+
+.calendar-item {
+    list-style: none;
+    margin: auto;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+    .calendar-item li {
+        text-decoration: none;
+        color: white;
+        text-transform: uppercase;
+        font-size: 0.8em;
+    }
+
+.content-right {
+    height: 100vh;
+    position: relative;
+    float: right;
+}
+
+#btnMenu2 {
+    background-color: transparent;
+    border: 1px solid #8080802e;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.btn-menu:active, .btn-menu:focus {
+    outline: 0;
+    box-shadow: none;
+}
+
+.fa-bars {
+    color: #808080;
+}
+
+#btnMenu1 {
+    display: none;
+    margin: 0;
+    background-color: transparent;
+    border: 1px solid #8080802e;
+}
+
+.body-content {
+    width: inherit;
+}
+
+@media screen and (max-width: 1000.98px) {
+    .menu-admin-left {
+        min-width: 100px;
+    }
+}
+
+@media screen and (max-width: 991.98px) {
+    #menuBar nav {
+        height: 200px;
+    }
+
+    .menu-admin-left {
+        height: 200px;
+        padding: 10px;
+    }
+
+        .menu-admin-left ul {
+        }
+
+    #menuBar {
+        max-width: 100px;
+    }
+
+    #btnMenu1 {
+        display: block;
+        border: 1px solid white;
+    }
+
+        #btnMenu1 .fa-bars {
+            color: white;
+        }
+
+    #btnMenu2 {
+    }
+}
+
+.k-grid-header th.k-header {
+    text-align: center;
+}
+
+.k-header .k-link {
+    text-align: center;
+}
+
+
+.navbar-right {
+    margin: 0;
+}
+
+.navbar-brand {
+    margin-bottom: 1em;
+}
+
+    .navbar-brand img {
+        margin: 0 auto;
+    }
+
+footer {
+    padding: 0.5em 0;
+}
+
+.content-right footer p {
+    margin: 0;
+}
+
+#bodyMain {
+    min-height: 91.5vh;
+}

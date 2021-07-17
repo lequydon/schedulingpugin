@@ -1,0 +1,253 @@
+﻿
+@{
+    ViewBag.Title = "Manage Page";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/Content/Question.css" rel="stylesheet" />
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<div id="dialog"></div>
+<div id="example">
+    <h2 style="text-align:center">MANAGE PAGE</h2>
+</div>
+
+<div style="clear:both">
+    <div id="grid"></div>
+</div>
+<script>
+    //var data = [
+    //    { "ID": "1", "Name": "Joule Broker", "PageCode": "abvc","UrlPage":"Scheduling PlugIn.com/abvc"},
+    //    { "ID": "2", "Name": "MGI Solution", "PageCode": "xbnv", "UrlPage": "Scheduling PlugIn.com/xbnv"}
+    //]
+    
+    function escapeHtmlEntities(str) {
+        if (typeof jQuery !== 'undefined') {
+            // Create an empty div to use as a container,
+            // then put the raw text in and get the HTML
+            // equivalent out.
+            return jQuery('<div/>').text(str).html();
+        }
+
+        // No jQuery, so use string replace.
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/>/g, '&gt;')
+            .replace(/</g, '&lt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&apos;');
+    }
+    $(document).ready(function () {
+        $("#grid").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "/Page/listPage"
+                    },
+                    update: {
+                        data: function (upday) {
+                            upday.ID = escapeHtmlEntities(upday.ID);
+                            upday.Name = escapeHtmlEntities(upday.Name);
+                            $.ajax({
+                                type: "post",
+                                url: "/Page/Update",
+                                data: { up: upday },
+                                success: function (d) {
+                                    if (d == -2) {
+                                        kendo.alert("The page name is duplicate.");
+                                    }
+                                    $("#grid").getKendoGrid().dataSource.read();
+                                    $("#grid").data('kendoGrid').refresh();
+
+                                }
+
+                            });
+                            return true;
+                        }
+                    },
+                    create: {
+                        data: function (model) {
+                            model.ID = escapeHtmlEntities(model.ID);
+                            model.Name = escapeHtmlEntities(model.Name);
+                            $.ajax({
+                                type: "POST",
+                                url: "/Page/create",
+                                data: { pagets: model },
+                                success: function (pon) {
+                                    if (pon == -1) {
+                                        kendo.alert("The page id is duplicate.");
+                                    }
+                                    else if (pon == -2) {
+                                        kendo.alert("The page name is duplicate.");
+
+                                    }
+                                    else if (pon == 0) {
+                                        kendo.alert("Error.");
+
+                                    }
+                                    $("#grid").getKendoGrid().dataSource.read();
+                                    $("#grid").data('kendoGrid').refresh();
+                                }
+                            });
+                            return true;
+                        }
+                    },
+                    parameterMap: function (options, operation) {
+
+                        if (operation !== "read" && options.models) {
+                            return { models: kendo.stringify(options.models) };
+                        }
+                    }
+                },
+                schema: {
+                    model: {
+                        id: "ID",
+                        fields: {
+                            ID: { type: "string", validation: { required: true } },
+                            Name: { type: "string", validation: { required: true } },
+                            PageCode: { type: "string", validation: { required: true }, editable: false },
+                            UrlPage: { type: "string", editable: false }
+
+                        }
+                    }
+                },
+                pageSize: 10
+            },
+            pageSize: 10,
+            height: 540,
+            dataBound: function (t) {
+                $('.k-header').on('click', '.k-grid-add', function () {
+                    $(".k-window-title").text("Create");
+                });
+
+                $('.k-grid-content').on('click', '.k-grid-edit', function () {
+
+                });
+                $('.k-grid-edit').click(function () {
+                    setTimeout(function () {
+                        $("input[name='ID']").attr('disabled', 'disabled').val();
+                      
+                    }, 0);
+
+                });
+                //$("tbody[role=rowgroup] tr").each(function () {
+                //    var linkUrl = $(this).find("td:nth-child(4)").text();
+                //    $(this).find("td:nth-child(4)").html("<a href=" + linkUrl + ">Click here</a>");
+                //});
+                createButtonOpenPage();
+            },
+            cancel: function () {
+                setTimeout(function () { createButtonOpenPage();}, 0);
+                
+            },
+            sortable: true,
+            reorderable: true,
+            groupable: false,
+            resizable: true,
+            filterable: true,
+            columnMenu: false,
+            pageable: {
+                refresh: true,
+                pageSizes: true,
+                buttonCount: 5
+            },
+            toolbar: ["create"],
+            columns: [{
+                field: "ID",
+                title: "Page ID",
+                width: 100
+            }, {
+                field: "Name",
+                title: "Page Name",
+                width: 120
+            }, {
+                field: "PageCode",
+                title: "Page Code",
+                width: 110
+            }, {
+                field: "UrlPage",
+                title: "Url PlugIn",
+                width: 500
+            }, {
+                command: ["edit", {
+                    text: "Delete", iconClass: "fa fa-close", className: "btn-decline-grid",
+                    click: function (e) {
+                        $('.textareaSaved').val("");
+                        dialogstart.data("kendoDialog").open();
+                        e.preventDefault();
+                        var tr = $(e.target).closest("tr");
+                        var data = this.dataItem(tr);
+                        taggrid = data.pagerequest;
+                        item = data.ID;
+                        tem = data.Name;
+                    },
+                }],
+                title: "Command",
+                width: 220
+            }],
+            editable: "popup",
+        });
+        var dialogstart = $("#dialog");
+        dialogstart.kendoDialog({
+            width: "450px",
+            closable: false,
+            modal: false,
+            content: "Are You Sure You Want to Delete This Question?",
+            visible: false,
+            actions: [
+                { text: 'Close' },
+                { text: 'OK', primary: true, action: onOK }
+            ]
+
+
+        });
+    });
+    $(window).on("resize", function () {
+        kendo.resize($("#grid"));
+    });
+
+    var item;
+    var tem;
+    function onOK() {
+        item = escapeHtmlEntities(item);
+        tem = escapeHtmlEntities(tem);
+        $.ajax({
+            type: "post",
+            url: "/Page/Delete",
+            data: { id: item },
+            success: function (e) {
+                if (e == -1) { kendo.alert("Câu trả lời đã tồn tại cho câu hỏi"); }
+                else {
+                    const Toast = swal.mixin({
+                        toast: true,
+                        position: 'top-left',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+
+                    Toast.fire({
+                        type: 'success',
+                        title: 'You have successfully deleted!'
+                    })
+                }
+                $("#grid").getKendoGrid().dataSource.read();
+                $("#grid").data('kendoGrid').refresh();
+
+
+            }
+        });
+        return true;
+    }
+
+    function createButtonOpenPage() {
+        $(".k-command-cell").each(function () {
+            var linkUrl = $(this).prev().text();
+            var className = "k-button k-button-icontext btn btn-success";
+            // $(this).append("<a role=button class=" + className +" href=" + linkUrl + " ></a > ");
+            if ($(this).find(".btn-success").text() != "" || $(this).find(".btn-success").text() != null) {
+                $(this).find(".btn-success").remove();
+                $(this).find(".k-grid-Delete").after('<a target="_blank" rel="noopener noreferrer" role=button class="k-button k-button-icontext btn btn-success" href="' + linkUrl + '" ><span class="k-icon k-i-hyperlink-open-sm"></span>Open</a > ');
+            }
+           
+        });
+    }
+</script>

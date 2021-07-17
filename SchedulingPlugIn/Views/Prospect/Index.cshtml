@@ -1,0 +1,1290 @@
+﻿@using SchedulingPlugIn.Service;
+@using SchedulingPlugIn.Models;
+@using SchedulingPlugIn.Models.Entity;
+@{ @*Session["pagecode"]= "H8AnGHXIvQ";*@
+var pagecode = Session["pagecode"].ToString();
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+PageQuestionService pageIDService = new PageQuestionService();
+Calendar cal = new Calendar();
+cal.IDPageRequest = pageIDService.getIDPageRequest(pagecode);
+}
+
+@if (cal.IDPageRequest == "MGISolutions")
+{
+    ViewBag.Title = "Request Consultation - MGI Solutions";
+    <link rel="stylesheet" href="~/Content/Prospect/MGISolutions.css" />
+}
+else if (cal.IDPageRequest == "JouleBroker")
+{
+    ViewBag.Title = "Request Consultation - Joule Broker";
+    <link rel="stylesheet" href="~/Content/Prospect/JouleBroker.css" />
+}
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutProspect.cshtml";
+
+}
+@*<link rel="stylesheet" href="~/Content/Calendar_Page.css" />*@
+@*-------------------------------------------------------------------------------*@
+@*<script id="dayevent-template" type="text/x-kendo-template">
+        <div class="row" id="detail" style="padding:10px 0;">
+            <div class="col-xs-7 col-md-3" style="display:flex;justify-content:center;">
+                <p style="margin:0">#: kendo.toString(start, "hh:mm tt") # - #: kendo.toString(end, "hh:mm tt") #</p>
+            </div>
+            <div class="col-xs-4 col-md-3" style="display:flex;justify-content:center;">
+                Available
+
+            </div>
+            <div class="col-xs-12 col-md-5" style="display:flex;justify-content:center;">
+                <button id="eventclick">Select this time slot</button>
+            </div>
+        </div>
+        @*<ul>
+                <li>
+                    #: kendo.toString(start, "hh:mm tt") # - #: kendo.toString(end, "hh:mm tt") #
+                </li>
+                <li>Available</li>
+                <li><button id="eventclick">Select this time slot</button></li>
+            </ul>
+    </script>*@
+@*<script id="weekevent-template" type="text/x-kendo-template">
+        <div>
+            #: kendo.toString(start, "hh:mm tt") # - #: kendo.toString(end, "hh:mm tt") #
+        </div>
+    </script>*@
+<div id="main">
+    <div id="loader"></div>
+    <div class="Over"></div>
+
+    <div class="Container daytype">
+        <div class="flex-container">
+            <div style="width:25%;">
+                <div id="calendar"></div>
+                <div class="slotstime">
+                    <label>Date Picked</label>
+                </div>
+            </div>
+            <div id="scheduler"></div>
+        </div>
+        <div class="button">
+            <a id="next-button" class="k-button k-next-button" onclick="show_Popup_Book()">Next&nbsp;<span class="k-icon k-i-arrow-right"></span></a>
+        </div>
+        <div id="dialog" style="display:none">
+            <img src="https://previews.123rf.com/images/123vector/123vector1709/123vector170900138/85717754-illustration-of-green-check-mark-icon-on-white-background-.jpg" />
+            <h3>Consultation Request was Submitted!</h3>
+            <h3>Please check your email inbox.</h3>
+            <button>Close</button>
+        </div>
+    </div>
+</div>
+
+
+<div id="containerBooks" style="display: none; visibility: visible;">
+
+    <h3>PLEASE ENTER YOUR INFORMATION BELOW</h3>
+    <form id="request_consultation" role="form">
+        <ul id="field_list">
+            <li>
+                <label class="popup-books">Consultation:</label>
+                <p id="nameConsultation-books"></p>
+            </li>
+            <li>
+                <label class="popup-books">Time:</label>
+                @*<p>#: kendo.toString(start, "hh:mm tt") # - #: kendo.toString(end, "hh:mm tt") # #: kendo.toString(start, "MMM dd, yyyy")#</p>*@
+                <p id="time-books"></p>
+            </li>
+            <li>
+                <label for="firstname" class="popup-books">First Name:</label>
+                <input type="text" id="firstname-books" class="form-control" name="FirstName" required />
+            </li>
+            <li>
+                <label class="popup-books">Last Name:</label>
+                <input type="text" id="lastname-books" class="form-control" name="LastName" required />
+            </li>
+            <li>
+                <label class="popup-books">Email Address:</label>
+                <input type="email" id="email-books" class="form-control" name="Email" required data-email-msg="Email format is not valid" />
+            </li>
+            <li class="phone_Number">
+                @* <label>Phone Number:</label>*@
+
+                <label for="PhoneNumber" class="popup-books">Phone Number:</label>
+                <input type="text" id="phone-books" data-role='maskedtextbox' data-mask="(999) 000-0000" name="PhoneNumber" required />
+                <span data-for='PhoneNumber' class='k-invalid-msg'></span>
+                @*<input type="text" id="phone" onkeypress="return isNumberKey(event)" name="PhoneNumber" required pattern="\d{10}" />*@
+            </li>
+            <li class="questionList">
+                <hr />
+                <h3>Please answer the following questions</h3>
+                <ul class="question-books"></ul>
+            </li>
+            <li class="capcha">
+                <div class="g-recaptcha" data-sitekey="6LeEi7IUAAAAAJNz6Nd7C6Gd2uoXF-_UQ5P3PwG2" id="captcha-books"></div>
+                <div id="g-recaptcha-error"></div>
+            </li>
+        </ul>
+        <div style="display: flex; font-size: 1.2em">
+            <button id="submit-books" class="k-button k-submit-button" type="submit">Submit&nbsp;<i class="fa fa-send-o"></i></button>
+            <button id="cancel-books" class="k-button k-cancel-button" type="reset">Cancel&nbsp;<span class="k-icon k-i-close"></span></button>
+        </div>
+    </form>
+
+</div>
+@*<div id="editor"></div>
+
+    <script id="editor-template" type="text/kendo-x-tmpl">
+        <label>
+            Title:
+            <input data-bind="value: title" />
+        </label>
+        <label>
+            Start:
+            <input data-role="datetimepicker" data-bind="value: start" />
+        </label>
+        <label>
+            End:
+            <input data-role="datetimepicker" data-bind="value: end" />
+        </label>
+        <button id="save">Save</button>
+        <button id="cancel">Cancel</button>
+    </script>*@
+@*<script id="event-template" type="text/x-kendo-template">
+        <button class="button edit-event" data-uid="#=uid#">Select this time slot</button>
+    </script>*@
+@*<script id="customEditorTemplate" type="text/x-kendo-template">
+    <div class="Container">
+
+        <h3>PLEASE ENTER YOUR INFORMATION BELOW</h3>
+        <form id="request_consultation">
+            <ul id="field_list">
+                <li>
+                    <label>Consultation:</label>
+                    <p id="nameConsultation"></p>
+                </li>
+                <li>
+                    <label>Time:</label>
+                    <p>#: kendo.toString(start, "hh:mm tt") # - #: kendo.toString(end, "hh:mm tt") # #: kendo.toString(start, "MMM dd, yyyy")#</p>
+                </li>
+                <li>
+                    <label for="firstname">First Name:</label>
+                    <input type="text" id="firstname" name="FirstName" required validationMessage="Enter {0}" />
+                </li>
+                <li>
+                    <label>Last Name:</label>
+                    <input type="text" id="lastname" name="LastName" required validationMessage="Enter {0}" />
+                </li>
+                <li>
+                    <label>Email Address:</label>
+                    <input type="email" id="email" name="Email" required data-email-msg="Email format is not valid" />
+                </li>
+                <li class="phone_Number">
+                     <label>Phone Number:</label>
+
+                    <label for="PhoneNumber">Phone Number:</label>
+                    <input type="text" id="phone" data-role='maskedtextbox' data-mask="(999) 000-0000" name="PhoneNumber" data-validmask-msg="Phone number is not valid" required validationMessage="Please enter the phone number" />
+                    <span data-for='PhoneNumber' class='k-invalid-msg'></span>
+                    <input type="text" id="phone" onkeypress="return isNumberKey(event)" name="PhoneNumber" required pattern="\d{10}" />
+                </li>
+                <li class="questionList">
+                    <hr />
+                    <h3>Please answer the following questions</h3>
+                    <ul class="question"></ul>
+                </li>
+                <li class="capcha">
+                    <div class="g-recaptcha" data-sitekey="6LeEi7IUAAAAAJNz6Nd7C6Gd2uoXF-_UQ5P3PwG2" id="captcha"></div>
+                    <div id="g-recaptcha-error"></div>
+                </li>
+            </ul>
+
+        </form>
+
+    </div>
+    <script>
+        var widthWindow = $(window).width();
+        var popup = $('.k-widget.k-window').width();
+        var widthcontainer = $('.Container').parent('.k-scheduler-edit-form .k-edit-form-container').width();
+        if (popup > widthWindow && widthWindow > 600) {
+            $('.k-widget.k-window').css('left', 0);
+            $('.Container').parent('.k-scheduler-edit-form .k-edit-form-container').width(widthWindow * 0.6);
+        } else if (popup < widthWindow && widthWindow >= 478) {
+            var total = (widthWindow - popup) / 2;
+            $('.k-widget.k-window').css('left', total);
+            $('.Container').parent('.k-scheduler-edit-form .k-edit-form-container').width(478);
+        } else if (popup < widthWindow && widthWindow < 478) {
+            var total = (widthWindow - popup) / 2;
+            $('.k-widget.k-window').css('left', total);
+
+            $('.Container').parent('.k-scheduler-edit-form .k-edit-form-container').width(320);
+        }
+        $(window).resize(function () {
+            var widthWindow = $(window).width();
+            var popup = $('.k-widget.k-window').width();
+            console.log(popup);
+            var widthcontainer = $('.Container').parent('.k-scheduler-edit-form .k-edit-form-container').width();
+            if (popup > widthWindow) {
+                $('.k-widget.k-window').css('left', 0);
+                $('.Container').parent('.k-scheduler-edit-form .k-edit-form-container').width(widthWindow * 0.6);
+            } else {
+                var total = (widthWindow - popup) / 2;
+                $('.k-widget.k-window').css('left', total);
+
+                $('.Container').parent('.k-scheduler-edit-form .k-edit-form-container').width(478);
+            }
+        })
+            <\/script>
+    </script>*@
+
+<script type="text/javascript">
+    kendo.culture().calendar.firstDay = 1;
+
+    //#region không đụng
+    kendo.culture().calendar.firstDay = 1;
+    $("#dialog").kendoDialog({
+        close: function () {
+            scheduler.refresh();
+            scheduler.dataSource.read();
+        },
+        visible: false,
+        closable: true
+    });
+
+    function getColorBasedOnHour(date) {
+        var difference = date.getTime() - kendo.date.getDate(date);
+        var hours = difference / kendo.date.MS_PER_HOUR;
+        $.getJSON("/Prospect/GetListForProspect_DetalTimeSlot", function (obj) {
+            $(obj).each(function (i) {
+                var start = kendo.toString(new Date(obj[i].DateStart.slice(6, 16) * 1000), "MM/dd/yyyy");
+                var end = kendo.toString(new Date(obj[i].DateEnd.slice(6, 16) * 1000), "MM/dd/yyyy");
+                var id = obj[i].ID;
+                if (new Date(obj[i].DateStart.slice(6, 16) * 1000).getTime() >= hours && hours >= new Date(obj[i].DateEnd.slice(6, 16) * 1000).getTime()) {
+                    return "#A2A2AA";
+                }
+            });
+        });
+        //$(DateStart).each(function (e) {
+        //if (DateStart[e].getTime() <= date.getTime() <= DateEnd[e].getTime())
+        // return "#000000";//#eff0f1
+        if (11 <= hours && hours < 14)
+            return "#A2A2AA";
+        //});
+    }
+
+    function getColorBasedOnHour(date) {
+        var difference = date.getTime() - kendo.date.getDate(date);
+        var hours = difference / kendo.date.MS_PER_HOUR;
+        var DateStart = new Array();
+        var DateEnd = new Array();
+        $.getJSON("/Prospect/GetListForProspect_DetalTimeSlot", function (obj) {
+            for(var i in obj) {
+                var start = kendo.toString(new Date(obj[i].DateStart.slice(6, 16) * 1000), "MM/dd/yyyy hh:mm:ss");
+                var end = kendo.toString(new Date(obj[i].DateEnd.slice(6, 16) * 1000), "MM/dd/yyyy hh:mm:ss");
+                DateStart.push(new Date(start));
+                DateEnd.push(new Date(end));
+            }
+        });
+        if (11 <= hours && hours < 14)
+            return "#A2A2AA";
+        for(var e in DateStart) { 
+        if ((DateStart[e].getTime() <= hours && hours < DateEnd[e].getTime()) || (hours > DateStart[e].getTime() && hours <= DateEnd[e].getTime()) || (DateStart[e].getTime() > hours && DateEnd[e].getTime() < hours))
+                return "#A2A2AA";
+        }
+    }
+
+    $(".slotstime").hide();
+    var zone;
+    var timeSlots = new Array();
+    var events=new Array();
+    var count = 0;
+    var scheduler = $("#scheduler").kendoScheduler({
+        add: function (e) {
+            $.getJSON("/Prospect/GetListForProspect_DetalTimeSlot", function (obj) {
+                var DateStart = new Array();
+                var DateEnd = new Array();
+                for(var i in obj) {
+                    var start = kendo.toString(new Date(obj[i].DateStart.slice(6, 16) * 1000), "MM/dd/yyyy");
+                    var end = kendo.toString(new Date(obj[i].DateEnd.slice(6, 16) * 1000), "MM/dd/yyyy");
+                    DateStart.push(start);
+                    DateEnd.push(end);
+                }
+            });
+            for (var i in DateStart) {
+                if (new Date(DateStart[i]).getTime() <= e.event.start.getTime() && e.event.start.getTime() < new Date(DateEnd[i]).getTime() || (e.event.end.getTime() > new Date(DateStart[i]).getTime() && e.event.end.getTime() <= new Date(DateEnd[i]).getTime()) || (new Date(DateStart[i]).getTime() > e.event.start.getTime() && new Date(DateEnd[i]).getTime() < e.event.end.getTime())) {
+                    setTimeout(function () {
+                        swal("This person is not available in this time period.");
+                    }, 0);
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        },
+        slotTemplate: "<div class='myClass' style='background:#=getColorBasedOnHour(date)#; height: 100%;width: 100%;'></div>",
+        date: new Date(),
+        startTime: new Date("10/03/2019 08:00"),
+        endtime: new Date("10/03/2019 21:00"),
+        //height: 580,
+        workDayStart: new Date("2019/8/30 8:00"),
+        workDayEnd: new Date("2019/8/30 21:00"),
+        majorTimeHeaderTemplate: kendo.template("<span class='k-time-text'>#=kendo.toString(date, 'hh:mm tt')#</span>"),
+        currentTimeMarker: false,
+        footer: false,
+        selectable: true,
+
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+
+        sync: function () {
+            $('.k-scheduler-navigation .k-scheduler-header-wrap').remove();
+            addArrow();
+            this.read();
+        },
+        views: [
+
+            {
+                type: "workWeek",
+                eventTemplate: $("#weekevent-template").html(),
+                //showWorkHours: true
+            },
+
+        ],
+        //messages: {
+        //    save: "Submit",
+        //    cancel: "Close"
+        //},
+        editable: {
+            confirmation: false,
+            destroy: true,
+            edit: true,
+        },
+        destroy: {
+            url: "https://demos.telerik.com/kendo-ui/service/tasks/destroy",
+            dataType: "jsonp"
+        },
+        moveStart: function (e) {
+            e.preventDefault();
+        },
+        timezone: "Etc/UTC",
+        autoSync: true,
+        dataSource: {
+            transport: {
+                read: {
+                    url: "/Prospect/GetListForProspect_DetalTimeSlot"
+                    //? timeZone = " + getTimezoneName()
+                },
+               
+            },
+            parameterMap: function (options, operation) {
+                if (operation !== "read" && options.models) {
+                    return { models: kendo.stringify(options.models) };
+                }
+            },
+            schema: {
+                 data: function (data) {
+                return data;
+            },
+                schema: {
+                    model: {
+                        id: "meetingID",
+                        fields: {
+                            meetingID: { from: "MeetingID", type: "number" },
+                            title: { from: "Title", defaultValue: null, validation: { required: true } },
+                            start: { type: "date", from: "DateStart" },
+                            end: { type: "date", from: "DateEnd" },
+                            startTimezone: { from: "StartTimezone" },
+                            endTimezone: { from: "EndTimezone" },
+                            description: { from: "Description" },
+                            recurrenceId: { from: "RecurrenceID" },
+                            recurrenceRule: { from: "RecurrenceRule" },
+                            recurrenceException: { from: "RecurrenceException" },
+                            roomId: { from: "RoomID", nullable: true },
+                            atendees: { from: "Atendees", nullable: true },
+                            isAllDay: { type: "boolean", from: "IsAllDay" }
+                        }
+                    }
+                }
+            },
+            resources: [
+                {
+                    field: "roomId",
+                    dataSource: [
+                        { text: "Meeting Room 101", value: 1, color: "#6eb3fa" },
+                        { text: "Meeting Room 201", value: 2, color: "#f58a8a" }
+                    ],
+                    title: "Room"
+                },
+                {
+                    field: "atendees",
+                    dataSource: [
+                        { text: "Alex", value: 1, color: "#f8a398" },
+                        { text: "Bob", value: 2, color: "#51a0ed" },
+                        { text: "Charlie", value: 3, color: "#56ca85" }
+                    ],
+                    multiple: true,
+                    title: "Atendees"
+                }
+            ]
+        },
+
+        allDaySlot: false,
+        navigate: function (e) {
+            //    //disable click current
+            //    var sender = $(e.sender.wrapper);
+            //    setTimeout(function () {
+            //        sender.find(".k-nav-current").bind(
+            //            'click',
+            //            function () {
+            //                return false;
+            //            });
+            //    }, 0);
+            //delete
+            calendar.value(e.date);
+            scheduler_navigate(e);
+            if (e.action == "previous") {
+                var date = $(".k-sm-date-format").text();
+
+                for (i = 0; i < date.length; i++) {
+                    if (date[i] == " ") break;
+                }
+                date = new Date(date.slice(0, i));
+
+                var temp = new Date();
+                var today = kendo.toString(temp, "d");
+                today = new Date(today);
+                if (date <= today) {
+                    swal("We're so sorry. This free time slot was booked. Please, try another free time slot.");
+                    e.preventDefault();
+                }
+            }
+
+        },
+        edit: function (e) {
+            e.preventDefault(); //prevent popup editing
+            if (timeSlots.length <= 2) {
+                var dataSource = this.dataSource;
+                var event = e.event;
+                $(".slotstime").show();
+                if (event.isNew() ) {
+                    setTimeout(function () {
+                        //dataSource.add(event);
+                        editEvent(event);
+                    });
+                } else {
+                    editEvent(event);
+                }
+                count++;
+                var timeSlot = {
+                    startTime: event.start,
+                    endTime: event.end,
+                    uid:event.uid
+                }
+
+                timeSlots.push(timeSlot);
+
+                // else {
+                //    //Message("You have registered three slots")
+                //    alert("You have registered three time slots");
+                //}
+                //var startDateTimeSlot = kendo.toString(event.start, "dddd, MMMM dd");
+                var startSlot = kendo.toString(event.start, "hh:mm tt");
+                var endSlot = kendo.toString(event.end, "hh:mm tt");
+                for (var i in timeSlots) {
+                    var startDateTimeSlot = kendo.toString(timeSlots[i].startTime, "dddd, MMMM dd");
+                    var timeStart = kendo.toString(timeSlots[i].startTime,"hh:mm tt");
+                    var timeEnd = kendo.toString(timeSlots[i].endTime,"hh:mm tt");
+                }
+                $(".slotstime").append("<div class='cardSlot'><div class='timeSlot'><p class='dateTimeSlot'>" + startDateTimeSlot + "</p><p class='time'>" + timeStart + " - " + timeEnd + "</p></div><div class='iconDelete'><span class='k-icon k-i-minus-outline'></span></div></div>");
+            }
+            else {
+                //alert("You have registered three time slots");
+                swal("You have registered three time slots");
+                //$(".k-event").hide();
+                //scheduler.removeEvent(event);
+            }
+            $('.k-i-minus-outline').click(function (data) {
+                var count = 0;
+                $(this).parents('.cardSlot').remove();
+                for (var i in timeSlots) {
+                    for(var j in event){
+                        console.log(timeSlots);
+                        console.log(timeSlots[i].uid);
+                        var uid = timeSlots[i].uid;
+                        var event = scheduler.dataSource.at(0);
+                        console.log("Event: " + event.uid);
+                        if (uid == event.uid && timeSlots.length > 1) {
+                            timeSlots.splice(uid, 1);
+                            scheduler.removeEvent(event.uid);
+                           // $(".k-event").remove();
+                        }
+                        else if (uid == event.uid && timeSlots.length == 1) {
+                            timeSlots.splice(uid, 1);
+                            $(".slotstime").hide();
+                            scheduler.removeEvent(event.uid);
+                        }
+                        count--;
+                    }
+                    }
+                });
+           
+            console.log(event)
+            console.log(timeSlots)
+
+        },
+        cancel: function () {
+            $("#scheduler").data('kendoScheduler').dataSource.read();
+            $("#scheduler").data("kendoScheduler").refresh();
+        },
+        dataBound: function (e) {
+            //$(".k-scheduler-content").css("overflow", "unset");
+            //console.log(e.sender.element);
+            var events = $(e.sender.element).find(".k-state-selected");
+            //console.log(events);
+            var top = 10;
+            var array = new Array();
+            var WidthParents = events.context.lastElementChild.clientWidth;
+            //console.log(WidthParents);
+            var widthDateOfWeek = WidthParents / 5;
+            //  console.log(WidthParents);
+            //console.log(WidthParents);
+            for (i = 0; i <= 5; i++) {
+                array[i] = widthDateOfWeek * i;
+            }
+            //console.log(array);
+            var max = 0;
+            var padding = 15;
+            $(e.sender.element).find(".k-event").each(function () {
+                var left = $(this).position().left;
+                $(this).width(widthDateOfWeek - 5 - padding);
+                for (i in array) {
+                    if (left < array[i]) {
+                        left = array[i - 1];
+                        break;
+                    }
+                }
+                //$(this).css("left", left + 1 + padding / 2.0);
+                $(this).height(30);
+                //  $(this).css("height", "100px");
+                //      $(this).css("left", sWidth);
+                //var witdh = this.getBoundingClientRect().width;
+                //var obj = {
+                //    "top": 0,
+                //    "witdh": witdh,
+                //    "left": $(this).position().left
+                //}
+                //array.push(obj);
+            });
+            //$(e.sender.element).find(".k-event:not(:last-child)").each(function () {
+            //    $(this).css("top", top);
+            //    top += $(this).height() + 20;
+            //    if ($(this).position().left != $(this).next().position().left) {
+            //        top = 10;
+            //    }
+            //    //  $(this).css("height", "100px");
+            //    //      $(this).css("left", swidth);
+            //    //var witdh = this.getboundingclientrect().width;
+            //    //var obj = {
+            //    //    "top": 0,
+            //    //    "witdh": witdh,
+            //    //    "left": $(this).position().left
+            //    //}
+            //    //array.push(obj);
+            //    if ($(this).position().top > max)
+            //        max = $(this).position().top;
+            //});
+
+            //$(e.sender.element).find(".k-event:last-child").css("top", top);
+            var dropdownlist = $("#ViewType").data("kendoDropDownList");
+
+            if ($('#viewType .k-input').text() == "Work Week") {
+                $("div.k-scheduler-content").css("max-height", max + 50);
+                $("div.k-scheduler-content").css("overflow", "hidden");
+            }
+            //
+            var setHeight = $("#scheduler").height() - $(".k-header").height();
+            if ($(".k-scheduler-table").next().text() == "" || $(".k-scheduler-table").next().text() == null || max + 50 < setHeight) {
+                $("div.k-scheduler-content").css("max-height", setHeight);
+            }
+            //tạo đường border cho scheduler
+            if ($('#viewtype .k-input').text() == "work week") {
+                $("div.k-scheduler-content table.k-scheduler-table tbody tr").each(function () {
+                    $(this).children("td").each(function () {
+                        $(this).css("border-bottom", "none");
+                    })
+                })
+            }
+            //if ($('#viewType .k-input').text() == "Agenda") {
+            //    formatAgenda(true);
+            //} else formatAgenda(false);
+            if ($('#viewType .k-input').text() == "Week") {
+                //ẩn thứ 7 chủ nhật
+                $(".k-scheduler-table tbody tr th:last-child").hide();
+                $(".k-scheduler-table tbody tr th:last-child").prev().hide();
+                $(".k-scheduler-table tbody tr").each(function () {
+                    $(this).children()
+                });
+                //set height header
+                $(".k-scheduler-header-wrap, .k-scheduler-table,.k-scheduler-table tbody ").height(32);
+                //
+                //$(".k-scheduler-table tr th").each(function () {
+                //    $(this).css("margin", 0);
+                //    $(this).height(32);
+                //});
+                $(".k-scheduler-table .k-link").each(function () {
+                    $(this).css("margin-bottom", "40px");
+                });
+            }
+        }
+
+    }).data("kendoScheduler");
+  
+    //scheduler.wrapper.on("click", ".k-event", function () {
+    //    var uid = $(this).data("uid");
+    //    var event = scheduler.occurrenceByUid(uid);
+    //    var end = new Date(event.end);
+    //    end.setHours(end.getHours() + 1); //update end
+    //    event.set("end", end); //end needs to be Date!
+    //});
+
+    var getdayarray;
+    $.ajax({
+        url: "/Prospect/GetList",
+        type: "get",
+        success: function (data) {
+            getdayarray = data;
+
+        },
+        async: false
+    });
+    if (getdayarray[0] != null) {
+        var datesfirst = getdayarray[0].Start.slice(6, 16);
+        datesfirst = new Date(datesfirst * 1000);
+    }
+    else
+        var datesfirst = new Date();
+    //var link = window.document.URL.toString();
+    //var a = link.split("/");
+    //if (a.length != 6) {
+    //    window.location.href = "https://www.youtube.com/watch?v=rma93iCBkwA"
+    //}
+    //scheduler.wrapper.find(".k-nav-current").hide();
+    //scheduler.wrapper.find(".k-scheduler-views").hide();
+    //scheduler.wrapper.find(".k-nav-today").hide();
+
+    var calendar = $("#calendar").kendoCalendar({
+        value: scheduler.date(datesfirst),
+        change: function () {
+            scheduler.date(this.value());
+            //format day + display Header
+            myFunc();
+            //if ($('.k-input').text() == "day") $('.k-scheduler-navigation .k-scheduler-header').remove();
+            formatWeek();
+        },
+        disableDates: function (date) {
+            return (date && date.getTime() < (new Date()).getTime() - 86400000);
+        },
+
+        footer: false,
+
+    }).data("kendoCalendar");
+    //#endregion
+    //#region saaaaaaaaaaaaaaaaaaa
+
+    function action() {
+        //$('.k-nav-prev span').removeclass('k-i-arrow-60-left').addclass('k-i-arrow-chevron-left');
+        //$('.k-nav-next span').removeclass('k-i-arrow-60-right').addclass('k-i-arrow-chevron-right');
+        //insert after element
+        //$("#scheduler .k-scheduler-navigation .k-nav-current").insertafter("#scheduler .k-nav-prev");
+        //disable hover
+        //$('.k-nav-current, .k-scheduler-navigation .k-nav-prev, .k-scheduler-navigation .k-nav-next').mousemove(function () {
+        //    $(this).removeclass("k-state-hover");
+        //});
+        $('.k-nav-prev a span').removeClass('k-i-arrow-60-left').addClass('k-i-arrow-chevron-left');
+        $('.k-nav-next a span').removeClass('k-i-arrow-60-right').addClass('k-i-arrow-chevron-right');
+        $('.k-nav-current, .k-scheduler-navigation .k-nav-prev, .k-scheduler-navigation .k-nav-next').mousemove(function () {
+            $(this).removeClass("k-state-hover");
+        });
+        //disable event click
+        $(".k-nav-current").bind('click', function () {
+            return false;
+        });
+        $("#dialog button").click(function () {
+            $("#dialog").data("kendoDialog").close();
+        })
+        if ($('#viewType .k-input').text() == "Work Week") {
+            hideWeek2();
+            formatWeek();
+
+        }
+        //$(window).resize(function () {
+        //    setwidthweek();
+        //    //var widthDate = $(".k-scheduler-table .k-first").width();
+        //    //console.log(widthDate);
+        //    //  $(".k-scheduler-datecolumn").width(0);
+        //    //$(".k-scheduler-timecolumn").width(180);
+        //    //console.log("a");
+        //    //if ($('#viewType .k-input').text() == "Agenda") {
+        //    //    //formatAgenda(true);
+        //    //    var widthBody = $("body").width();
+        //    //    if (widthBody > 970) {
+        //    //        $(".edit-event").text("Select this time slot");
+        //    //        $(".edit-event").css("width", "188px");
+        //    //    }
+        //    //    else if (widthBody < 970) {
+        //    //        $(".edit-event").text("Select");
+        //    //        $(".edit-event").css("width", "100px");
+        //    //    } else if (widthBody < 500) $(".edit-event").text("Select");
+        //    //}// else formatAgenda(false);
+        //})
+        //set time current
+        //setInterval(updateTime, 1000);
+        //6 get value timezone
+        // console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
+        //var width = $(this).width();
+        //console.log(width);
+        //$(".k-window").css("left", width / 4);
+        //$("#scheduler").on("click", ".edit-event", function () {
+        //    var dataItem = scheduler.occurrenceByUid($(this).data("uid"));
+        //    scheduler.editEvent(dataItem);
+        //        $.getJSON("/Prospect/GetListQuestionByPageCode", function (data) {
+        //            var result = "";
+        //            $(".question").html("");
+        //            for (i in data) {
+        //                //result += "<li> <p> Question <span class=" + "IDQuestion" + ">" + (parseInt(i) + 1) + "</span>: <span>* </span>" + data[i].Question + "</p>" + "<textarea rows=" + 3 + " ></textarea>";
+        //                result += '<li> <p> Question <span class="IDQuestion" style="display:none">' + data[i].ID + "</span>" + (parseInt(i) + 1) + ": <span>* </span>" + data[i].Question + '</p> <textarea rows=' + 3 + '></textarea>';
+        //            }
+        //            //console.log(result);
+        //            $(".question").append(result);
+        //        })
+        //        //$('.k-scheduler-update').click(function () {
+        //});
+
+    }
+    action();
+    //display none header
+    function displayHeader() {
+        $('.k-scheduler-layout > tbody > tr:first-child').hide();
+        if ($('.k-input').text() == "Week") {
+            $('.k-scheduler-layout > tbody > tr:first-child').show();
+            $(".k-state-default.k-nav-current").hide();
+        }
+    }
+    function setwidthweek() {
+        var getwidth = $("table.k-scheduler-table> tbody> tr> td").width();
+        $("table.k-scheduler-table> tbody> tr> th").css("width", getwidth - 2);
+        $("table.k-scheduler-table> tbody> tr> th:first-child").css("width", getwidth - 17);
+        $("table.k-scheduler-table> tbody> tr> th:last-child").css("width", getwidth - 16);
+    }
+    function myfunc() {
+
+        //xoa displayheader();
+        //format day
+        //  var date_format = $('.k-lg-date-format').text();
+        //formatday(date_format);
+        //xoa hideweek();
+        //hideday();
+        //week
+        if ($('#viewtype .k-input').text() == "work week") {
+            hideweek2();
+            formatweek();
+            setwidthweek();
+            //day
+        }
+
+    }
+    // This is a functions that scrolls to #{blah}link
+    //function goToByScroll(id) {
+    //    $('html,body').animate({
+    //        scrollTop: $(id).offset().top
+    //    }, 'slow');
+    //}
+
+
+    function scheduler_navigate(e) {
+        e.sender.one('dataBound', myFunc)
+    }
+    //format kweek
+    //xoa $('.k-scheduler-navigation .k-scheduler-header').remove();
+
+    function formatWeek() {
+        if ($('.k-input').text() == "Work Week") {
+            $('.k-scheduler-table > tbody > tr > th > .k-nav-day').each(function () {
+                var s = $(this).text();
+                var result;
+                if (s.length == 8)
+                    result = s.slice(0, 3) + " - " + s.slice(6, s.length);
+                else result = s.slice(0, 3) + " - " + s.slice(7, s.length);
+                $(this).text(result);
+            });
+        }
+    }
+
+    //xoa formatWeek();
+
+    function hideWeek2() {
+        $('.k-scheduler-navigation .k-scheduler-header').remove();
+        $('.k-scheduler-header').clone().insertAfter('#scheduler .k-nav-prev');
+        //$('.k-scheduler-navigation .k-nav-current').hide();
+        //$('.k-scheduler-header').clone().insertAfter('#scheduler .k-nav-prev');
+        //$('.k-scheduler-layout > tbody > tr:first-child').hide();
+    }
+    function hideDay() {
+        //$('.k-scheduler-navigation .k-scheduler-header').remove();
+        $('.k-scheduler-navigation .k-nav-current').show();
+    }
+    //scheduler.wrapper.on("click", ".k-event", function (e) {
+    //    var eventelement = $(e.currenttarget);
+    //    var event = scheduler.occurrencebyuid(eventelement.data("uid"));
+    //    scheduler.editevent(event);
+    //});
+    function getMinutesTwoTime(date1, date2) {
+        var diff = date2.getTime() - date1.getTime();
+        var msec = diff;
+        var hh = Math.floor(msec / 1000 / 60 / 60);
+        msec -= hh * 1000 * 60 * 60;
+        var mm = Math.floor(msec / 1000 / 60);
+        msec -= mm * 1000 * 60;
+        var ss = Math.floor(msec / 1000);
+        msec -= ss * 1000;
+
+        return hh * 60 + mm + ss / 60;
+    }
+    //#endregion
+    function setTimeZone(timezone) {
+        //  setTimeout(function () {
+        var selectedView = scheduler.viewName();
+        var selectedDate = scheduler.date();
+
+        scheduler.destroy();
+        if (timeZone)
+            options.timezone = timezone;
+
+        //options.dataSource.transport.read.url = "/Prospect/GetList?timeZone=" + offset;
+        $("#scheduler").empty().kendoScheduler(options);
+        scheduler = $("#scheduler").data("kendoScheduler");
+        scheduler.view(selectedView);
+        scheduler.date(selectedDate);
+        action();
+        //   }, 1000);
+
+        setwidthweek();
+
+        // console.log(offset);
+    }
+
+    function getValueTimeZone(s) {
+        for (i = 0; i < s.length; i++) {
+            if (s[i] == "=") break;
+        }
+        var temp = s.slice(i + 1, s.length);
+        return temp;
+    }
+
+    function loadWeb(milisecond) {
+        document.getElementById("loader").style.display = "block";
+        $(".Over").css("position", "fixed");
+        setTimeout(function () {
+            document.getElementById("loader").style.display = "none";
+            $(".Over").css("position", "unset");
+        }, milisecond);
+    }
+
+    //get name pageCode
+
+    function getConsultation(obj) {
+
+        var x = $(location).attr('pathname');
+        var pageCode = getPageCode(x);
+        for (i in obj) {
+            if (obj[i].PageCode == pageCode)
+                return obj[i].Name;
+        }
+
+        return null;
+        // $.getJSON('employee.json', function (emp) {
+    }
+    function getPageCode(s) {
+        var count = 0;
+        for (i = 0; i < s.length; i++) {
+            if (s[i] == "/") count++;
+            if (count == 3) break;
+        }
+        return s.slice(i + 1, s.length);
+    }
+    function escapeHtmlEntities(str) {
+        if (typeof jQuery !== 'undefined') {
+            // Create an empty div to use as a container,
+            // then put the raw text in and get the HTML
+            // equivalent out.
+            return jQuery('<div/>').text(str).html();
+        }
+
+        // No jQuery, so use string replace.
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/>/g, '&gt;')
+            .replace(/</g, '&lt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&apos;');
+    }
+    function startLoad() {
+        document.getElementById("loader").style.display = "block";
+        $(".Over").css("position", "fixed");
+    }
+    function endLoad() {
+        document.getElementById("loader").style.display = "none";
+        //$(".Over").css("position", "unset");
+    }
+    var editor = $("#editor");
+    var template = kendo.template($("#editor-template").html());
+    function destroyEditor() {
+        if (count < 3) {
+            kendo.destroy(editor);
+            editor.find("button").off();
+            editor.html("");
+        }
+    }
+    var currentEvent;
+
+
+    function editEvent(event) {
+        if (count < 3) {
+            destroyEditor();
+            scheduler.cancelEvent(currentEvent);
+
+            //editor.html(template({}));
+            kendo.bind(editor, event); //Bind the editor container (uses MVVM)
+            count++;
+
+        }
+        editor.find(".k-event").click(function () {
+            scheduler.saveEvent();
+            destroyEditor();
+        });
+
+        editor.find(".k-event-delete").click(function (event) {
+            scheduler.cancelEvent(currentEvent);
+            destroyEditor(event);
+        });
+        console.log(count);
+
+    }
+
+    function updateTime() {
+        var currtime = new Date().toLocaleString(["en-us"], { timeZone: timezone });
+
+        //var currtime = new Date(currtime2);
+        //console.log(currtime.getHours());
+        ////var currtime = new Date();
+        //var amOrPm = (currtime.getHours() < 12) ? "am" : "pm";
+        //// var hour = (currtime.getHours() < 12) ? currtime.getHours() : currtime.getHours() - 12;
+        //var minutes;
+        //if (currtime.getMinutes() < 10) minutes = "0" + currtime.getMinutes().toString();
+        //else minutes = currtime.getMinutes();
+        // currtime = new Date(currtime);
+        // var currtime1 = (currtime.slice(0, 2) + ":" + currtime.slice(3, 5));
+        //  $("#time").html(currtime.getHours() + ":" + currtime.getMinutes());
+        for (i in currtime) {
+            if (currtime[i] == ",")
+                break;
+        }
+        i++;
+        var currtime1 = currtime.slice(i, currtime.length);
+        $("#time").html(currtime1);
+    }
+    function getTimezoneName() {
+        var timeSummer = new Date(Date.UTC(2005, 6, 30, 0, 0, 0, 0));
+        var summerOffset = -1 * timeSummer.getTimezoneOffset();
+        var timeWinter = new Date(Date.UTC(2005, 12, 30, 0, 0, 0, 0));
+        var winterOffset = -1 * timeWinter.getTimezoneOffset();
+        var timeZoneHiddenField;
+
+        if (-720 == summerOffset && -720 == winterOffset) { timeZoneHiddenField = 'Dateline Standard Time'; }
+        else if (-660 == summerOffset && -660 == winterOffset) { timeZoneHiddenField = 'UTC-11'; }
+        else if (-660 == summerOffset && -660 == winterOffset) { timeZoneHiddenField = 'Samoa Standard Time'; }
+        else if (-660 == summerOffset && -600 == winterOffset) { timeZoneHiddenField = 'Hawaiian Standard Time'; }
+        else if (-570 == summerOffset && -570 == winterOffset) { timeZoneHiddenField.value = 'Pacific/Marquesas'; }
+        //                else if (-540 == summerOffset && -600 == winterOffset) { timeZoneHiddenField.value = 'America/Adak'; }
+        //                else if (-540 == summerOffset && -540 == winterOffset) { timeZoneHiddenField.value = 'Pacific/Gambier'; }
+        else if (-480 == summerOffset && -540 == winterOffset) { timeZoneHiddenField = 'Alaskan Standard Time'; }
+        //                else if (-480 == summerOffset && -480 == winterOffset) { timeZoneHiddenField = 'Pacific/Pitcairn'; }
+        else if (-420 == summerOffset && -480 == winterOffset) { timeZoneHiddenField = 'Pacific Standard Time'; }
+        else if (-420 == summerOffset && -420 == winterOffset) { timeZoneHiddenField = 'US Mountain Standard Time'; }
+        else if (-360 == summerOffset && -420 == winterOffset) { timeZoneHiddenField = 'Mountain Standard Time'; }
+        else if (-360 == summerOffset && -360 == winterOffset) { timeZoneHiddenField = 'Central America Standard Time'; }
+        //                else if (-360 == summerOffset && -300 == winterOffset) { timeZoneHiddenField = 'Pacific/Easter'; }
+        else if (-300 == summerOffset && -360 == winterOffset) { timeZoneHiddenField = 'Central Standard Time'; }
+        else if (-300 == summerOffset && -300 == winterOffset) { timeZoneHiddenField = 'SA Pacific Standard Time'; }
+        else if (-240 == summerOffset && -300 == winterOffset) { timeZoneHiddenField = 'Eastern Standard Time'; }
+        else if (-270 == summerOffset && -270 == winterOffset) { timeZoneHiddenField = 'Venezuela Standard Time'; }
+        else if (-240 == summerOffset && -240 == winterOffset) { timeZoneHiddenField = 'SA Western Standard Time'; }
+        else if (-240 == summerOffset && -180 == winterOffset) { timeZoneHiddenField = 'Central Brazilian Standard Time'; }
+        else if (-180 == summerOffset && -240 == winterOffset) { timeZoneHiddenField = 'Atlantic Standard Time'; }
+        else if (-180 == summerOffset && -180 == winterOffset) { timeZoneHiddenField = 'Montevideo Standard Time'; }
+        else if (-180 == summerOffset && -120 == winterOffset) { timeZoneHiddenField = 'E. South America Standard Time'; }
+        else if (-150 == summerOffset && -210 == winterOffset) { timeZoneHiddenField = 'Mid-Atlantic Standard Time'; }
+        else if (-120 == summerOffset && -180 == winterOffset) { timeZoneHiddenField = 'America/Godthab'; }
+        else if (-120 == summerOffset && -120 == winterOffset) { timeZoneHiddenField = 'SA Eastern Standard Time'; }
+        else if (-60 == summerOffset && -60 == winterOffset) { timeZoneHiddenField = 'Cape Verde Standard Time'; }
+        else if (0 == summerOffset && -60 == winterOffset) { timeZoneHiddenField = 'Azores Daylight Time'; }
+        else if (0 == summerOffset && 0 == winterOffset) { timeZoneHiddenField = 'Morocco Standard Time'; }
+        else if (60 == summerOffset && 0 == winterOffset) { timeZoneHiddenField = 'GMT Standard Time'; }
+        else if (60 == summerOffset && 60 == winterOffset) { timeZoneHiddenField = 'Africa/Algiers'; }
+        else if (60 == summerOffset && 120 == winterOffset) { timeZoneHiddenField = 'Namibia Standard Time'; }
+        else if (120 == summerOffset && 60 == winterOffset) { timeZoneHiddenField = 'Central European Standard Time'; }
+        else if (120 == summerOffset && 120 == winterOffset) { timeZoneHiddenField = 'South Africa Standard Time'; }
+        else if (180 == summerOffset && 120 == winterOffset) { timeZoneHiddenField = 'GTB Standard Time'; }
+        else if (180 == summerOffset && 180 == winterOffset) { timeZoneHiddenField = 'E. Africa Standard Time'; }
+        else if (240 == summerOffset && 180 == winterOffset) { timeZoneHiddenField = 'Russian Standard Time'; }
+        else if (240 == summerOffset && 240 == winterOffset) { timeZoneHiddenField = 'Arabian Standard Time'; }
+        else if (270 == summerOffset && 210 == winterOffset) { timeZoneHiddenField = 'Iran Standard Time'; }
+        else if (270 == summerOffset && 270 == winterOffset) { timeZoneHiddenField = 'Afghanistan Standard Time'; }
+        else if (300 == summerOffset && 240 == winterOffset) { timeZoneHiddenField = 'Pakistan Standard Time'; }
+        else if (300 == summerOffset && 300 == winterOffset) { timeZoneHiddenField = 'West Asia Standard Time'; }
+        else if (330 == summerOffset && 330 == winterOffset) { timeZoneHiddenField = 'India Standard Time'; }
+        else if (345 == summerOffset && 345 == winterOffset) { timeZoneHiddenField = 'Nepal Standard Time'; }
+        else if (360 == summerOffset && 300 == winterOffset) { timeZoneHiddenField = 'N. Central Asia Standard Time'; }
+        else if (360 == summerOffset && 360 == winterOffset) { timeZoneHiddenField = 'Central Asia Standard Time'; }
+        else if (390 == summerOffset && 390 == winterOffset) { timeZoneHiddenField = 'Myanmar Standard Time'; }
+        else if (420 == summerOffset && 360 == winterOffset) { timeZoneHiddenField = 'North Asia Standard Time'; }
+        else if (420 == summerOffset && 420 == winterOffset) { timeZoneHiddenField = 'SE Asia Standard Time'; }
+        else if (480 == summerOffset && 420 == winterOffset) { timeZoneHiddenField = 'North Asia East Standard Time'; }
+        else if (480 == summerOffset && 480 == winterOffset) { timeZoneHiddenField = 'China Standard Time'; }
+        else if (540 == summerOffset && 480 == winterOffset) { timeZoneHiddenField = 'Yakutsk Standard Time'; }
+        else if (540 == summerOffset && 540 == winterOffset) { timeZoneHiddenField = 'Tokyo Standard Time'; }
+        else if (570 == summerOffset && 570 == winterOffset) { timeZoneHiddenField = 'Cen. Australia Standard Time'; }
+        else if (570 == summerOffset && 630 == winterOffset) { timeZoneHiddenField = 'Australia/Adelaide'; }
+        else if (600 == summerOffset && 540 == winterOffset) { timeZoneHiddenField = 'Asia/Yakutsk'; }
+        else if (600 == summerOffset && 600 == winterOffset) { timeZoneHiddenField = 'E. Australia Standard Time'; }
+        else if (600 == summerOffset && 660 == winterOffset) { timeZoneHiddenField = 'AUS Eastern Standard Time'; }
+        else if (630 == summerOffset && 660 == winterOffset) { timeZoneHiddenField = 'Australia/Lord_Howe'; }
+        else if (660 == summerOffset && 600 == winterOffset) { timeZoneHiddenField = 'Tasmania Standard Time'; }
+        else if (660 == summerOffset && 660 == winterOffset) { timeZoneHiddenField = 'West Pacific Standard Time'; }
+        else if (690 == summerOffset && 690 == winterOffset) { timeZoneHiddenField = 'Central Pacific Standard Time'; }
+        else if (720 == summerOffset && 660 == winterOffset) { timeZoneHiddenField = 'Magadan Standard Time'; }
+        else if (720 == summerOffset && 720 == winterOffset) { timeZoneHiddenField = 'Fiji Standard Time'; }
+        else if (720 == summerOffset && 780 == winterOffset) { timeZoneHiddenField = 'New Zealand Standard Time'; }
+        else if (765 == summerOffset && 825 == winterOffset) { timeZoneHiddenField = 'Pacific/Chatham'; }
+        else if (780 == summerOffset && 780 == winterOffset) { timeZoneHiddenField = 'Tonga Standard Time'; }
+        else if (840 == summerOffset && 840 == winterOffset) { timeZoneHiddenField = 'Pacific/Kiritimati'; }
+        else { timeZoneHiddenField = 'US/Pacific'; }
+        return timeZoneHiddenField;
+    }
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+    //scheduler.date();
+</script>
+
+<script>
+
+    var popup_button_next = $("#containerBooks").kendoWindow({
+        modal: true,
+        draggable: false,
+        width: '100vh',
+        height: '100%',
+        action: ['close'],
+        visible: false
+    }).data("kendoWindow");
+
+    function show_Popup_Book() {
+        $(timeSlots).each(function (e) {
+            var timeFrom = timeSlots[e].startTime;
+            var timeTo = timeSlots[e].endTime;
+            $("#time-books").append(kendo.toString(timeFrom, "hh:mm tt") + " - " + kendo.toString(timeTo, "hh:mm tt") + "  " + kendo.toString(timeFrom, "MM/dd/yyyy") + "<br/>");
+        });
+        $("#containerBooks").css({ "display": "block" }, { "visibility": "hidden" });
+        popup_button_next.center().open();
+        timeSlots.pop();
+        $.getJSON("/Prospect/GetListQuestionByPageCode", function (data) {
+            var result = "";
+            $(".question-books").html("");
+            for (var i in data) {
+
+                //result += "<li> <p> Question <span class=" + "IDQuestion" + ">" + (parseInt(i) + 1) + "</span>: <span>* </span>" + data[i].Question + "</p>" + "<textarea rows=" + 3 + " ></textarea>";
+                result += '<li> <p> Question <span class="IDQuestion" style="display:none">' + data[i].ID + "</span>" + (parseInt(i) + 1) + ": <span>* </span>" + data[i].Question + '</p> <textarea class="form-control" rows=' + 3 + '></textarea>';
+            }
+            //console.log(result);
+            $(".question-books").append(result);
+        });
+
+        $.getJSON('/Page/listPage', function (emp) {
+            $('#nameConsultation-books').text(getConsultation(emp));
+        });
+        var maxNumber = 13;
+
+        $("input[name='PhoneNumber']").keyup(function () {
+
+            $(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d)+$/, "($1)$2-$3"));
+            //if ($(this).val().length >= 10)
+            //    $(this).val($(this).val().substring(0, maxNumber));
+        });
+
+        $(window).resize(function () {
+            var width = $(this).width();
+            //$(".k-window").css("left", width / 5);
+        });
+        $("#maskedtextbox").kendoMaskedTextBox({
+            mask: "(999) 000-0000"
+        });
+        var container = $("#request_consultation");
+        kendo.init(container);
+        container.kendoValidator({
+            rules: {
+                validmask: function (input) {
+                    if (input.is("[data-validmask-msg]") && input.val() != "") {
+                        var maskedtextbox = input.data("kendoMaskedTextBox");
+                        return maskedtextbox.value().indexOf(maskedtextbox.options.promptChar) === -1;
+                    }
+                    return true;
+                }
+            }
+        });
+        $("#phone-books").removeClass();
+        $("#phone-books").addClass("form-control");
+    }
+
+    $("#submit-books").click(function (e) {
+        var customer = {
+            FirstName: escapeHtmlEntities($('#firstname-books').val()),
+            LastName: escapeHtmlEntities($('#lastname-books').val()),
+            Email: escapeHtmlEntities($('#email-books').val()),
+            Phone: escapeHtmlEntities($('#phone-books').val())
+        };
+        var calendars = new Array();
+        var idTimeSlot = new Array();
+        $(timeSlots).each(function (e) {
+            var timeFrom = timeSlots[e].startTime;
+            var timeTo = timeSlots[e].endTime;
+            var Duration = getMinutesTwoTime(timeSlots[e].startTime, timeSlots[e].endTime).toString();
+            var date = kendo.toString(timeSlots[e].startTime, "MM/dd/yyyy hh:mm:ss");
+            idTimeSlot.push(timeSlots[e].idTimeSlot);
+            calendars.push({ "Duration": Duration, "Date": date });
+        });
+        //var start = [new Date(2019, 10, 11, 07, 00, 00), new Date(2019, 10, 11, 08, 15, 00), new Date(2019, 10, 11, 09, 15, 00)];
+        //var end = [new Date(2019, 10, 11, 08, 00, 00), new Date(2019, 10, 11, 09, 00, 00), new Date(2019, 10, 11, 10, 00, 00)];
+
+        var arrQuestion = new Array();
+        $(".IDQuestion").each(function () {
+            var ID = $(this).text().toString();
+            var Answer = escapeHtmlEntities($(this).parent().next().val());
+            var obj = {
+                'IDPageQuestion': ID,
+                'Answer': Answer
+            }
+            arrQuestion.push(obj);
+        });
+        var timeZone;
+        if (timezone1 == null)
+            timeZone = getTimezoneName();
+        else timeZone = timezone1;
+
+        //captcha
+        var SuccessCaptcha = 0;
+        var response = grecaptcha.getResponse();
+        (response.length == 0) ? SuccessCaptcha = 0 : SuccessCaptcha = 1;
+
+        var count = 0;
+        $(".text-required").each(function () {
+            $(this).remove();
+        });
+        var arrError = [];
+        $(".question-books li").each(function () {
+
+            var temp = $(this).children("textarea").val();
+            if (temp == "" || temp == null || temp.trim() == "") {
+                $(this).append('<span class="text-required" required style="color: red; float: left">Please answer this question.</span>');
+                arrError.push($(this).children("textarea"));
+                count++;
+            }
+        });
+
+        if (arrError.length >= 1) {
+            goToByScroll(arrError[0]);
+            arrError[0].focus();
+            arrError[0].select();
+        }
+        $(".question-books li").each(function () {
+            $(this).children("textarea").keyup(function () {
+                var temp = $(this).val();
+                if (temp.length > 0) $(this).next().remove();
+            });
+        });
+        var validator = $("#request_consultation").data("kendoValidator");
+        if ($('#firstname-books') == "") {
+            goToByScroll('#firstname-books');
+            $('#firstname-books').focus();
+            $('#firstname-books').select();
+
+        }
+        if (count <= 0 && validator.validate()) {
+
+            //if (SuccessCaptcha == 0) $("#g-recaptcha-error").html('<span style="color: red;">This field is required.</span>');
+            if (SuccessCaptcha == 1) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Prospect/Confirm",
+                    data: {
+                        idTimeSlot: idTimeSlot,
+                        customer: customer,
+                        calendar: calendars,
+                        arrQuestion: arrQuestion,
+                        timeZone: timeZone
+                        //,offsetTimeZoneChoose: offsetTimeZoneChoose
+                    }
+                }).done(function (e) {
+                    if (e == 1) {
+                        endLoad();
+                        $("#dialog").css("display", "block");
+                        $("#dialog").data("kendoDialog").open();
+                        $(".k-overlay").hide();
+                        $(".k-widget .k-window").hide();
+                        //$("#scheduler").data("kendoScheduler").refresh();
+                    }
+                    else if (e == 0) {
+                        endLoad();
+                        //  alert("This consultation was booked");
+                        $(".sweet-alert").css("z-index", "100000");
+                        $(".k-window").css("z-index", "10000");
+
+                        swal("This consultation was booked!");
+
+                        $(".confirm").click(function () {
+                            $(".k-scheduler-cancel").trigger("click");
+                        });
+                    } else {
+                        endLoad();
+                        //  alert("This consultation was booked");
+                        $(".sweet-alert").css("z-index", "10005");
+                        $(".k-window").css("z-index", "10000");
+
+                        swal("You've already requested this free slot.");
+
+                        $(".confirm").click(function () {
+                            $(".k-scheduler-cancel").trigger("click");
+                        });
+                    }
+                });
+                window.scrollTo(0, 0);
+                startLoad();
+            } else {
+
+                $("#g-recaptcha-error").html('<span style="color: red;">Please verify that you are not a robot.</span>');
+                e.preventDefault();
+            }
+            $("#scheduler").data('kendoScheduler').dataSource.read();
+            $("#scheduler").data("kendoScheduler").refresh();
+            $("#containerBooks").css({ "display": "none" }, { "visibility": "hidden" });
+        } else { e.preventDefault(); }
+    });
+
+    $("#cancel-books").click(function () {
+        $("#scheduler").data('kendoScheduler').dataSource.read();
+        $("#scheduler").data("kendoScheduler").refresh();
+        $("#containerBooks").css({ "display": "none" }, { "visibility": "hidden" });
+        popup_button_next.close();
+    });
+
+</script>
+<script src='https://www.google.com/recaptcha/api.js?hl=en'></script>

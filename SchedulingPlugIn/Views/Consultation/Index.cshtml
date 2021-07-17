@@ -1,0 +1,634 @@
+﻿
+@{
+    ViewBag.Title = "Manage Consultation";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+@*<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.default.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.2.619/styles/kendo.default.mobile.min.css" />*@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://kendo.cdn.telerik.com/2019.2.619/js/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert2@7.18.0/dist/sweetalert2.all.js"></script>
+<script src="https://kendo.cdn.telerik.com/2019.2.619/js/kendo.all.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+<div class="manage">
+    <h2 style="text-align:center;  ">MANAGE CONSULTATIONS</h2>
+</div>
+<div class="btn-group" style="float:right; color:black;padding-bottom:5px" id="menu">
+    <button type="button" class="btn btn-default" style="border-top-left-radius:12px; border-bottom-left-radius:12px;" id="All">All Consultation</button>
+    <button type="button" class="btn btn-default" id="Approved">Approved</button>
+    <button type="button" class="btn btn-default" id="Pending">Pending</button>
+    <button type="button" class="btn btn-default" style="border-top-right-radius:12px; border-bottom-right-radius:12px;" id="Expired">Expired </button>
+</div>
+@*<div id="Consultation" style="padding-top:2em;">*@
+<div id="dialog-content">
+</div>
+<div id="Consultation" style="clear:both">
+    <div id="grid">
+    </div>
+    <div id="dialog_gridStart">
+        <div id="dialog_decline">
+            <div class="content-dialog-decline" style="width: 100%">
+                <div>
+                    Reason<span style="color: red">*</span>
+                </div>
+                <textarea class="textareaSaved" style="width: 100%; height: 70px"></textarea>
+            </div>
+            <div class="fail" style="color:red;text-align:center;padding-top:4px;display:none">Reason is required</div>
+            <div class="button_dialog_decline">
+                <button class="button_fromCancel">
+                    <span class="fa fa-close"></span>
+                    Cancel
+                </button>
+                <button class="button_fromSaved">
+                    <span class="fa fa-save"></span>
+                    Saved
+                </button>
+            </div>
+        </div>
+        <div class="dialog_page" style="height: 450px;word-wrap: break-word;">
+            <div class="Page1">
+                <div class="info_person" style="margin-top:10px;"><div>Full Name:</div><div class="name_popup"></div></div>
+                <div class="info_person" style="margin-top:10px;"><div>Email Address:</div> <div class="gmail_popup"></div> </div>
+                <div class="info_person" style="margin-top:10px;"><div>Phone Number:</div> <div class="phone_popup"></div></div>
+                <div class="info_person" style="margin-top:10px;"><div>Date:</div> <div class="date_popup"></div></div>
+                <div class="info_person" style="margin-top:10px;"><div>Time:</div><div class="time_popup"></div></div>
+                <div class="info_person" style="margin-top:10px;"><div>Page:</div><div class="page_popup"></div></div>
+                <div class="ques_tion"></div>
+
+            </div>
+            <div class="Page2">
+
+            </div>
+        </div>
+        <div class="page-button">
+
+        </div>
+        <div class="button_dialog">
+            <button class="button_fromDecline">
+                <span class="fa fa-close"></span>
+                Decline
+            </button>
+            <button class="button_fromCancel">
+                <span class="fa fa-close"></span>
+                Cancel
+            </button>
+            <button class="button_fromAccept">
+                <span class="fa fa-check"></span>
+                Accept
+            </button>
+            <button class="button_fromClose">
+                Close
+            </button>
+        </div>
+
+    </div>
+</div>
+<script>
+    var LinkList;
+    var color = "";
+    $("#Approved").click(function () {
+        $("#Approved").css("background-color", "#999999");
+        $("#All").css("background-color", "#FFFFFF");
+        $("#Pending").css("background-color", "#FFFFFF");
+        $("#Expired").css("background-color", "#FFFFFF");
+        $("#grid").html("");
+        list("/Consultation/ListApproved?status=1");
+
+        record = 0;
+    });
+    $("#Pending").click(function () {
+        $("#Pending").css("background-color", "#999999");
+        $("#Approved").css("background-color", "#FFFFFF");
+        $("#All").css("background-color", "#FFFFFF");
+        $("#Expired").css("background-color", "#FFFFFF");
+        $("#grid").html("");
+        list("/Consultation/ListApproved?status=0");
+
+        record = 0;
+    });
+    $("#All").click(function () {
+        $("#All").css("background-color", "#999999");
+        $("#Pending").css("background-color", "#FFFFFF");
+        $("#Approved").css("background-color", "#FFFFFF");
+        $("#Expired").css("background-color", "#FFFFFF");
+        $("#grid").html("");
+        list("/Consultation/Listconsultation");
+
+        record = 0;
+    });
+    $("#Expired").click(function () {
+        $("#All").css("background-color", "#FFFFFF");
+        $("#Pending").css("background-color", "#FFFFFF");
+        $("#Approved").css("background-color", "#FFFFFF");
+        $("#Expired").css("background-color", "#999999");
+        $("#grid").html("");
+        list("/Consultation/Expired");
+
+        record = 0;
+    });
+    var record = 0;
+
+    function list(a) {
+         LinkList = a;
+        $("#grid").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: a,
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            ID: { type: "string" },
+                            FirstName: { type: "string" },
+                            LastName: { type: "string" },
+                            Email: { type: "string" },
+                            Date: { type: "date" },
+                            Time: { type: "string" },
+                            Page: { type: "string" },
+                            Note: { type: "string" },
+                        }
+                    }
+                },
+                pageSize: 20,
+            },
+            dataBound: function (e) {
+                console.log("ttttt" + e);
+                var grid = $("#grid").data("kendoGrid");
+                var gridData = grid.dataSource.view();
+
+                for (var i = 0; i < gridData.length; i++) {
+                    var currentUid = gridData[i].uid;
+                    if (gridData[i].Status == 1) {
+                        var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                        var editButton = $(currenRow).find(".k-grid-Accept");
+                        var declineButton = $(currenRow).find(".k-grid-Decline");
+                        editButton.hide();
+                        declineButton.text("Cancel");
+                    }
+                    if (a == "/Consultation/Expired") {
+                        var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                        var editButton = $(currenRow).find(".k-grid-Accept");
+                        editButton.hide();
+                    }
+                }
+            },
+            selectable: "multiple",
+            filterable: {
+                mode: "row"
+            },
+            groupable: false,
+            reorderable: true,
+            persistSelection: true,
+            resizable: true,
+            sortable: true,
+            columnMenu: true,
+            pageable: {
+                refresh: true,
+                pageSizes: [5, 10, 20, 50, 100],
+                buttoncount: 1
+            },
+
+
+            columns: [
+                {
+                    title: "#",
+                    template: "#= ++record #",
+                    width: 40,
+                },
+            {
+                field: "FirstName",
+                title: "First Name",
+                width: 150,
+
+            }, {
+                field: "LastName",
+                title: "Last Name",
+                width: 150,
+
+            }, {
+                field: "Email",
+                title: "Email",
+                width: 200,
+
+            }, {
+                field: "Phone",
+                title: "Phone",
+                width: 150,
+            }, {
+                field: "DateFomart",
+                title: "Date",
+               // format: "{0:MM/dd/yyyy}",
+                filterable: {
+                    cell: {
+                        showOperators: false,
+                    },
+                },
+                width: 150,
+
+            }, {
+                field: "Time",
+                title: "Time",
+                width: 165,
+
+            }, {
+                field: "PageName",
+                title: "Page",
+                width: 150,
+
+                filterable: { cell: { showOperators: false } }
+            }, {
+                command: [
+                                {
+                                    text: "Details", iconClass: "fa fa-info-circle", className: "btn-details-consultation",
+                                    click: showDetails
+                                }, {
+                                    text: "Decline", iconClass: "fa fa-close", className: "btn-decline-gridStart", click: function (e) {
+                                        $('.textareaSaved').val("");
+                                        dialog_decline.data("kendoDialog").open();
+                                        e.preventDefault();
+                                        var tr = $(e.target).closest("tr");
+                                        var data = this.dataItem(tr);
+                                        tc = data.ID;
+                                    }
+
+                                },
+                                 {
+                                     text: "Accept", iconClass: "fa fa-check", className: "btn-Accept-gridStart", click: clickApprove
+                                 },
+
+
+
+                ],
+                title: "Commands",
+                width: 310,
+            }
+            ],
+            dataBinding: function() {
+            record = (this.dataSource.page() - 1) * this.dataSource.pageSize();
+        }
+        });
+    }
+    var tc;
+    $(document).ready(function (e) {
+        list("/Consultation/Listconsultation");
+        $("#All").css("background-color", "#999999");
+        $("#Pending").css("background-color", "#FFFFFF");
+        $("#Approved").css("background-color", "#FFFFFF");
+        $("#Expired").css("background-color", "#FFFFFF");
+        record = 0;
+        var gridElement = $("#grid");
+        function resizeGrid() {
+            gridElement.data("kendoGrid").resize();
+        }
+        //$(window).resize(function () {
+        //    resizeGrid();
+        //});
+    });
+    $('.button_fromAccept').click(function (e) {
+        e.preventDefault();
+        console.log(tc);
+        $.ajax({
+            type: "post",
+            url: "/Admin/UpdateResson",
+            data: { idCalendar: tc, status: 1, reason:"" },
+            success: function (da) {
+                const Toast = swal.mixin({
+                    toast: true,
+                    position: 'top-left',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+
+                Toast.fire({
+                    type: 'success',
+                    title: 'Successfully !'
+                })
+                $("#grid").getKendoGrid().dataSource.read();
+                $("#grid").data('kendoGrid').refresh();
+                senmail(tc, 1, "");
+            }
+        });
+        dialog_consultation.data("kendoDialog").close();
+    });
+    $('.button_fromSaved').click(function (e) {
+        if ($('.textareaSaved').val() != "") {
+            e.preventDefault();
+            console.log(tc);
+            $.ajax({
+                type: "post",
+                url: "/Admin/UpdateResson",
+                data: { idCalendar: tc, status: -1, reason: $('.textareaSaved').val() },
+                success: function (da) {
+
+                    const Toast = swal.mixin({
+                        toast: true,
+                        position: 'top-left',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Successfully Saved this record!'
+                    })
+                    $("#grid").getKendoGrid().dataSource.read();
+                    $("#grid").data('kendoGrid').refresh();
+                    senmail(tc, -1, $('.textareaSaved').val());
+                    
+                }
+            });
+            dialog_decline.data("kendoDialog").close();
+        }
+        else
+            $('.fail').css('display', 'block');
+    });
+    $('.button_fromok').click(function () {
+        console.log(tc);
+        $.ajax({
+            type: "post",
+            url: "/Admin/UpdateResson",
+            data: { idCalendar: tc, status: -1, reason: ""},
+            success: function () {
+                const Toast = swal.mixin({
+                    toast: true,
+                    position: 'top-left',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+
+                Toast.fire({
+                    type: 'success',
+                    title: 'Successfully Saved this record!'
+                })
+                $("#grid").getKendoGrid().dataSource.read();
+                $("#grid").data('kendoGrid').refresh();
+                senmail(tc, -1, "");
+            }
+        });
+        dialog_decline.data("kendoDialog").close();
+    });
+    var dialog_consultation = $("#dialog_gridStart");
+    var dialog_decline = $("#dialog_decline");
+    var show_decline_dialog = $(".button_fromDecline");
+    dialog_consultation.kendoDialog({
+        width: "700em",
+        height:"650em",
+            title: "Customer Consultation",
+            visible: false,
+        });
+    function showDetails(e) {
+        $(".button_fromAccept").show();
+        e.preventDefault();
+
+            var tr = $(e.target).closest("tr");
+            var data = this.dataItem(tr);
+
+        tc = data.ID;
+        var grid = $("#grid").data("kendoGrid");
+        var gridData = grid.dataSource.view();
+
+        for (var i = 0; i < gridData.length; i++) {
+            var currentUid = gridData[i].uid;
+            console.log(gridData[i]);
+            if (gridData[i].Status == 1 && gridData[i].ID==tc) {
+                var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                var editButton = $(currenRow).find(".k-grid-Accept");
+                $(".button_fromAccept").hide();
+                $(".button_fromDecline").hide();
+                $(".button_fromCancel").show();
+            }
+            if (gridData[i].Status == 0 && gridData[i].ID == tc) {
+                $(".button_fromCancel").hide();
+                $(".button_fromDecline").show();
+            }
+            if (LinkList == "/Consultation/Expired") {
+                var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                var editButton = $(currenRow).find(".k-grid-Accept");
+                $(".button_fromAccept").hide();
+                $(".button_fromCancel").hide();
+            }
+        }
+            console.log(data.ID);
+            detailpopup(data.ID);
+            contactpopup(data.ID);
+            dialog_consultation.data("kendoDialog").open();
+        }
+        function clickApprove(e) {
+            e.preventDefault();
+            var tr = $(e.target).closest("tr");
+            var data = this.dataItem(tr);
+            console.log(data.ID);
+            $.ajax({
+                type: "post",
+                url: "/Admin/UpdateResson",
+                data: { idCalendar: data.ID, status: 1, reason:""},
+                success: function (da) {
+                    const Toast = swal.mixin({
+                        toast: true,
+                        position: 'top-left',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Successfully Accept this record!'
+                    })
+                    $("#grid").getKendoGrid().dataSource.read();
+                    $("#grid").data('kendoGrid').refresh();
+                    senmail(data.ID, 1, "");
+                }
+            });
+        }
+        function senmail(id, status, reason) {
+            $.ajax({
+                type: "post",
+                url: "/Admin/send",
+                data: { idCalendar: id, status: status, reason: reason }
+            });
+        }
+        function showdecline(e) {
+            e.preventDefault();
+            var tr = $(e.target).closest("tr");
+            var data = this.dataItem(tr);
+            tc = data.ID;
+            console.log(data.ID);
+            detailpopup(data.ID);
+            contactpopup(data.ID);
+            $('.textareaSaved').val("");
+            dialogstart.data("kendoDialog").open();
+        };
+        show_decline_dialog.click(function () {
+            dialog_decline.data("kendoDialog").open();
+            $('.textareaSaved').val("");
+        });
+        dialog_decline.kendoDialog({
+            width: "380px",
+            title: "Decline this consultation?",
+            closable: false,
+            visible: false,
+        });
+        function onOK() {
+            $.ajax({
+                type: "post",
+                url: "/Admin/UpdateResson",
+                data: { idCalendar: tc, status: -1 },
+                success: function (e) {
+
+                    const Toast = swal.mixin({
+                        toast: true,
+                        position: 'top-left',
+                        showConfirmButton: false,
+                        timer: 3000
+
+                    })
+
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Success!',
+                    })
+                    $("#grid").getKendoGrid().dataSource.read();
+                    $("#grid").data('kendoGrid').refresh();
+                    dialog_consultation.data("kendoDialog").close();
+                    senmail(tc, -1, "");
+                }
+
+            });
+            return true;
+        }
+        show_decline_dialog.click(function () {
+            dialogstart.data("kendoDialog").open();
+        });
+        $('.button_fromClose').click(function () {
+            dialog_consultation.data("kendoDialog").close();
+
+        });
+        $('.button_fromCancel').click(function () {
+            dialog_decline.data("kendoDialog").close();
+        });
+        function contactpopup(id) {
+            if (id != null) {
+                $.ajax({
+                    type: "get",
+                    url: "/admin/PopUpContact?id=" + id,
+                    success: function (e) {
+                        $('.name_popup').html(e[0].FirstName);
+                        $('.phone_popup').html(e[0].Phone);
+                        $('.date_popup').html(e[0].DateNotStamp);
+                        $('.gmail_popup').html(e[0].Email);
+                        $('.time_popup').html(e[0].Time);
+                        $('.page_popup').html(e[0].PageRequestName);
+                    }
+                })
+
+            }
+        }
+        function detailpopup(id) {
+            if (id != null) {
+
+                $.ajax({
+                    type: "get",
+                    // url: "https://api.myjson.com/bins/1a4229",
+                    url: "/admin/ListAswer?id=" + id,
+                    success: function (e) {
+                        // add button paging
+                        //count auto
+                        for (i in e) {
+                            //console.log(e[i]);
+                            if (e[i].Answer == null)
+                                e[i].Answer = "";
+                        }
+                        var autocount = 0;
+                        var count_object = Object.keys(e).length;
+                        var temp_count;
+                        $('.ques_tion').html("");
+                        $('.Page2').html("");
+                        $(".page-button").html("");
+                        //$(".page-button").append('<input type="button" id="-1temp" value="<" style="display:inline-block;background-color:white;border:1px solid #ccc;font-size:15px" />');
+                        if (count_object <= 7)
+                            $(".page-button").append('<input type="button" id="1temp" value="1" style="display:inline-block;background-color:white;border:1px solid #ccc;font-size:16px" />');
+                        else {
+                            $(".page-button").append('<input type="button" id="1temp" value="1" style="display:inline-block;background-color:white;border:1px solid #ccc;font-size:16px"/>');
+                            temp_count = parseInt((count_object - 7) / 10);
+                            if (((count_object - 7) % 10) != 0)
+                                temp_count++;
+                            for (var i = 1; i <= temp_count; i++) {
+                                var t = i + 1;
+                                var display_t = "display:inline-block;";
+                                //if (t != 2)
+                                //    display_t = "display:none;";
+                                $(".page-button").append('<input type="button" id="' + t + 'temp" value="' + t + '" style="' + display_t + 'background-color:white;border:1px solid #ccc;font-size:15px" />');
+                            }
+                            //$(".page-button").append('<input type="button" id="-2temp" value=">" style="display:inline-block;background-color:white;border:1px solid #ccc;font-size:15px" />');
+                        }
+                        //add paging 1
+                        var temp = 0;
+                        for (var i = 0; i <= 7; i++) {
+
+                            temp = i + 1;
+                            if (e[i] != null && i <= 2) {
+
+
+                                $('.ques_tion').append(' <div class="question_info"><div class="question" style="display: grid; grid-template-columns: 25% 75%; line-height:1.5"><div>Question ' + temp + '</div><div>' + e[i].Question + '</div></div><div class="reply">' + e[i].Answer + '</div></div>');
+                            }
+                            if (e[i] != null && i > 2) {
+
+                                $('.Page2').append('<div class="question_info"><div class="question" style="display: grid; grid-template-columns: 25% 75%; line-height:1.5"><div>Question ' + temp + '</div><div>' + e[i].Question + '</div></div><div class="reply">' + e[i].Answer + '</div></div>');
+                            }
+                        }
+                        temp_count++;
+                        //var prev1 = $('#-1temp');
+                        //var prev2 = $('#-2temp');
+                        //var count_number_button_page = $('#1temp');
+                        //var temp_button_page = $('#3temp');
+                        //var flag = 0;
+
+                        $('input').click(function () {
+                            console.log($('.Page1 .ques_tion').css('height'));
+                            if ($(this).val() == 1) {
+                                $('.ques_tion').html("");
+                                $('.info_person').css('display', 'grid');
+                                $('.Page2').html("");
+                                for (var i = 0; i <= 7; i++) {
+                                    temp = i + 1;
+                                    if (e[i] != null && i <= 2) {
+
+                                        $('.ques_tion').append(' <div class="question_info"><div class="question" style="display: grid; grid-template-columns: 25% 75%; line-height:1.5" ><div>Question ' + temp + '</div><div>' + e[i].Question + '</div></div><div class="reply">' + e[i].Answer + '</div></div>');
+                                    }
+                                    if (e[i] != null && i > 2) {
+
+                                        $('.Page2').append('<div class="question_info"><div class="question" style="display: grid; grid-template-columns: 25% 75%; line-height:1.5" ><div>Question ' + temp + '</div><div>' + e[i].Question + '</div></div><div class="reply">' + e[i].Answer + '</div></div>');
+                                    }
+                                }
+                            }
+                            if ($(this).val() != 1) {
+                                $('.ques_tion').html("");
+                                $('.info_person').css('display', 'none');
+                                $('.Page2').html("");
+                                for (var i = ($(this).val() * 10 - 3) - 10 + 1; i <= $(this).val() * 10 - 3; i++) {
+                                    temp = i + 1;
+                                    if (e[i] != null && i <= $(this).val() * 10 - 8) {
+                                        $('.ques_tion').append(' <div class="question_info"><div class="question" style="display: grid; grid-template-columns: 25% 75%; line-height:1.5" ><div>Question ' + temp + '</div><div>' + e[i].Question + '</div></div><div class="reply">' + e[i].Answer + '</div></div>');
+                                    }
+                                    if (e[i] != null && i > $(this).val() * 10 - 8 && i <= $(this).val() * 10 - 2) {
+                                        $('.Page2').append('<div class="question_info"><div class="question" style="display: grid; grid-template-columns: 25% 75%; line-height:1.5" ><div>Question ' + temp + '</div><div>' + e[i].Question + '</div></div><div class="reply">' + e[i].Answer + '</div></div>');
+                                    }
+                                }
+                            }
+                        })
+                    }
+                })
+            }
+
+    }
+
+</script>
+<link rel="stylesheet" href="~/Content/Manageconsultation.css" />
+<link rel="stylesheet" href="~/Content/don/Admin.css" />
+

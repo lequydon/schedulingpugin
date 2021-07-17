@@ -1,0 +1,151 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/Content/Question.css" rel="stylesheet" />
+
+<div id="example">
+    <h2 style="text-align:center">Manage Customer</h2>
+</div>
+<div style="clear:both">
+    <div id="grid"></div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#grid").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "/Customer/ListCustomer"
+                    },
+                    update: {
+                        data: function (upday) {
+                            $.ajax({
+                                type: "post",
+                                url: "/Customer/update",
+                                data: { t: upday },
+                                success: function (d) {
+                                    if (d == 1) {
+                                        $("#grid").getKendoGrid().dataSource.read();
+                                        $("#grid").data('kendoGrid').refresh();
+                                    }
+                                }
+
+                            });
+                            return true;
+                        }
+                    },
+                    create: {
+                        data: function (model) {
+                            console.log(model);
+                            $.ajax({
+                                type: "POST",
+                                url: "/Customer/create",
+                                data: { t: model },
+                                success: function (pon) {
+                                    if (pon == 1) {
+                                        $("#grid").getKendoGrid().dataSource.read();
+                                        $("#grid").data('kendoGrid').refresh();
+                                    }
+                                }
+                            });
+                            return true;
+                        }
+                    },
+                    parameterMap: function (options, operation) {
+
+                        if (operation !== "read" && options.models) {
+                            return { models: kendo.stringify(options.models) };
+                        }
+                    }
+                },
+                schema: {
+                    model: {
+                        id: "ID",
+                        fields: {
+                            ID: { type: "string", validation: { required: true } },
+                            FirstName: { type: "string", validation: { required: true } },
+                            LastName: { type: "string", validation: { required: true } },
+                            Email: { type: "string", validation: { required: true } },
+                            Phone: { type: "string", validation: { required: true } }
+
+                        }
+                    }
+                },
+                pageSize: 10
+            },
+            pageSize: 10,
+            height: 540,
+            dataBound: function (e) {
+                console.log(e);
+                $(".k-grid-delete").click(function (e) {
+                    e.preventDefault();
+
+                    var grid = $("#grid").data("kendoGrid");
+
+                    var Item = grid.dataItem($(this).closest("tr"));
+
+                    grid.dataSource.remove(Item);
+                    $.ajax({
+                        type: "post",
+                        url: "/Customer/delete",
+                        data: { id: Item.ID },
+                        success: function (pon) {
+                            if (pon == 1) {
+                                $("#grid").getKendoGrid().dataSource.read();
+                                $("#grid").data('kendoGrid').refresh();
+                            }
+                        }
+                    })
+
+                    return false;
+                });
+            },
+            sortable: true,
+            reorderable: true,
+            groupable: false,
+            resizable: true,
+            filterable: true,
+            columnMenu: false,
+            pageable: {
+                refresh: true,
+                pageSizes: true,
+                buttonCount: 5
+            },
+            toolbar: ["create"],
+            pageable: true,
+            columns: [{
+                field: "ID",
+                title: "ID",
+                width: 150
+            }, {
+                field: "FirstName",
+                title: "FirstName",
+                width: 150
+            }, {
+                field: "LastName",
+                title: "LastName",
+                width: 150
+            }, {
+                field: "Email",
+                title: "Email",
+                width: 150
+            }, {
+                field: "Phone",
+                title: "Phone",
+                width:150,
+            }, {
+                command: ["edit", "destroy"],
+                title: "Delete",
+                width: 180
+            }],
+            editable: "popup",
+        });
+    });
+    $(window).on("resize", function () {
+        kendo.resize($("#grid"));
+    });
+</script>
+
+

@@ -1,0 +1,67 @@
+﻿@model SchedulingPlugIn.Models.Entity.TimeSlot
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TimeSlot</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DateStart)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateStart)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hour)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hour)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Minute)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Minute)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IDAppUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDAppUser)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
